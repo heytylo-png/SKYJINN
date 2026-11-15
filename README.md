@@ -26,3 +26,6 @@ Each unit is one painted pose. Motion comes from two layers:
 - **Region warps** — `anim.json` marks parts of a sprite and how they move. The game bakes a 12-frame loop per sprite the first time it appears. The region format is documented above `prepReg` in `index.html`.
 
 To preview, open `index.html#anim`. Options are separated by `;`, e.g. `index.html#anim=wyv,gry;t=2;s=move;z=4` (units, tier, state `idle|move|atk|die`, zoom). After editing `anim.json` or `meta.json`, run `python3 tools/embed.py`.
+
+## Install as an app
+`manifest.json`, `sw.js` and `icon-*.png` make the game installable (home-screen icon, fullscreen, works offline) when `index.html` is served from its own web address, e.g. GitHub Pages. The claude.ai artifact can't install because its frame blocks service workers. Bump `VERSION` in `sw.js` whenever `index.html` changes.
