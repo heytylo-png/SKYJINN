@@ -13,10 +13,12 @@ SHEETS={
  'muc1':[('muc',1,4,S4)],
  'muc3':[('muc',3,6,{'idle':[0,2,4]}),('muc',3,8,{'walk':[0,2,4,6]}),('muc',3,8,{'atk':[3,4,5,6]}),('muc',3,8,{'die':[1,3,5,7]})],
  'knc1':[('knc',1,5,{'idle':[0],'walk':[1,0],'atk':[2],'die':[3,4]})],'knc2':[('knc',2,4,S4)],'knc3':[('knc',3,4,S4)],
+ 'wym3':[('wym',3,4,S4)],'lch2':[('lch',2,4,S4)],
  'gbc1':[('gbc',1,4,S4)],'lch1':[('lch',1,4,S4)],'lch3':[('lch',3,4,S4)],
  'col1':[('col',1,4,S4)],'col2':[('col',2,4,S4)],'col3':[('col',3,4,S4)]}
 CROP={'muc3':(130,0)}
-ROWNORM={'muc3'}  # rows drawn at different sizes: scale each row's first frame to the target  # left label column to drop
+ROWNORM={'muc3'}
+CUTS={'wym3':[490,970,1712]}  # manual frame boundaries (x in the sheet) where effects touch the next frame  # rows drawn at different sizes: scale each row's first frame to the target  # left label column to drop
 def key(im):
     border=np.concatenate([im[:12].reshape(-1,3),im[-12:].reshape(-1,3),im[:,:12].reshape(-1,3),im[:,-12:].reshape(-1,3)])
     bg=np.median(border,axis=0);d=np.sqrt(((im-bg)**2).sum(-1));mag=np.minimum(im[...,0],im[...,2])-im[...,1]
@@ -59,6 +61,7 @@ for name,rows in SHEETS.items():
     scale=None
     for (k,t,n,states),(y0,y1) in zip(rows,rb):
         band=mask[y0:y1];cs=spans(band.sum(0)>0,6,n,band.sum(0));assert len(cs)==n,(name,k,len(cs))
+        if name in CUTS:b=[0]+[c-cx for c in CUTS[name]]+[band.shape[1]];cs=[[b[i],b[i+1]] for i in range(n)]
         # give each blob to one frame: whole if it is mostly on one side of a cut, else split at the cut
         er=ndimage.binary_erosion(band,iterations=4);lab,nl=ndimage.label(er)
         if nl:
@@ -82,6 +85,7 @@ for name,rows in SHEETS.items():
             for li in range(1,nl+1):
                 if li in mains.values() or sizes[li]>0.25*big:continue
                 m=lab==li;owner[m]=int(np.argmin([d[m].min() for d in dts]))
+        if name in CUTS:owner=np.where(band,np.broadcast_to(colseg,band.shape),-1)
         fmask=[];boxes=[]
         for f in range(n):
             m=owner==f;ys,xs=np.where(m);fmask.append(m);boxes.append((xs.min(),xs.max()+1,y0+ys.min(),y0+ys.max()+1))
