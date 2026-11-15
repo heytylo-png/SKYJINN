@@ -8,7 +8,7 @@ Open `index.html` in a phone browser (landscape). Everything — code, sprites, 
 ## Factions (8)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
 
-Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins. Placeholder shapes: Undead, Automatons.
+Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins, Undead (except Corpse Catapult tier 3). Placeholder shapes: Automatons.
 
 ## Layout
 - `index.html` — the full game
