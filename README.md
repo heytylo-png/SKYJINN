@@ -18,7 +18,7 @@ Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins 
 - `art/maps/` — map backgrounds (Desert Ruins, Sky Bridge, Volcanic Wastes)
 - `tools/cut.py` — removes the magenta background and trims a sprite
 - `art/units/anim.json` — per-unit animation regions (wing flaps, flames, tails, cloth, wheels, glows)
-- `tools/embed.py` — re-embeds `art/units` (sprites, `meta.json`, `anim.json`) into `index.html` (run from repo root)
+- `tools/embed.py` — re-embeds `art/units` (sprites, `meta.json`, `anim.json`) into `index.html` (run from repo root; needs Pillow). Sprites are embedded as lossless WebP
 
 ## Animation
 Each unit is one painted pose. Motion comes from two layers:
