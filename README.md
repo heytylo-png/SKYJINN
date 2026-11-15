@@ -17,4 +17,12 @@ Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons. Placehol
 - `art/bases/` — base tower art per faction
 - `art/maps/` — map backgrounds (Desert Ruins, Sky Bridge, Volcanic Wastes)
 - `tools/cut.py` — removes the magenta background and trims a sprite
-- `tools/embed.py` — re-embeds `art/units` into `index.html` (run from repo root)
+- `art/units/anim.json` — per-unit animation regions (wing flaps, flames, tails, cloth, wheels, glows)
+- `tools/embed.py` — re-embeds `art/units` (sprites, `meta.json`, `anim.json`) into `index.html` (run from repo root)
+
+## Animation
+Each unit is one painted pose. Motion comes from two layers:
+- **Whole-sprite motion** — movement style per unit (`mv` in `meta.json`: `hop` default, `stomp`, `gallop`, `crawl`, `roll`, `float`), attack wind-up and strike, hit knockback, and a death animation.
+- **Region warps** — `anim.json` marks parts of a sprite and how they move. The game bakes a 12-frame loop per sprite the first time it appears. The region format is documented above `prepReg` in `index.html`.
+
+To preview, open `index.html#anim`. Options are separated by `;`, e.g. `index.html#anim=wyv,gry;t=2;s=move;z=4` (units, tier, state `idle|move|atk|die`, zoom). After editing `anim.json` or `meta.json`, run `python3 tools/embed.py`.
