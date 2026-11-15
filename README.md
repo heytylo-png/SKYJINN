@@ -8,7 +8,7 @@ Open `index.html` in a phone browser (landscape). Everything — code, sprites, 
 ## Factions (8)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
 
-Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins (except Field Mechanic, Warboss Mega-Mech and Rocket Battery tier 3). Placeholder shapes: Undead, Automatons.
+Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins (except Rocket Battery tier 3). Placeholder shapes: Undead, Automatons.
 
 ## Layout
 - `index.html` — the full game
