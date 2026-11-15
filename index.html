@@ -20,7 +20,16 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
 .stg canvas{width:40px;height:38px}
 .stg .sn{font-weight:700;font-size:12px}.stg .sd{font-size:11px;color:#c9b393;font-weight:500}
 .stg .ss{font-size:15px;color:#ffd77a;letter-spacing:2px}
-.stg.lock{opacity:.4}.stg.lock::after{content:'🔒';position:absolute;top:4px;right:6px;font-size:13px}
+.stg.lock{opacity:.4}
+#fgRows{display:flex;flex-direction:column;gap:8px;width:min(100%,520px)}
+.fgr{display:flex;align-items:center;gap:10px;background:#2c2016;border:1px solid #4e3a26;border-radius:12px;padding:8px 12px;text-align:left}
+.fgr .fi{font-size:22px}.fgr .ft{flex:1}.fgr .ft b{display:block;font-size:14px}.fgr .ft span{font-size:12px;color:#c9b393}
+.fgr .pips{color:#ffd77a;letter-spacing:2px;font-size:13px}
+.fgr button{min-width:84px}
+.gemc{color:#8fe3ff;font-size:.8em}
+#endGems{color:#8fe3ff;font-weight:700;margin:0}
+#dlBody{background:#2c2016;border:1px solid #4e3a26;border-radius:12px;padding:10px 16px;max-width:520px}
+#dlBody .dm{font-size:18px;font-weight:700;color:#ffd77a}#dlBody p{margin:4px 0}.stg.lock::after{content:'🔒';position:absolute;top:4px;right:6px;font-size:13px}
 .stg.next{border-color:#ffd77a!important;box-shadow:0 0 10px rgba(255,215,122,.35)}
 #endStars{font-size:28px!important;color:#ffd77a!important;letter-spacing:6px}
 @media (orientation:portrait){#stages{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -169,11 +178,13 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
       <button data-d="hard">Hard</button>
     </div>
     <div class="btns more"><button id="bCamp">🏆 Campaign <span id="campStars"></span></button><button id="bTut">🎓 Tutorial</button><button id="bWatch">👁 AI vs AI</button></div>
+    <div class="btns more"><button id="bDaily">📅 Daily Challenge <span id="dailyTag"></span></button><button id="bForge">⚒ Forge <span id="gemTag"></span></button></div>
   </div>
   <div id="end" class="ov hide">
     <h2 id="endT"></h2>
     <p id="endS"></p>
     <p id="endStars" class="hide"></p>
+    <p id="endGems" class="hide"></p>
     <div class="btns"><button id="endNext" class="hide">Next stage ▶</button><button id="endCamp" class="hide">Campaign</button><button id="again">Play again</button></div>
   </div>
   <div id="camp" class="ov hide">
@@ -183,6 +194,19 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
     <div id="stages"></div>
     <p id="campNote" class="hint"></p>
     <div class="btns"><button id="campBack">Back</button></div>
+  </div>
+  <div id="forge" class="ov hide">
+    <h2>⚒ Forge <span id="fgGems" class="gemc"></span></h2>
+    <p class="lbl">PERMANENT UPGRADES FOR</p>
+    <div class="chips" id="cForge"></div>
+    <div id="fgRows"></div>
+    <p class="hint">Earn 💎 by playing: win +10, loss +3, new campaign ★ +5 each, daily challenge win +30. Upgrades apply to your army in every mode except AI vs AI.</p>
+    <div class="btns"><button id="fgBack">Back</button></div>
+  </div>
+  <div id="daily" class="ov hide">
+    <h2>📅 Daily Challenge</h2>
+    <div id="dlBody"></div>
+    <div class="btns"><button id="dlGo">Fight ▶</button><button id="dlBack">Back</button></div>
   </div>
   <div id="pause" class="ov hide">
     <h2>Paused</h2>
@@ -405,7 +429,7 @@ const WISHES={
  goblin:{icon:'✈',name:'Airstrike',short:'Bomb',tip:'Tap where to call an Airstrike ✈',desc:'Bombers carpet-bomb a wide stretch of the battlefield.'},
  knight:{icon:'✨',name:'Divine Judgment',short:'Smite',tip:'Tap where to call down Judgment ✨',desc:'A pillar of holy light smites enemies, empowers nearby allies and cleanses their acid.'}};
 const GMAX=0.18,GRATE=0.02;
-const FACMOD={djinn:{hp:1.02,dmg:1.0},verdant:{hp:1.1,dmg:1.06},mutant:{hp:1,dmg:1.02},knight:{hp:1.0,dmg:0.97},goblin:{hp:0.84,dmg:0.79},undead:{hp:1.24,dmg:1.16},auto:{hp:0.96,dmg:0.97},dragon:{hp:1.08,dmg:1.05},none:{hp:1,dmg:1}};
+const FACMOD={djinn:{hp:1.02,dmg:1.0},verdant:{hp:1.1,dmg:1.06},mutant:{hp:1.03,dmg:1.04},knight:{hp:1.02,dmg:0.98},goblin:{hp:0.8,dmg:0.75},undead:{hp:1.28,dmg:1.2},auto:{hp:0.95,dmg:0.96},dragon:{hp:1.18,dmg:1.14},none:{hp:1,dmg:1}};
 const HOME=150,HOME_DMG=0.2,HOME_DEF=0.2,CAP=999,QMAX=80,OVERTIME=1e9;
 const homeK=()=>G.time<OVERTIME?1:0;
 const SUP={champion:6,swarm:1,tank:3,ranged:2,diver:2,air:3,aa:2,siege:3,support:2};
@@ -1095,14 +1119,16 @@ function iconTo(canvas,k,side){
 }
 
 // ======================= setup & economy =======================
-function newGame(diff,spec,camp){
+function newGame(diff,spec,camp,daily){
   TUT=null;$('coach').classList.add('hide');
   auInit();$('app').classList.toggle('spectate',!!spec);
-  const map=camp?(camp.st.map||'dunes'):optMap;applyMap(map);
-  const others=Object.keys(FAC).filter(f=>f!==pickFac),ef=camp?camp.st.e:pickEnemy||(optEnemy!=='random'?optEnemy:others[Math.floor(Math.random()*others.length)]);
-  G={diff,map,fac:[pickFac,ef],time:0,wave:0,waveT:FIRST,gold:camp?[200,200+(camp.st.boss?300:0)]:[optGold,optGold],camp:camp||null,egm:camp&&camp.st.egm||1,income:[40,40],incLvl:[0,0],roster:[{},{}],tier:[{},{}],ck:[0,0],
+  const map=camp?(camp.st.map||'dunes'):daily?daily.map:optMap;applyMap(map);
+  const others=Object.keys(FAC).filter(f=>f!==pickFac),ef=camp?camp.st.e:daily?daily.e:pickEnemy||(optEnemy!=='random'?optEnemy:others[Math.floor(Math.random()*others.length)]);
+  G={diff,map,fac:[pickFac,ef],time:0,wave:0,waveT:FIRST,gold:camp?[200,200+(camp.st.boss?300:0)]:daily?daily.gold.slice():[optGold,optGold],daily:daily||null,camp:camp||null,egm:camp&&camp.st.egm||1,income:[40,40],incLvl:[0,0],roster:[{},{}],tier:[{},{}],ck:[0,0],
      anchor:[ANCHOR,ANCHOR],bshake:[0,0],shk:0,units:[],corpses:[],proj:[],fx:[],parts:[],shields:[],zones:[],
      wishWaves:2,aw:[0,0],awT:[0,0],tcd:[0,0],queue:[[],[]],sup:[0,0],relT:[0,0],armed:null,over:false,paused:false,lastEnemy:{},lastOwn:{},kills:[0,0],spec:!!spec,speed:1};
+  G.um=[[1,1],[1,1]];if(daily){G.um=[daily.um.slice(),daily.um.slice()]}
+  if(!spec&&!G.sim){const u=upOf(pickFac);G.um[0][0]*=1+0.04*u.hp;G.um[0][1]*=1+0.04*u.dmg;G.gold[0]+=25*u.gold}
   if(camp&&camp.st.boss){const ck=FAC[ef].keys.find(k=>TYPES[k].champ);G.roster[1][ck]=1}
   musStart();
   warmQ=[];for(const s of [0,1])for(const k of keysOf(s))warm(k,1,s);
@@ -1119,7 +1145,8 @@ function buyIncome(s){if(G.incLvl[s]>=5)return false;const c=incCost(s);if(G.gol
 function mkUnit(side,k){
   const T=TYPES[k],tier=tierOf(side,k),m=1+0.3*(tier-1),fm=FACMOD[T.fac];
   const x=side===0?rnd(85,115):WORLD-rnd(85,115),y=T.air?rnd(AYB[0],AYB[1]):rnd(GY[0]+5,GY[1]-5);
-  return {side,k,T,x,y,hp:T.hp*m*fm.hp,max:T.hp*m*fm.hp,base:T.hp*m*fm.hp,dmg:T.dmg*m*fm.dmg,heal:(T.heal||0)*m,cd:Math.random()*T.cd,tier,dead:false,flash:0,ph:Math.random()*6,atk:0,age:0,g:0,ev:0,acidT:0,acidS:0,acidSrc:0,buffT:0,form:0,formT:0,kids:0,broodT:T.brood||0,mom:null,shMax:T.fac==='auto'?T.hp*m*fm.hp*0.25:0,sh:T.fac==='auto'?T.hp*m*fm.hp*0.25:0,shT:0,burnT:0,burnSrc:0,stunT:0,revived:0};
+  const um=(G.um&&G.um[side])||[1,1],hm=m*fm.hp*um[0];
+  return {side,k,T,x,y,hp:T.hp*hm,max:T.hp*hm,base:T.hp*hm,dmg:T.dmg*m*fm.dmg*um[1],heal:(T.heal||0)*m,cd:Math.random()*T.cd,tier,dead:false,flash:0,ph:Math.random()*6,atk:0,age:0,g:0,ev:0,acidT:0,acidS:0,acidSrc:0,buffT:0,form:0,formT:0,kids:0,broodT:T.brood||0,mom:null,shMax:T.fac==='auto'?T.hp*hm*0.25:0,sh:T.fac==='auto'?T.hp*hm*0.25:0,shT:0,burnT:0,burnSrc:0,stunT:0,revived:0};
 }
 function spawn(side){
   let any=false;
@@ -1400,11 +1427,17 @@ function endGame(){
   if(G.spec){t=a[0]===a[1]?'Draw':`${FAC[G.fac[a[0]>a[1]?0:1]].name} wins!`;snd('win')}else snd(t==='Victory!'?'win':'lose');
   $('endT').textContent=t;$('endT').style.color=G.spec?'#ffd77a':t==='Victory!'?'#7ef0c8':t==='Defeat'?'#ff8a6a':'#ffd77a';
   $('endS').innerHTML=`${FAC[G.fac[0]].name} vs ${FAC[G.fac[1]].name} · ${G.spec?'AI vs AI':G.diff}<br>Waves: ${G.wave} · ${G.spec?FAC[G.fac[0]].name:'Your'} Anchor ${Math.ceil(a[0])} · ${G.spec?FAC[G.fac[1]].name:'Enemy'} Anchor ${Math.ceil(a[1])}<br>${G.spec?FAC[G.fac[0]].name+' kills':'Destroyed'} ${G.kills[0]} · ${G.spec?FAC[G.fac[1]].name+' kills':'Lost'} ${G.kills[1]}`;
+  if(G.daily)$('endS').innerHTML=`📅 Daily: ${G.daily.mod.n}<br>`+$('endS').innerHTML;
   $('endStars').classList.add('hide');$('endNext').classList.add('hide');$('endCamp').classList.toggle('hide',!G.camp);
   if(G.camp){const c=G.camp,P=progOf(c.fac),win=t==='Victory!';
     $('endS').innerHTML=`Stage ${c.i+1}: ${c.st.name} · vs ${FAC[c.st.e].name}<br>`+$('endS').innerHTML;
-    if(win){const r=a[0]/ANCHOR,st=r>=0.75?3:r>=0.4?2:1;P.stars[c.i]=Math.max(P.stars[c.i]||0,st);P.cleared=Math.max(P.cleared,c.i+1);saveProg();updCampBtn();
+    if(win){const r=a[0]/ANCHOR,st=r>=0.75?3:r>=0.4?2:1;c.newStars=Math.max(0,st-(P.stars[c.i]||0));P.stars[c.i]=Math.max(P.stars[c.i]||0,st);P.cleared=Math.max(P.cleared,c.i+1);saveProg();updCampBtn();
       $('endStars').textContent='★'.repeat(st)+'☆'.repeat(3-st);$('endStars').classList.remove('hide');if(c.i<5)$('endNext').classList.remove('hide')}}
+  $('endGems').classList.add('hide');
+  if(!G.spec&&!TUT){const win=t==='Victory!';let g=win?10:3,why=[];
+    if(G.camp&&win){const ns=Math.max(0,(G.camp.newStars||0));if(ns){g+=5*ns;why.push('new ★')}}
+    if(G.daily&&win&&META.daily!==G.daily.id){META.daily=G.daily.id;g+=30*(G.daily.gm||1);why.push('daily')}
+    META.gems+=g;saveMeta();$('endGems').textContent=`+${g} 💎${why.length?' ('+why.join(', ')+')':''} · total ${META.gems}`;$('endGems').classList.remove('hide')}
   $('end').classList.remove('hide');
 }
 
@@ -1815,6 +1848,57 @@ async function initStore(){
     STORE=ref;if(snap&&snap.exists){const d=JSON.parse(JSON.stringify(snap.data()||{}));for(const f in d){const a=progOf(f),b=d[f];a.cleared=Math.max(a.cleared,b.cleared||0);a.stars=a.stars.map((v,i)=>Math.max(v,(b.stars||[])[i]||0))}}
   }catch(e){}finally{updCampBtn()}
 }
+let META={gems:0,up:{},daily:''},MSTORE=null;
+const upOf=f=>META.up[f]||(META.up[f]={hp:0,dmg:0,gold:0});
+async function initMeta(){
+  try{const ls=localStorage.getItem('skyjinn-meta');if(ls)Object.assign(META,JSON.parse(ls)||{})}catch(e){}
+  try{if(!(window.claude&&claude.use))return;const tm=new Promise(r=>setTimeout(()=>r(null),10000));
+    const [db,user]=await Promise.all([claude.use('db'),claude.use('user')]);if(!db||!user)return;
+    const id=await Promise.race([user.id(),tm]);if(!id)return;
+    const ref=db.doc('data/users/'+id+'/meta');const snap=await Promise.race([ref.get(),tm]);MSTORE=ref;
+    if(snap&&snap.exists){const d=JSON.parse(JSON.stringify(snap.data()||{}));if((d.gems||0)>META.gems)META.gems=d.gems;if(d.daily>META.daily)META.daily=d.daily;
+      for(const f in d.up||{}){const a=upOf(f),b=d.up[f];for(const k of ['hp','dmg','gold'])a[k]=Math.max(a[k],b[k]||0)}}
+  }catch(e){}finally{updMetaTags()}
+}
+let msaving=Promise.resolve();
+function saveMeta(){try{localStorage.setItem('skyjinn-meta',JSON.stringify(META))}catch(e){}
+  if(MSTORE){const body=JSON.parse(JSON.stringify(META));msaving=msaving.then(()=>MSTORE.set(body)).catch(()=>{})}updMetaTags()}
+function updMetaTags(){$('gemTag').textContent=`💎 ${META.gems}`;$('dailyTag').textContent=META.daily===todayId()?'✓':'NEW'}
+// ---- forge ----
+const UPS=[{k:'hp',i:'🛡',n:'Vitality',d:l=>`+${4*l}% unit health`},{k:'dmg',i:'⚔',n:'Might',d:l=>`+${4*l}% unit damage`},{k:'gold',i:'💰',n:'War Chest',d:l=>`+${25*l} starting gold`}];
+const upPrice=l=>20*(l+1);let forgeFac='djinn';
+function openForge(){forgeFac=pickFac;['start','end'].forEach(i=>$(i).classList.add('hide'));$('forge').classList.remove('hide');renderForge()}
+function renderForge(){
+  $('fgGems').textContent=`💎 ${META.gems}`;
+  const cf=$('cForge');if(!cf.children.length)for(const f of Object.keys(FAC)){const b=document.createElement('button');b.dataset.f=f;b.textContent=FAC[f].name.replace('Magic ','');b.onclick=()=>{forgeFac=f;renderForge()};cf.appendChild(b)}
+  cf.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.f===forgeFac));
+  const U=upOf(forgeFac),w=$('fgRows');w.innerHTML='';
+  for(const u of UPS){const l=U[u.k],max=l>=5,pr=upPrice(l),r=document.createElement('div');r.className='fgr';
+    r.innerHTML=`<span class="fi">${u.i}</span><span class="ft"><b>${u.n}</b><span>${l?u.d(l):'none yet'}${max?'':' → '+u.d(l+1)}</span></span><span class="pips">${'◆'.repeat(l)}${'◇'.repeat(5-l)}</span><button ${max||META.gems<pr?'disabled':''}>${max?'MAX':pr+' 💎'}</button>`;
+    r.querySelector('button').onclick=()=>{if(max||META.gems<pr)return;META.gems-=pr;U[u.k]++;saveMeta();snd('shield');renderForge()};w.appendChild(r)}
+}
+$('fgBack').onclick=()=>{$('forge').classList.add('hide');$('start').classList.remove('hide')};
+// ---- daily challenge ----
+function todayId(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+const DMODS=[
+  {n:'Gold Rush',d:'Both armies start with 1500 gold.',gold:[1500,1500]},
+  {n:'Glass Cannons',d:'All units deal double damage but have 60% health.',um:[0.6,2]},
+  {n:'Iron Hide',d:'All units have +80% health. Long, grinding fights.',um:[1.8,1]},
+  {n:'Underdog',d:'The enemy starts with 600 gold, you start with 200. Double reward.',gold:[200,600],gm:2},
+  {n:'Sky Bridge Brawl',d:'Narrow bridge, 500 gold each.',map:'bridge',gold:[500,500]},
+  {n:'Volcanic Fury',d:'Volcanic Wastes, damage +50% for everyone.',map:'volcano',um:[1,1.5]},
+  {n:'Lean Start',d:'Both armies start with only 100 gold.',gold:[100,100]}];
+function dailyOf(id){let h=2166136261;for(const c of id)h=Math.imul(h^c.charCodeAt(0),16777619);const rnd=()=>{h=Math.imul(h^(h>>>15),2246822507);h^=h>>>13;return (h>>>0)/4294967296};
+  const F=Object.keys(FAC),f=F[Math.floor(rnd()*F.length)],o=F.filter(x=>x!==f),e=o[Math.floor(rnd()*o.length)],m=DMODS[Math.floor(rnd()*DMODS.length)];
+  return {id,f,e,mod:m,map:m.map||['dunes','bridge','volcano'][Math.floor(rnd()*3)],gold:(m.gold||[300,300]).slice(),um:(m.um||[1,1]).slice(),gm:m.gm||1}}
+let DAILY=null;
+function openDaily(){DAILY=dailyOf(todayId());['start','end'].forEach(i=>$(i).classList.add('hide'));$('daily').classList.remove('hide');
+  const done=META.daily===DAILY.id,mn={dunes:'Desert Ruins',bridge:'Sky Bridge',volcano:'Volcanic Wastes'}[DAILY.map];
+  $('dlBody').innerHTML=`<p class="dm">${DAILY.mod.n}</p><p>${DAILY.mod.d}</p><p>You play <b>${FAC[DAILY.f].name}</b> vs <b>${FAC[DAILY.e].name}</b> · Hard · ${mn}</p><p class="gemc">${done?'✓ Already won today — play again for fun (+10 💎 per win)':'First win today: +'+(30*DAILY.gm+10)+' 💎'}</p><p class="hint">New challenge every day at midnight.</p>`}
+$('dlGo').onclick=()=>{$('daily').classList.add('hide');pickFac=DAILY.f;newGame('hard',false,null,DAILY)};
+$('dlBack').onclick=()=>{$('daily').classList.add('hide');$('start').classList.remove('hide')};
+$('bDaily').onclick=openDaily;$('bForge').onclick=openForge;
+initMeta();
 let saving=Promise.resolve();
 function saveProg(){try{localStorage.setItem('skyjinn-progress',JSON.stringify(PROG))}catch(e){}
   if(STORE){const body=JSON.parse(JSON.stringify(PROG));saving=saving.then(()=>STORE.set(body)).catch(()=>{})}}
