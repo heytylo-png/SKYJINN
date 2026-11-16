@@ -14,10 +14,12 @@ SHEETS={
  'muc3':[('muc',3,6,{'idle':[0,2,4]}),('muc',3,8,{'walk':[0,2,4,6]}),('muc',3,8,{'atk':[3,4,5,6]}),('muc',3,8,{'die':[1,3,5,7]})],
  'knc1':[('knc',1,5,{'idle':[0],'walk':[1,0],'atk':[2],'die':[3,4]})],'knc2':[('knc',2,4,S4)],'knc3':[('knc',3,4,S4)],
  'wym3':[('wym',3,4,S4)],'lch2':[('lch',2,4,S4)],
- 'gbc1':[('gbc',1,4,S4)],'lch1':[('lch',1,4,S4)],'lch3':[('lch',3,4,S4)],
+ 'gbc1':[('gbc',1,4,S4)],'gbc2':[('gbc',2,4,S4)],'gbc3':[('gbc',3,4,S4)],'lch1':[('lch',1,4,S4)],'lch3':[('lch',3,4,S4)],
  'col1':[('col',1,4,S4)],'col2':[('col',2,4,S4)],'col3':[('col',3,4,S4)]}
 CROP={'muc3':(130,0)}
 ROWNORM={'muc3'}
+DESPILL={'gbc2','gbc3'}  # strip leftover magenta (shadow smears)
+SCALEADJ={'gbc2':1.17}  # sheets whose idle height includes tall smoke/effects
 CUTS={'wym3':[490,970,1712]}  # manual frame boundaries (x in the sheet) where effects touch the next frame  # rows drawn at different sizes: scale each row's first frame to the target  # left label column to drop
 def key(im):
     border=np.concatenate([im[:12].reshape(-1,3),im[-12:].reshape(-1,3),im[:,:12].reshape(-1,3),im[:,-12:].reshape(-1,3)])
@@ -90,7 +92,7 @@ for name,rows in SHEETS.items():
         for f in range(n):
             m=owner==f;ys,xs=np.where(m);fmask.append(m);boxes.append((xs.min(),xs.max()+1,y0+ys.min(),y0+ys.max()+1))
         ground=boxes[0][3]
-        if scale is None or (k,t)!=prev or name in ROWNORM:scale=TARGET/(boxes[0][3]-boxes[0][2]);ground0=ground
+        if scale is None or (k,t)!=prev or name in ROWNORM:scale=TARGET/(boxes[0][3]-boxes[0][2])*SCALEADJ.get(name,1);ground0=ground
         prev=(k,t)
         ent=out.setdefault(k+str(t),{'f':[]})
         idx0=len(ent['f'])
@@ -100,6 +102,8 @@ for name,rows in SHEETS.items():
             cr=rgba[Y0:Y1,X0:X1].copy();cr[...,3]=cr[...,3]*fm[Y0:Y1,X0:X1]
             crop=Image.fromarray(cr,'RGBA');W=max(1,round(crop.width*scale));H=max(1,round(crop.height*scale))
             crop=crop.resize((W,H),Image.LANCZOS)
+            if name in DESPILL:
+                a=np.asarray(crop).astype(int).copy();r,g,b=a[...,0],a[...,1],a[...,2];a[...,3][(r>140)&(r-g>85)&(b-g>35)]=0;crop=Image.fromarray(a.astype(np.uint8),'RGBA')
             idh=boxes[0][3]-boxes[0][2]
             FM=np.zeros(mask.shape,bool);FM[y0:y1]=fmask[fi];body=FM[ground-int(idh*0.6):ground,X0:X1];feet=FM[ground-int(idh*0.2):ground,X0:X1]
             fx=np.where(feet)[1];back=float(np.percentile(fx,8)) if len(fx) else 0
