@@ -9,9 +9,8 @@ data={}
 for f in sorted(glob.glob('art/units/*.png')):
     m=re.match(r'([a-z]+)(\d)\.png',os.path.basename(f))
     if not m or m.group(1) not in meta:continue
-    # embedded as lossless WebP: pixel-identical to the PNG, about a fifth smaller
-    im=Image.open(f).convert('RGBA');b=io.BytesIO();im.save(b,'WEBP',lossless=True,method=4,exact=True)
-    assert Image.open(io.BytesIO(b.getvalue())).convert('RGBA').tobytes()==im.tobytes(),f
+    # embedded as lossy WebP (colour q90, exact alpha): looks the same in game at about a third of the lossless size
+    im=Image.open(f).convert('RGBA');b=io.BytesIO();im.save(b,'WEBP',quality=90,alpha_quality=100,method=6)
     data.setdefault(m.group(1),{})[m.group(2)]='data:image/webp;base64,'+base64.b64encode(b.getvalue()).decode()
 c=lambda o:json.dumps(o,separators=(',',':'))
 s,n1=re.subn(r'const SPRITE_DATA=\{.*?\};\n',lambda _:'const SPRITE_DATA='+json.dumps(data)+';\n',s,count=1,flags=re.S)
