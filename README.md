@@ -24,6 +24,8 @@ Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins,
 Each unit is one painted pose. Motion comes from two layers:
 - **Whole-sprite motion** — movement style per unit (`mv` in `meta.json`: `hop` default, `stomp`, `gallop`, `crawl`, `roll`, `float`), attack wind-up and strike, hit knockback, and a death animation.
 - **Region warps** — `anim.json` marks parts of a sprite and how they move. The game bakes a 12-frame loop per sprite the first time it appears. The region format is documented above `prepReg` in `index.html`.
+- **Combat effects** — drawn in code, no art needed: melee slash arcs, muzzle bursts, spell charge-ups before each cast (units listed in `CAST`), impact sparks and blasts, hit recoil, footstep dust in time with the walk cycle, a shadow that shrinks when a unit leaves the ground, speed lines on divers, and a dust ring when a unit arrives.
+- **Faction powers** — each power has a cast flash, a ground rune, its own effect while active (tornado, vines, storm cloud, ground cracks, EMP rings and arcs, meteors, bombers with falling bombs, holy beam) and marks left on the ground. These are visual only: `wishFx`, `drawZone` and `blastFx` in `index.html`.
 
 To preview, open `index.html#anim`. Options are separated by `;`, e.g. `index.html#anim=wyv,gry;t=2;s=move;z=4` (units, tier, state `idle|move|atk|die`, zoom). After editing `anim.json` or `meta.json`, run `python3 tools/embed.py`.
 
