@@ -431,7 +431,7 @@ const WISHES={
  knight:{icon:'✨',name:'Divine Judgment',short:'Smite',tip:'Tap where to call down Judgment ✨',desc:'A pillar of holy light smites enemies, empowers nearby allies and cleanses their acid.'}};
 const GMAX=0.18,GRATE=0.02;
 const FACMOD={djinn:{hp:1.02,dmg:1.0},verdant:{hp:1.1,dmg:1.06},mutant:{hp:1.03,dmg:1.04},knight:{hp:1.02,dmg:0.98},goblin:{hp:0.8,dmg:0.75},undead:{hp:1.28,dmg:1.2},auto:{hp:0.95,dmg:0.96},dragon:{hp:1.18,dmg:1.14},none:{hp:1,dmg:1}};
-const HOME=150,HOME_DMG=0.2,HOME_DEF=0.2,CAP=999,QMAX=80,OVERTIME=1e9;
+const HOME=150,HOME_DMG=0.2,HOME_DEF=0.2,CAP=999,QMAX=80,OVERTIME=300; // last minute: no home-defence bonus, base damage x2
 const homeK=()=>G.time<OVERTIME?1:0;
 const SUP={champion:6,swarm:1,tank:3,ranged:2,diver:2,air:3,aa:2,siege:3,support:2};
 const TOWER={range:260,dmg:40,cd:0.75};
@@ -1270,7 +1270,7 @@ function hurt(side,k,dmg,e,src){
   if(e.T.fac==='djinn'&&k!=='acid'&&k!=='burn'&&k!=='wish'&&k!=='zone'&&Math.random()<MIRAGE){e.mir=0.25;G.fx.push({t:'ring',x:e.x,y:bodyY(e),r:9,life:0.25,max:0.25,c:'#efe4ff'});return}
   for(const t of e.T.tags)if(T.bonus[t])m*=T.bonus[t];
   if(e.T.tags.includes('armor')&&!T.pierce)m*=0.6;
-  if(shielded(e.side,e.x))m*=0.3;
+  if(shielded(e.side,e.x)){m*=0.3;if(!G.sim&&Math.random()<0.3)G.fx.push({t:'hex',x:e.x,y:bodyY(e),c:PAL[e.side].glow,life:0.3,max:0.3})}
   if(Math.abs(e.x-BX[e.side])<=HOME)m*=1-HOME_DEF*homeK();
   if(e.T.fac==='knight'){if(!e.moving)m*=0.85;m*=1-0.05*Math.min(3,e.form)}
   if(e.T.fac==='dragon'&&T.proj&&k!=='zone')m*=0.85;
@@ -1338,6 +1338,7 @@ function champAbility(u,dir){
   else if(T.ability==='holy'){for(const a of G.units)if(a.side===u.side&&!a.dead&&Math.abs(a.x-x)<110){a.hp=Math.min(a.max,a.hp+50);a.buffT=Math.max(a.buffT,3)}
     for(const e of G.units)if(e.side!==u.side&&!e.dead&&Math.abs(e.x-x)<70)hurt(u.side,'knc',35,e,u);
     G.fx.push({t:'ring',x,y,r:110,life:0.7,max:0.7,c:GOLD});G.fx.push({t:'ring',x,y,r:60,life:0.5,max:0.5,c:'#fff2c0'});for(let i=0;i<14;i++)sparks(x+rnd(-60,60),y-rnd(0,60),1,GOLD);snd('shield',x)}
+  if(!G.sim)champFx(u,dir);
 }
 function castWish(side,x){
   const f=G.fac[side],dir=side?-1:1;
@@ -1377,7 +1378,7 @@ function lightning(side,x){
   for(let i=0;i<20;i++)sparks(x+rnd(-40,40),GY[1]-rnd(0,60),1,side===0?'#c9b6ff':'#ffb38a');
   puff(x,GY[1]-20,12,'#e6c995',80);shake(9);snd('bolt');
 }
-function raiseShield(side,x){G.shields.push({side,x,r:80,life:6,max:6});snd('shield');shake(2);
+function raiseShield(side,x){G.shields.push({side,x,r:80,life:6,max:6});snd('shield');shake(2);if(!G.sim){G.fx.push({t:'rune',x,y:GY[1]+6,r:80,c:PAL[side].glow,life:1,max:1,sp:side?-1:1});G.fx.push({t:'shock',x,y:GY[1]+6,r:100,w:5,c:PAL[side].glow,life:0.6,max:0.6})}
   for(let i=0;i<16;i++)sparks(x+rnd(-70,70),GY[1]-rnd(0,90),1,PAL[side].glow)}
 function updUnit(u,dt){
   const T=u.T,dir=u.side===0?1:-1,eb=BX[1-u.side];
@@ -1462,20 +1463,25 @@ function update(dt){
     const focus=Math.min(f0,f1)+(Math.abs(f1-f0)<400?Math.abs(f1-f0)/2:120);
     cam.x+=(focus-V.visW/2-cam.x)*Math.min(1,dt*1.5)}
   clampCam();
+  if(G.time>=OVERTIME&&!G.ot){G.ot=1;if(!G.sim){toast('⏱ OVERTIME: base damage ×2, no home defence bonus');G.fx.push({t:'screen',c:'#ff5a2a',life:0.6,max:0.6,a:0.25});snd('wave')}}
   if(G.anchor[0]<=0||G.anchor[1]<=0||G.time>=MATCH)endGame();
 }
 function clampCam(){cam.x=V.visW>=WORLD?(WORLD-V.visW)/2:Math.max(0,Math.min(WORLD-V.visW,cam.x))}
+// who won: base HP first; if the bases are level, the side that pushed its front line further, then kills
+function front(s){let f=null;for(const u of G.units)if(u.side===s&&!u.dead&&!u.T.air){const d=s?BX[1]-u.x:u.x-BX[0];if(f===null||d>f)f=d}return f===null?0:f}
+function result(){const a=G.anchor;if(a[0]!==a[1])return {win:a[0]>a[1]?0:1,why:a[0]<=0||a[1]<=0?'ko':'base'};
+  const f0=front(0),f1=front(1);if(Math.abs(f0-f1)>=10)return {win:f0>f1?0:1,why:'ground'};
+  if(G.kills[0]!==G.kills[1])return {win:G.kills[0]>G.kills[1]?0:1,why:'kills'};return {win:-1,why:'draw'}}
 function endGame(){
-  G.over=true;closeSheet();musStop();const a=G.anchor;let t;
-  if(a[1]<=0&&a[0]>0)t='Victory!';else if(a[0]<=0&&a[1]>0)t='Defeat';else t=a[0]>a[1]?'Victory!':a[0]<a[1]?'Defeat':'Draw';
-  if(G.spec){t=a[0]===a[1]?'Draw':`${FAC[G.fac[a[0]>a[1]?0:1]].name} wins!`;snd('win')}else snd(t==='Victory!'?'win':'lose');
+  G.over=true;G.res=result();if(G.sim)return;closeSheet();musStop();const a=G.anchor,R=G.res;let t=R.win<0?'Draw':R.win===0?'Victory!':'Defeat';
+  if(G.spec){t=R.win<0?'Draw':`Winner: ${FAC[G.fac[R.win]].name}`;snd('win')}else snd(t==='Victory!'?'win':'lose');
   $('endT').textContent=t;$('endT').style.color=G.spec?'#ffd77a':t==='Victory!'?'#7ef0c8':t==='Defeat'?'#ff8a6a':'#ffd77a';
-  $('endS').innerHTML=`${FAC[G.fac[0]].name} vs ${FAC[G.fac[1]].name} · ${G.spec?'AI vs AI':G.diff}<br>Waves: ${G.wave} · ${G.spec?FAC[G.fac[0]].name:'Your'} Anchor ${Math.ceil(a[0])} · ${G.spec?FAC[G.fac[1]].name:'Enemy'} Anchor ${Math.ceil(a[1])}<br>${G.spec?FAC[G.fac[0]].name+' kills':'Destroyed'} ${G.kills[0]} · ${G.spec?FAC[G.fac[1]].name+' kills':'Lost'} ${G.kills[1]}`;
+  $('endS').innerHTML=`${FAC[G.fac[0]].name} vs ${FAC[G.fac[1]].name} · ${G.spec?'AI vs AI':G.diff}<br>Waves: ${G.wave} · ${G.spec?FAC[G.fac[0]].name:'Your'} Anchor ${Math.ceil(a[0])} · ${G.spec?FAC[G.fac[1]].name:'Enemy'} Anchor ${Math.ceil(a[1])}<br>${G.spec?FAC[G.fac[0]].name+' kills':'Destroyed'} ${G.kills[0]} · ${G.spec?FAC[G.fac[1]].name+' kills':'Lost'} ${G.kills[1]}`+(R.why==='ground'?'<br>Bases level: won on ground taken':R.why==='kills'?'<br>Bases level and front lines even: won on kills':'');
   if(G.daily)$('endS').innerHTML=`📅 Daily: ${G.daily.mod.n}<br>`+$('endS').innerHTML;
   $('endStars').classList.add('hide');$('endNext').classList.add('hide');$('endCamp').classList.toggle('hide',!G.camp);
   if(G.camp){const c=G.camp,P=progOf(c.fac),win=t==='Victory!';
     $('endS').innerHTML=`Stage ${c.i+1}: ${c.st.name} · vs ${FAC[c.st.e].name}<br>`+$('endS').innerHTML;
-    if(win){const r=a[0]/ANCHOR,st=r>=0.75?3:r>=0.4?2:1;c.newStars=Math.max(0,st-(P.stars[c.i]||0));P.stars[c.i]=Math.max(P.stars[c.i]||0,st);P.cleared=Math.max(P.cleared,c.i+1);saveProg();updCampBtn();
+    if(win){const r=a[0]/ANCHOR,st=R.why==='ground'||R.why==='kills'?1:r>=0.75?3:r>=0.4?2:1;c.newStars=Math.max(0,st-(P.stars[c.i]||0));P.stars[c.i]=Math.max(P.stars[c.i]||0,st);P.cleared=Math.max(P.cleared,c.i+1);saveProg();updCampBtn();
       $('endStars').textContent='★'.repeat(st)+'☆'.repeat(3-st);$('endStars').classList.remove('hide');if(c.i<5)$('endNext').classList.remove('hide')}}
   $('endGems').classList.add('hide');
   if(!G.spec&&!TUT){const win=t==='Victory!';let g=win?10:3,why=[];
@@ -1556,7 +1562,7 @@ function drawBattle(t,w,h,dpr){
     ctx.restore()}
   for(const p of G.parts)if(p.spark){ctx.globalAlpha=p.life/p.max;ctx.strokeStyle=p.c;ctx.lineWidth=p.s;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-p.vx*0.03,p.y-p.vy*0.03);ctx.stroke()}
   ctx.globalAlpha=1;
-  for(const f of G.fx){if(f.dl>0)continue;const a=f.life/f.max;ctx.globalAlpha=a;if(drawFx2(f,a,t)){ctx.globalAlpha=1;continue}
+  for(const f of G.fx){if(f.dl>0)continue;const a=f.life/f.max;ctx.globalAlpha=a;if(drawFx2(f,a,t)||drawFx3(f,a,t)){ctx.globalAlpha=1;continue}
     if(f.t==='ring'){ctx.strokeStyle=f.c;ctx.lineWidth=2.5;const rr=f.r*(1.25-a*0.45);ctx.beginPath();ctx.ellipse(f.x,f.y,rr,rr*0.4,0,0,7);ctx.stroke()}
     else if(f.t==='flash'){ctx.save();ctx.fillStyle=f.c;ctx.shadowColor=f.c;ctx.shadowBlur=14;ctx.beginPath();ctx.arc(f.x,f.y,3+(1-a)*6,0,7);ctx.fill();ctx.restore()}
     else if(f.t==='heal'){ctx.strokeStyle=HEAL;ctx.lineWidth=2;ctx.shadowColor=HEAL;ctx.shadowBlur=6;ctx.beginPath();ctx.moveTo(f.x,f.y);ctx.quadraticCurveTo((f.x+f.x2)/2,Math.min(f.y,f.y2)-12,f.x2,f.y2);ctx.stroke();ctx.shadowBlur=0}
@@ -1755,11 +1761,43 @@ function drawZone(z,t){
     ctx.fillStyle=GOLD;for(let i=0;i<10;i++){const ph=(t*0.9+i*0.1)%1;ctx.globalAlpha=(1-ph)*a;ctx.beginPath();ctx.arc(z.x+Math.sin(i*2.4+t)*wv*1.2,gy-ph*110,1.6,0,7);ctx.fill()}}
   ctx.restore();
 }
+// ======================= champion ability & shield effects (visual only) =======================
+function champFx(u,dir){const T=u.T,x=u.x,y=T.air?(GY[0]+GY[1])/2:u.y,by=bodyY(u),c=fxc(T,u.side);
+  G.fx.push({t:'rune',x,y:y+1,r:T.ability==='breath'||T.ability==='vomit'?50:80,c,life:0.9,max:0.9,sp:dir});
+  if(T.ability==='storm'){G.fx.push({t:'boom',x,y:y-6,r:70,c:'#ffd27a',life:0.5,max:0.5});for(let i=0;i<2;i++)G.fx.push({t:'shock',x,y,r:95+i*20,w:5-i*2,c:i?'#e2c391':'#fff2c0',life:0.6,max:0.6,dl:i*0.08});
+    for(let i=0;i<10&&roomP();i++){const an=rnd(0,7);G.parts.push({x:x+Math.cos(an)*20,y:y-rnd(0,40),vx:Math.cos(an)*rnd(60,140),vy:-rnd(20,80),g:200,life:rnd(0.5,0.9),max:0.9,c:'#7a5a3a',s:rnd(1.5,2.6),a:1,leaf:1,rot:rnd(0,6),vr:rnd(-10,10),fl:y+rnd(-4,4)})}}
+  else if(T.ability==='root'){const l=[];for(let i=0;i<8;i++)l.push([i*0.8+rnd(-0.2,0.2),rnd(45,85)]);G.fx.push({t:'cracks',x,y:y-2,l,c:'#c8ff8a',life:1.6,max:1.6});
+    G.fx.push({t:'shock',x,y,r:100,w:5,c:'#9dffbf',life:0.6,max:0.6});scorch(x,y-2,60,'#3f5a1e',6);
+    for(let i=0;i<12&&roomP();i++)G.parts.push({x:x+rnd(-80,80),y:y-rnd(0,10),vx:rnd(-6,6),vy:-rnd(25,60),g:-10,life:rnd(0.8,1.3),max:1.3,c:HEAL,s:rnd(1.4,2.4),a:0.85})}
+  else if(T.ability==='vomit'){G.fx.push({t:'cone',x:x+dir*14,y:y-38,dir,len:110,sp:0.45,c0:'#eaffb0',c1:'#b8ff3c',life:0.55,max:0.55});scorch(x+dir*60,y,55,'#5f7e1c',6)}
+  else if(T.ability==='deathnova'){G.fx.push({t:'boom',x,y:y-10,r:90,c:'#a8e0d8',life:0.6,max:0.6});for(let i=0;i<3;i++)G.fx.push({t:'shock',x,y,r:90+i*18,w:5-i*1.5,c:i?'#a8e0d8':'#ffffff',life:0.65,max:0.65,dl:i*0.1});
+    const l=[];for(let i=0;i<9;i++)l.push([i*0.7+rnd(-0.2,0.2),rnd(40,80)]);G.fx.push({t:'cracks',x,y:y-2,l,c:'#a8e0d8',life:1.8,max:1.8});scorch(x,y-2,50,'#2a3634',7)}
+  else if(T.ability==='emp'){G.fx.push({t:'shock',x,y:y-30,r:100,w:5,c:'#9fe8ff',life:0.22,max:0.22,inv:1,sq:0.45});
+    for(let i=0;i<3;i++)G.fx.push({t:'shock',x,y:y-30,r:110+i*18,w:6-i*1.5,c:i?'#9fe8ff':'#ffffff',life:0.6,max:0.6,dl:0.18+i*0.1,sq:0.45});
+    for(const e of G.units)if(e.side!==u.side&&!e.dead&&Math.abs(e.x-x)<100)G.fx.push({t:'arc',x,y:by,x2:e.x,y2:bodyY(e),c:'#9fe8ff',life:0.3,max:0.3,dl:0.18+rnd(0,0.12)})}
+  else if(T.ability==='breath'){G.fx.push({t:'cone',x:x+dir*20,y:u.y-16,dir,len:T.air?170:140,sp:0.4,rot:T.air?0.55:0,c0:'#fff2c0',c1:'#ff8a2a',life:0.6,max:0.6});
+    for(let i=0;i<3;i++)scorch(x+dir*(40+i*35),y+rnd(-6,6),26,'#2a1d14',6)}
+  else if(T.ability==='barrage'){G.fx.push({t:'muzzle',x:x+dir*4,y:y-60,dir,c:'#ffb050',s:2.4,life:0.2,max:0.2});G.fx.push({t:'boom',x:x-dir*6,y:y-52,r:28,c:'#ffb050',life:0.35,max:0.35})}
+  else if(T.ability==='holy'){G.zones.push({t:'light',side:u.side,x,r:38,life:0.7,max:0.7});for(let i=0;i<2;i++)G.fx.push({t:'shock',x,y,r:110+i*24,w:4-i,c:i?'#ffe9a8':'#ffffff',life:0.7,max:0.7,dl:i*0.1});
+    for(let i=0;i<10&&roomP();i++)G.parts.push({x:x+rnd(-60,60),y:y-rnd(60,130),vx:rnd(-10,10),vy:rnd(10,25),g:4,life:rnd(1.2,1.8),max:1.8,c:i%3?'#fff6d8':'#e2b448',s:rnd(1.4,2.2),a:0.9,leaf:1,rot:rnd(0,6),vr:rnd(-3,3)})}}
+function drawFx3(f,a,t){
+  if(f.t==='cone'){const p=1-a,L=f.len*Math.min(1,p*4+0.2);ctx.save();ctx.translate(f.x,f.y);ctx.scale(f.dir,1);ctx.rotate(f.rot||0);ctx.globalCompositeOperation='lighter';
+    for(let k=0;k<3;k++){const sp=f.sp*(1-k*0.25),fl=Math.sin(t*40+k)*0.04;const g=ctx.createLinearGradient(0,0,L,0);g.addColorStop(0,hexA(f.c0,a*0.9));g.addColorStop(0.5,hexA(f.c1,a*0.6));g.addColorStop(1,hexA(f.c1,0));
+      ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(L,Math.tan(sp+fl)*L*(0.5+k*0.15));ctx.quadraticCurveTo(L*1.1,0,L,-Math.tan(sp-fl)*L*(0.5+k*0.15));ctx.closePath();ctx.fill()}
+    ctx.restore();return true}
+  if(f.t==='hex'){ctx.save();ctx.translate(f.x,f.y);ctx.globalCompositeOperation='lighter';ctx.globalAlpha=a;ctx.strokeStyle=f.c;ctx.lineWidth=1.4;
+    for(const r of [5+(1-a)*8,3+(1-a)*4]){ctx.beginPath();for(let i=0;i<6;i++){const an=i*Math.PI/3;ctx.lineTo(Math.cos(an)*r,Math.sin(an)*r)}ctx.closePath();ctx.stroke()}ctx.restore();return true}
+  return false}
 function drawShield(sh,t){
-  const P=PAL[sh.side],a=Math.min(1,sh.life/0.6)*Math.min(1,(sh.max-sh.life)/0.2+0.2),y=GY[1]+6,hh=115;
-  ctx.save();ctx.globalAlpha=0.16*a;ctx.fillStyle=P.glow;ctx.beginPath();ctx.ellipse(sh.x,y,sh.r,hh,0,Math.PI,0);ctx.fill();
-  ctx.globalAlpha=(0.6+Math.sin(t*8)*0.2)*a;ctx.strokeStyle=P.glow;ctx.lineWidth=2;ctx.shadowColor=P.glow;ctx.shadowBlur=12;ctx.stroke();
-  ctx.globalAlpha=0.3*a;ctx.lineWidth=1;for(let i=1;i<4;i++){ctx.beginPath();ctx.ellipse(sh.x,y,sh.r*i/4,hh,0,Math.PI,0);ctx.stroke()}
+  const P=PAL[sh.side],a=Math.min(1,sh.life/0.6)*Math.min(1,(sh.max-sh.life)/0.2+0.2),y=GY[1]+6,hh=115,rise=Math.min(1,(sh.max-sh.life)/0.35);
+  ctx.save();ctx.beginPath();ctx.ellipse(sh.x,y,sh.r,hh*rise,0,Math.PI,0);ctx.closePath();
+  const g=ctx.createRadialGradient(sh.x,y,sh.r*0.2,sh.x,y,sh.r*1.2);g.addColorStop(0,hexA(P.glow,0.04*a));g.addColorStop(1,hexA(P.glow,0.26*a));ctx.fillStyle=g;ctx.fill();
+  ctx.save();ctx.clip();ctx.globalCompositeOperation='lighter';ctx.strokeStyle=P.glow;ctx.lineWidth=0.8;const s=11,band=(t*0.6)%1;
+  for(let row=0;row<12;row++)for(let col=-8;col<=8;col++){const cx=sh.x+col*s*1.5,cy=y-row*s*0.87-(col&1?s*0.43:0);const v=(y-cy)/hh,wv=Math.max(0,1-Math.abs(v-band)*5);
+    ctx.globalAlpha=(0.08+wv*0.35)*a;ctx.beginPath();for(let i=0;i<6;i++){const an=i*Math.PI/3;ctx.lineTo(cx+Math.cos(an)*s*0.5,cy+Math.sin(an)*s*0.5)}ctx.closePath();ctx.stroke()}
+  ctx.restore();
+  ctx.globalAlpha=(0.6+Math.sin(t*8)*0.2)*a;ctx.strokeStyle=P.glow;ctx.lineWidth=2;ctx.shadowColor=P.glow;ctx.shadowBlur=12;ctx.beginPath();ctx.ellipse(sh.x,y,sh.r,hh*rise,0,Math.PI,0);ctx.stroke();
+  ctx.shadowBlur=0;ctx.globalAlpha=0.5*a;ctx.beginPath();ctx.ellipse(sh.x,y,sh.r,sh.r*0.18,0,0,7);ctx.stroke();
   ctx.restore();
 }
 function drawBase(side,t){
@@ -1948,7 +1986,7 @@ function drawHUD(t){
   ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='800 15px system-ui';ctx.fillText('WAVE '+G.wave,w/2,19);
   const pw=96,f=1-G.waveT/(G.wave===0?FIRST:WAVE);
   ctx.fillStyle='rgba(255,255,255,0.2)';rrS(w/2-pw/2,25,pw,5,2.5);ctx.fill();ctx.fillStyle='#ffd77a';rrS(w/2-pw/2,25,pw*f,5,2.5);ctx.fill();
-  const rem=Math.max(0,Math.ceil(MATCH-G.time));ctx.font='600 11px system-ui';ctx.fillStyle='#f0dcc0';ctx.fillText(Math.floor(rem/60)+':'+String(rem%60).padStart(2,'0'),w/2,43);
+  const rem=Math.max(0,Math.ceil(MATCH-G.time));ctx.font='600 11px system-ui';ctx.fillStyle=G.time>=OVERTIME?(Math.floor(G.time*2)%2?'#ff6a4a':'#ffd0a0'):'#f0dcc0';ctx.fillText((G.time>=OVERTIME?'OT ':'')+Math.floor(rem/60)+':'+String(rem%60).padStart(2,'0'),w/2,43);
   const sy=w<560?54:30;
   const le=keysOf(1).filter(k=>G.lastEnemy[k]);
   if(le.length){const room=(w<560?w-24:w/2-70);ctx.font='800 11px system-ui';let need=0;for(const k of le)need+=ctx.measureText('×'+G.lastEnemy[k]).width+29;
@@ -2177,7 +2215,7 @@ function loop(now){
 }
 new ResizeObserver(resize).observe(cv);window.addEventListener('resize',resize);
 resize();requestAnimationFrame(loop);initStore();loadSprites();if(LAB)document.querySelectorAll('.ov,#bar,#stage>*:not(canvas)').forEach(o=>o.style.display='none');
-window.__sky={sim(f,diff,spec,ef){pickFac=f;pickEnemy=ef||null;newGame(diff,spec);pickEnemy=null;G.sim=1;if(!spec)aiShop(0);while(!G.over)update(1/30);const r={fac:G.fac.slice(),a:G.anchor.slice(),w:G.wave,t:Math.round(G.time),k:G.kills.slice(),ch:[0,1].map(i=>keysOf(i).filter(k=>TYPES[k].champ).map(k=>G.roster[i][k]||0)[0])};G=null;return r}};
+window.__sky={sim(f,diff,spec,ef){pickFac=f;pickEnemy=ef||null;newGame(diff,spec);pickEnemy=null;G.sim=1;if(!spec)aiShop(0);while(!G.over)update(1/30);const r={fac:G.fac.slice(),win:G.res.win,why:G.res.why,a:G.anchor.slice(),w:G.wave,t:Math.round(G.time),k:G.kills.slice(),ch:[0,1].map(i=>keysOf(i).filter(k=>TYPES[k].champ).map(k=>G.roster[i][k]||0)[0])};G=null;return r}};
 })();
 </script>
 </body>
