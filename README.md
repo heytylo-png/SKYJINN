@@ -32,3 +32,12 @@ To preview, open `index.html#anim`. Options are separated by `;`, e.g. `index.ht
 
 ## Champion poses
 `art/poses/src/` holds the drawn pose strips (idle, walk, attack, death on magenta). `python3 tools/poses.py` cuts them into frames + `art/poses/poses.json`; `python3 tools/embed_poses.py` embeds them in `index.html` as `SPR_POSE`. Champions with poses for a tier use them; other tiers keep their single painted sprite.
+
+## Lane Prototype (`lane-prototype.html`)
+A separate, self-contained prototype: one HTML file, no libraries, no image assets. All sprites, the fortresses, the background and the sound are generated in code (Canvas 2D, Web Audio).
+- Open `lane-prototype.html` on a phone. It plays in landscape and rotates itself if the phone is locked to portrait.
+- Stats for every unit live in the `FACTIONS` table near the top of the file.
+- Replace any sprite via the `SPRITES` table (`'knights.melee.0': 'my.png'`; 64x64, facing right, magenta `#FF00FF` = transparent).
+- Debug views: `#gallery` (all sprites), `#fps` (frame counter).
+- `node tools/lane_balance.js 5` simulates AI-vs-AI matches for every pairing and prints win rates.
+- Keyboard (desktop): 1-4 deploy, Q/W/E/R upgrade, A/S/D attack/hold/retreat, Esc pause, M sound.
