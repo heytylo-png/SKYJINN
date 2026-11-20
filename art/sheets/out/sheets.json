@@ -1,0 +1,193 @@
+{
+ "bil1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 88,
+  "mz": [
+   117.9,
+   40.1
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_bile_cannon_t1.png"
+ },
+ "blt1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 91,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_bloat_brute_t1.png"
+ },
+ "brd1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 83,
+  "mz": [
+   114.3,
+   109.1
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_brood_mother_t1.png"
+ },
+ "gor1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 92.0,
+  "hit": 2,
+  "ih": 87,
+  "mz": [
+   119.0,
+   57.8
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_gore_wing_t1.png"
+ },
+ "lar1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 67,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_larva_t1.png"
+ },
+ "lep1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 78,
+  "mz": [
+   121.4,
+   100.2
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_leaper_t1.png"
+ },
+ "muc1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 87,
+  "mz": [
+   121.0,
+   83.0
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_abomination_t1.png"
+ },
+ "skt1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 78,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_skitterling_t1.png"
+ },
+ "spn1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 69,
+  "mz": [
+   118.1,
+   62.8
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_spine_hurler_t1.png"
+ },
+ "spt1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 89,
+  "mz": [
+   111.0,
+   61.1
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_acid_spitter_t1.png"
+ }
+}
