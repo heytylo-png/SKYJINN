@@ -36,5 +36,22 @@ To preview, open `index.html#anim`. Options are separated by `;`, e.g. `index.ht
 ## Champion poses
 `art/poses/src/` holds the drawn pose strips (idle, walk, attack, death on magenta). `python3 tools/poses.py` cuts them into frames + `art/poses/poses.json`; `python3 tools/embed_poses.py` embeds them in `index.html` as `SPR_POSE`. Champions with poses for a tier use them; other tiers keep their single painted sprite.
 
+## Unit sprite sheets
+Drawn idle, walk, attack and death animation for any unit. When a unit has a sheet for its tier (or a lower tier), the game plays it instead of the single sprite, region warps and champion poses. Combat effects (slashes, muzzle bursts, dust) still apply.
+
+**Making a sheet**
+- One PNG per unit per tier, named `<faction>_<unit>_t<tier>.png`, e.g. `mutant_leaper_t1.png` or `knight_grand_paladin_t1.png`. The unit part can be the full name with underscores, one distinctive word, or the 3-letter key (`lep`). Faction can be singular or plural (`mutant`, `mutants`, `auto`, `automatons`).
+- 4 rows × 4 columns on solid magenta. Row 1 idle, row 2 walk, row 3 attack (the hit lands on frame 2), row 4 death. Frames read left to right. Flying units: hover idle, fly, attack, death fall.
+- Every frame faces right; the enemy side is mirrored in code.
+- Frames don't need to be evenly spaced: each sprite is assigned to a cell by where its centre falls, then trimmed.
+
+**Adding sheets**
+1. Put them in `art/sheets/src/`.
+2. `python3 tools/sheets.py` keys out the magenta, trims each frame, scales the whole sheet by one factor so the unit never changes size, and normalizes to 64×64 frames (128×128 for champions), bottom-centre aligned with the feet on one baseline. Output: `art/sheets/out/<key><tier>.png` and `sheets.json`. It prints a warning if a row doesn't have 4 frames.
+3. `python3 tools/embed_sheets.py` embeds them into `index.html` as `SPR_SHEET` (lossy WebP).
+4. Check them with `index.html#anim=lep;s=atk` (states `idle`, `move`, `atk`, `die`), then bump `VERSION` in `sw.js`.
+
+**Playback** (`SHEET_FPS` and `SHEET_HIT` in `index.html`): idle 4 fps loop, walk 8 fps loop, attack 10 fps timed so frame 2 shows at the moment of the hit, death 8 fps then holds the last frame while it fades.
+
 ## Match end
 A match lasts 6 minutes. The last minute is overtime (`OVERTIME` in `index.html`): the home-defence bonus is off and bases take double damage. If both bases still have the same HP at the time limit, the side whose front line has pushed further wins, then the side with more kills; only then is it a draw. A campaign win decided this way earns 1 star.
