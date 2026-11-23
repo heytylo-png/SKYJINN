@@ -19,6 +19,26 @@
   ],
   "src": "mutant_bile_cannon_t1.png"
  },
+ "bil2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 72,
+  "mz": [
+   118,
+   55
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_bile_cannon_t2.png"
+ },
  "blt1": {
   "F": 128,
   "air": false,
@@ -35,6 +55,23 @@
    4
   ],
   "src": "mutant_bloat_brute_t1.png"
+ },
+ "blt2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 84,
+  "mz": null,
+  "n": [
+   4,
+   8,
+   4,
+   4
+  ],
+  "src": "mutant_bloat_brute_t2.png"
  },
  "brd1": {
   "F": 128,
@@ -56,6 +93,26 @@
   ],
   "src": "mutant_brood_mother_t1.png"
  },
+ "brd2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 94,
+  "mz": [
+   117.8,
+   113.8
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_brood_mother_t2.png"
+ },
  "gor1": {
   "F": 128,
   "air": true,
@@ -75,6 +132,26 @@
    4
   ],
   "src": "mutant_gore_wing_t1.png"
+ },
+ "gor2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 91.0,
+  "hit": 2,
+  "ih": 86,
+  "mz": [
+   118.7,
+   70.9
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_gore_wing_t2.png"
  },
  "lar1": {
   "F": 128,
@@ -113,6 +190,26 @@
   ],
   "src": "mutant_leaper_t1.png"
  },
+ "lep2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 81,
+  "mz": [
+   110,
+   100
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_leaper_t2.png"
+ },
  "muc1": {
   "F": 128,
   "air": false,
@@ -133,6 +230,26 @@
   ],
   "src": "mutant_abomination_t1.png"
  },
+ "muc2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 89,
+  "mz": [
+   95,
+   114
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_abomination_t2.png"
+ },
  "skt1": {
   "F": 128,
   "air": false,
@@ -149,6 +266,23 @@
    4
   ],
   "src": "mutant_skitterling_t1.png"
+ },
+ "skt2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 81,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_skitterling_t2.png"
  },
  "spn1": {
   "F": 128,
@@ -170,6 +304,23 @@
   ],
   "src": "mutant_spine_hurler_t1.png"
  },
+ "spn2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 93,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_spine_hurler_t2.png"
+ },
  "spt1": {
   "F": 128,
   "air": false,
@@ -189,5 +340,25 @@
    4
   ],
   "src": "mutant_acid_spitter_t1.png"
+ },
+ "spt2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 93,
+  "mz": [
+   110.0,
+   71.7
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "mutant_acid_spitter_t2.png"
  }
 }
