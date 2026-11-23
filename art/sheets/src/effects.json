@@ -1,0 +1,6 @@
+{
+ "_about": "Drawn projectile/slash position on the attack hit frame, in sheet frame pixels [x, y], for sheets where auto-detection misses or misplaces it. null = the sheet draws no effect. Read by tools/sheets.py.",
+ "bil2": [118, 55],
+ "lep2": [110, 100],
+ "muc2": [95, 114]
+}

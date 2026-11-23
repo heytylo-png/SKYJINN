@@ -7,7 +7,8 @@
 #   row 1 idle, row 2 walk, row 3 attack (the hit lands on frame 2), row 4 death.
 #   Flying units: hover idle, fly, attack, death fall.
 # Cells don't have to be even: each sprite is found by where its centre falls in the 4x4 grid, then trimmed.
-# Already-cleaned sheets (transparent background, square, 4x4 equal frames with feet bottom-centre) are kept
+# Already-cleaned sheets (transparent background, 4 rows of equal square frames, any number of columns, feet
+# bottom-centre; each row's frame count is read from the sheet) are kept
 # as-is: the tool only measures them (idle height, baseline, drawn projectile) and the game scales them.
 # Output (magenta sheets): <out_dir>/<key><tier>.png, a 4x4 grid of F x F frames (F=64, champions 128) with every frame
 # bottom-centre aligned so the feet sit on one baseline, plus <out_dir>/sheets.json. Embed with
@@ -112,15 +113,21 @@ def normalize(frames, F, air):
 
 def is_clean(path):
     im = Image.open(path)
-    if im.mode != 'RGBA' or im.width != im.height or im.width % COLS: return False
-    a = np.asarray(im)[..., 3]; w = im.width
-    return all(a[y, x] == 0 for y in (0, w - 1) for x in (0, w - 1))
+    if im.mode != 'RGBA' or im.height % ROWS: return False
+    F = im.height // ROWS
+    if im.width % F or im.width < F: return False          # square frames; any number of columns
+    a = np.asarray(im)[..., 3]; h, w = a.shape
+    return all(a[y, x] == 0 for y in (0, h - 1) for x in (0, w - 1))
 
 def measure_clean(path, air):
     """keep a cleaned sheet's pixels; measure frame counts, idle height, baseline and any drawn projectile"""
-    im = Image.open(path).convert('RGBA'); F = im.width // COLS; al = np.asarray(im)[..., 3] > 40
+    im = Image.open(path).convert('RGBA'); F = im.height // ROWS; C = im.width // F; al = np.asarray(im)[..., 3] > 40
     cell = lambda r, c: al[r * F:(r + 1) * F, c * F:(c + 1) * F]
-    n = [int(sum(cell(r, c).any() for c in range(COLS))) for r in range(ROWS)]
+    def count(r):  # frames in a row: from the left up to the first empty cell
+        k = 0
+        while k < C and cell(r, k).any(): k += 1
+        return k
+    n = [count(r) for r in range(ROWS)]
     bots, tops, cxs = [], [], []
     for c in range(n[0]):
         ys, xs = np.nonzero(cell(0, c)); bots.append(ys.max()); tops.append(ys.min())
@@ -142,6 +149,8 @@ def measure_clean(path, air):
 
 def main():
     U = units(); os.makedirs(OUT, exist_ok=True)
+    ov_path = os.path.join(SRC, 'effects.json')  # hand-placed drawn effects, where auto-detection misses
+    OV = {k: v for k, v in json.load(open(ov_path)).items() if not k.startswith('_')} if os.path.exists(ov_path) else {}
     man_path = os.path.join(OUT, 'sheets.json'); man = json.load(open(man_path)) if os.path.exists(man_path) else {}
     files = sorted(glob.glob(os.path.join(SRC, '*.png')))
     if not files: print('no sheets in', SRC); return
@@ -152,6 +161,7 @@ def main():
         id = u['key'] + str(tier)
         if is_clean(f):
             atlas, e = measure_clean(f, u['air']); F, n = e['F'], e['n']
+            if id in OV: e['mz'] = OV[id]
             man[id] = dict(src=os.path.basename(f), air=u['air'], clean=True, **e)  # used as-is: no copy in OUT
         else:
             F = FRAME_CHAMP if u['role'] == 'champion' else FRAME

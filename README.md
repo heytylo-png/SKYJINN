@@ -44,8 +44,8 @@ Drawn idle, walk, attack and death animation for any unit. When a unit has a she
 - 4 rows × 4 columns on solid magenta. Row 1 idle, row 2 walk, row 3 attack (the hit lands on frame 2), row 4 death. Frames read left to right. Flying units: hover idle, fly, attack, death fall.
 - Every frame faces right; the enemy side is mirrored in code.
 - Frames don't need to be evenly spaced: each sprite is assigned to a cell by where its centre falls, then trimmed.
-- **Already-cleaned sheets** (transparent background, square, 4×4 equal frames with feet bottom-centre, e.g. 512×512 with 128×128 frames) are kept as they are. The tool only measures them: idle height (the game scales the unit to its usual on-screen height), baseline, and any projectile or slash drawn into the attack row.
-- If an attack frame draws its own projectile or slash, that frame becomes the hit frame. The game's projectile then launches from the drawn glob, and the game's own muzzle burst, spell charge-up and melee slash are skipped for that unit so nothing doubles up. Damage still travels with the game's projectile.
+- **Already-cleaned sheets** (transparent background, 4 rows of equal square frames with feet bottom-centre, e.g. 512×512 with 128×128 frames) are kept as they are. A row can have more frames than the others (e.g. an 8-frame walk on a 1024×512 sheet): each row's frame count is read from the sheet, counting from the left up to the first empty cell. The tool only measures them: idle height (the game scales the unit to its usual on-screen height), baseline, and any projectile or slash drawn into the attack row.
+- If an attack frame draws its own projectile or slash, that frame becomes the hit frame. The game's projectile then launches from the drawn glob, and the game's own muzzle burst, spell charge-up and melee slash are skipped for that unit so nothing doubles up. Damage still travels with the game's projectile. Where auto-detection misses or misplaces a drawn effect, set its position by hand in `art/sheets/src/effects.json` (frame pixels on the hit frame, or `null` for none).
 
 **Adding sheets**
 1. Put them in `art/sheets/src/`.
