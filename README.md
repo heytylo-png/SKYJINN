@@ -53,6 +53,8 @@ Drawn idle, walk, attack and death animation for any unit. When a unit has a she
 3. `python3 tools/embed_sheets.py` embeds them into `index.html` as `SPR_SHEET` (lossy WebP).
 4. Check them with `index.html#anim=lep;s=atk` (states `idle`, `move`, `atk`, `die`), then bump `VERSION` in `sw.js`.
 
+**Tier 3** units drawn with their own tier-3 sheet are drawn 15% bigger to show off the tier-3 glow (`SHEET_TIER_SCALE` in `index.html`); the health bar and projectile launch point scale with them.
+
 **Playback** (`SHEET_FPS` and `SHEET_HIT` in `index.html`): idle 4 fps loop, walk 8 fps loop, attack 10 fps timed so the hit frame shows at the moment of the hit (frame 2 by default; for cleaned sheets, the frame with the drawn effect or the furthest reach), death 8 fps then holds the last frame while it fades.
 
 ## Match end
