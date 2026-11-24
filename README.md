@@ -45,13 +45,15 @@ Drawn idle, walk, attack and death animation for any unit. When a unit has a she
 - Every frame faces right; the enemy side is mirrored in code.
 - Frames don't need to be evenly spaced: each sprite is assigned to a cell by where its centre falls, then trimmed.
 - **Already-cleaned sheets** (transparent background, 4 rows of equal square frames with feet bottom-centre, e.g. 512×512 with 128×128 frames) are kept as they are. A row can have more frames than the others (e.g. an 8-frame walk on a 1024×512 sheet): each row's frame count is read from the sheet, counting from the left up to the first empty cell. The tool only measures them: idle height (the game scales the unit to its usual on-screen height), baseline, and any projectile or slash drawn into the attack row.
-- If an attack frame draws its own projectile or slash, that frame becomes the hit frame. The game's projectile then launches from the drawn glob, and the game's own muzzle burst, spell charge-up and melee slash are skipped for that unit so nothing doubles up. Damage still travels with the game's projectile. Where auto-detection misses or misplaces a drawn effect, set its position by hand in `art/sheets/src/effects.json` (frame pixels on the hit frame, or `null` for none).
+- If an attack frame draws its own projectile or slash, that frame becomes the hit frame. The game's projectile then launches from the drawn glob, and the game's own muzzle burst, spell charge-up and melee slash are skipped for that unit so nothing doubles up. Damage still travels with the game's projectile. Where auto-detection misses or misplaces a drawn effect, set its position by hand in `art/sheets/src/effects.json` (frame pixels on the hit frame, or `null` for none). To also fix a wrongly picked hit frame, use `{"mz": [x, y], "hit": 2}` (0-based frame index).
 
 **Adding sheets**
 1. Put them in `art/sheets/src/`.
 2. `python3 tools/sheets.py` (for magenta sheets) keys out the magenta, trims each frame, scales the whole sheet by one factor so the unit never changes size, and normalizes to 64×64 frames (128×128 for champions), bottom-centre aligned with the feet on one baseline. Output: `art/sheets/out/<key><tier>.png` and `sheets.json`. It prints a warning if a row doesn't have 4 frames.
 3. `python3 tools/embed_sheets.py` embeds them into `index.html` as `SPR_SHEET` (lossy WebP).
 4. Check them with `index.html#anim=lep;s=atk` (states `idle`, `move`, `atk`, `die`), then bump `VERSION` in `sw.js`.
+
+**Fire glow and embers** (`FIRE_GLOW` in `index.html`, Dragons): bright fire pixels in each frame (flames, breath, fireballs, lava) get a soft orange halo baked into the frames once at match start, and small embers drift up from them, more on attack frames. Fire projectiles trail embers, fire impacts and meteors burst into them, and burning units shed them. Tunables: `FIRE_GLOW_ALPHA`, `FIRE_EMBER_RATE`, `FIRE_EMBER_ATK`.
 
 **Tier 3** units drawn with their own tier-3 sheet are drawn 15% bigger to show off the tier-3 glow (`SHEET_TIER_SCALE` in `index.html`); the health bar and projectile launch point scale with them.
 
