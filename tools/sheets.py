@@ -161,7 +161,12 @@ def main():
         id = u['key'] + str(tier)
         if is_clean(f):
             atlas, e = measure_clean(f, u['air']); F, n = e['F'], e['n']
-            if id in OV: e['mz'] = OV[id]
+            if id in OV:
+                ov = OV[id]
+                if isinstance(ov, dict):
+                    if 'mz' in ov: e['mz'] = ov['mz']
+                    if 'hit' in ov: e['hit'] = int(ov['hit'])
+                else: e['mz'] = ov
             man[id] = dict(src=os.path.basename(f), air=u['air'], clean=True, **e)  # used as-is: no copy in OUT
         else:
             F = FRAME_CHAMP if u['role'] == 'champion' else FRAME

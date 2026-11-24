@@ -1,5 +1,5 @@
 {
- "_about": "Drawn projectile/slash position on the attack hit frame, in sheet frame pixels [x, y], for sheets where auto-detection misses or misplaces it. null = the sheet draws no effect. Read by tools/sheets.py.",
+ "_about": "Drawn projectile/slash on the attack hit frame, in sheet frame pixels, for sheets where auto-detection misses or misplaces it. Value: [x, y]; null = the sheet draws no effect; or {\"mz\": [x, y] or null, \"hit\": frame index (0-based)} to also set the hit frame. Read by tools/sheets.py.",
  "bil2": [
   118,
   55
@@ -27,5 +27,36 @@
  "spn3": [
   105,
   40
- ]
+ ],
+ "rap1": [
+  112,
+  73
+ ],
+ "hrp1": [
+  88,
+  57
+ ],
+ "rap2": [
+  105,
+  65
+ ],
+ "hrp2": [
+  68,
+  65
+ ],
+ "wym2": [
+  105,
+  35
+ ],
+ "hrp3": [
+  75,
+  60
+ ],
+ "wyv3": {
+  "mz": [
+   105,
+   40
+  ],
+  "hit": 2
+ }
 }
