@@ -1092,16 +1092,61 @@ function flashFrame(an,fi){if(FLC.width!==an.fw||FLC.height!==an.fh){FLC.width=a
 // A sheet is a 4x4 grid of F x F frames: rows idle, walk, attack, death; feet on each frame's bottom row, centred.
 // When a unit has a sheet for its tier (or a lower one) it replaces the single sprite, region warps and poses.
 const SHEET_FPS={idle:4,walk:8,atk:10,die:8},SHEET_HIT=1; // default hit frame (index); each sheet records its own (S.hit)
-const SHEET={},SHEETC={};
+const SHEET={},SHEETC={},FIREC={};
 const SHEET_TIER_SCALE={3:1.15}; // units drawn with their own tier-3 sheet are this much bigger, to show off the tier-3 glow
 const sheetScale=id=>id?SHEET_TIER_SCALE[+id.slice(-1)]||1:1;
 function loadSheets(){for(const id in SPR_SHEET){const img=new Image();img.onload=()=>{SHEET[id]=img;for(const k in SHEETC)if(k.startsWith(id))delete SHEETC[k]};img.src=SPR_SHEET[id].d}}
 function sheetOf(k,t){for(let x=t||1;x>=1;x--)if(SHEET[k+x])return k+x;return null}
-function sheetCanvas(id,side){const key=id+'|'+side;if(SHEETC[key])return SHEETC[key];if(bakeBudget<=0)return null;bakeBudget--;
-  const S=SPR_SHEET[id],img=SHEET[id],F=S.F,r=3,cf=F+r*2,cv=document.createElement('canvas');cv.width=cf*Math.max(...S.n);cv.height=cf*4;const c=cv.getContext('2d');
+function sheetCanvas(id,side){const key=id+'|'+side;if(SHEETC[key])return SHEETC[key];if(bakeBudget<=0)return null;
+  {const T1=TYPES[id.slice(0,-1)];if(T1&&FIRE_GLOW[T1.fac]&&!(id in FIREC)){if(bakeBudget<2)return null;bakeBudget--}}bakeBudget--;
+  const S=SPR_SHEET[id],img=SHEET[id],F=S.F,T0=TYPES[id.slice(0,-1)],fire=T0&&FIRE_GLOW[T0.fac]?(id in FIREC?FIREC[id]:(FIREC[id]=fireBake(id,S,img,F))):null;
+  const r=fire?fire.gp:3,cf=F+r*2,cv=document.createElement('canvas');cv.width=cf*Math.max(...S.n);cv.height=cf*4;const c=cv.getContext('2d'); // fire sheets get a wider margin for the halo
   const fc=document.createElement('canvas');fc.width=F;fc.height=F;const fx=fc.getContext('2d');
-  for(let row=0;row<4;row++)for(let i=0;i<S.n[row];i++){fx.clearRect(0,0,F,F);fx.drawImage(img,i*F,row*F,F,F,0,0,F,F);glowInto(c,fc,F,F,i*cf+r,row*cf+r,side,r)}
-  return SHEETC[key]={cv,cf,r,F,S,ts:sheetScale(id)}}
+  for(let row=0;row<4;row++)for(let i=0;i<S.n[row];i++){fx.clearRect(0,0,F,F);fx.drawImage(img,i*F,row*F,F,F,0,0,F,F);glowInto(c,fc,F,F,i*cf+r,row*cf+r,side,3)}
+  if(fire){c.save();c.globalCompositeOperation='lighter';c.globalAlpha=FIRE_GLOW_ALPHA;c.drawImage(fire.gl,0,0);c.restore()} // bake the fire halo in once: no per-frame blending cost
+  return SHEETC[key]={cv,cf,r,F,S,ts:sheetScale(id),fire}}
+// ---- fire glow & embers on drawn sheets (Dragons) ----
+// Bright fire pixels in each frame (flames, breath, fireballs, lava) get a soft additive halo, and embers drift up from them.
+const FIRE_GLOW={dragon:1};          // factions whose drawn fire glows and sheds embers
+const FIRE_GLOW_ALPHA=0.8, FIRE_EMBER_RATE=2.5, FIRE_EMBER_ATK=4; // halo strength; embers/s per 100 fire px; attack-frame multiplier
+const EMBER_C=['#ffe9b0','#ffd27a','#ffb050','#ff8a2a'];
+const isFirePx=(r,g,b,a)=>a>100&&r>200&&g>110&&b<150&&r-b>110&&r+g>340;
+// build once per sheet: a halo atlas laid out like the frame atlas, and up to 24 sample fire points per frame
+// separable box blur (run twice ~ gaussian) on a float mask, in place
+function boxBlur(a,w,h,rad){const t=new Float32Array(a.length),n=rad*2+1;
+  for(let y=0;y<h;y++){let s=0,o=y*w;for(let x=-rad;x<=rad;x++)s+=a[o+Math.min(w-1,Math.max(0,x))];
+    for(let x=0;x<w;x++){t[o+x]=s/n;s+=a[o+Math.min(w-1,x+rad+1)]-a[o+Math.max(0,x-rad)]}}
+  for(let x=0;x<w;x++){let s=0;for(let y=-rad;y<=rad;y++)s+=t[Math.min(h-1,Math.max(0,y))*w+x];
+    for(let y=0;y<h;y++){a[y*w+x]=s/n;s+=t[Math.min(h-1,y+rad+1)*w+x]-t[Math.max(0,y-rad)*w+x]}}}
+// build once per sheet: a halo atlas (own padding so the halo fades out fully) and up to 24 sample fire points per frame
+function fireBake(id,S,img,F){const gp=Math.round(F*0.2),gf=F+gp*2,gl=document.createElement('canvas');gl.width=gf*Math.max(...S.n);gl.height=gf*4;const gc=gl.getContext('2d');
+  const fc=document.createElement('canvas');fc.width=F;fc.height=F;const fx=fc.getContext('2d',{willReadFrequently:true});
+  const hf=gf>>1,hp=gp>>1,rad=Math.max(1,Math.round(F*0.025)),hc=document.createElement('canvas');hc.width=hf;hc.height=hf;const hx=hc.getContext('2d'); // halo at half resolution
+  const pts=[[],[],[],[]],cnt=[[],[],[],[]];let any=0;
+  for(let row=0;row<4;row++)for(let i=0;i<S.n[row];i++){fx.clearRect(0,0,F,F);fx.drawImage(img,i*F,row*F,F,F,0,0,F,F);
+    const d=fx.getImageData(0,0,F,F).data,core=new Float32Array(hf*hf),list=[];
+    for(let p=0,k=0;p<d.length;p+=4,k++)if(isFirePx(d[p],d[p+1],d[p+2],d[p+3])){const y=(k/F|0)>>1,x=(k%F)>>1,q=(y+hp)*hf+x+hp;core[q]=Math.min(1,core[q]+0.25);list.push(k)}
+    cnt[row][i]=list.length;any+=list.length;const ps=[];for(let k=0;k<Math.min(24,list.length);k++){const v=list[(Math.random()*list.length)|0];ps.push([v%F,(v/F)|0])}pts[row][i]=ps;
+    if(!list.length)continue;
+    const halo=core.slice();boxBlur(halo,hf,hf,rad);boxBlur(halo,hf,hf,rad);boxBlur(halo,hf,hf,rad*2);
+    const G2=hx.createImageData(hf,hf),g=G2.data;
+    for(let k=0;k<core.length;k++){const a=Math.min(1,halo[k]*2.2+core[k]*0.35);if(a<0.01)continue;const o=k*4;g[o]=255;g[o+1]=140+(a*80|0);g[o+2]=40+(a*40|0);g[o+3]=a*255}
+    hx.putImageData(G2,0,0);gc.imageSmoothingEnabled=true;gc.drawImage(hc,0,0,hf,hf,i*gf,row*gf,hf*2,hf*2)}
+  return any?{gl,pts,cnt,gp,gf}:null}
+function fireFx(sh,u,row,f,s,c,tt,dk){const fb=sh.fire;if(!fb)return;const n=fb.cnt[row][f]||0;if(!n)return;
+  if(!G||G.paused||G.sim||!roomP())return;
+  const rate=n/100*FIRE_EMBER_RATE*(row===2?FIRE_EMBER_ATK:1)*(dk!=null?0.4:1),ps=fb.pts[row][f];
+  if(!ps.length||Math.random()>rate/60)return;
+  const p=ps[(Math.random()*ps.length)|0],dir=u.side?-1:1,gs=(1+u.g*0.3)*(1+u.ev*0.09);
+  G.parts.push({x:u.x+dir*(p[0]-sh.S.ax)*s*gs,y:u.y+(p[1]-sh.S.fy)*s*gs,vx:rnd(-10,10)-dir*4,vy:-rnd(14,34),g:-14,life:rnd(0.5,1.1),max:1.1,c:EMBER_C[(Math.random()*4)|0],s:rnd(0.6,1.2),a:1,ember:1,ph:rnd(0,7)})}
+function emberBurst(x,y,n,sp){for(let i=0;i<n&&roomP();i++)G.parts.push({x:x+rnd(-4,4),y:y+rnd(-4,4),vx:rnd(-1,1)*(sp||40),vy:-rnd(10,sp||40),g:-10,life:rnd(0.4,0.9),max:0.9,c:EMBER_C[(Math.random()*4)|0],s:rnd(0.45,1),a:1,ember:1,ph:rnd(0,7)})}
+// embers: additive glow around a solid bright core, so they read on dark and bright ground alike
+function drawEmbers(t){let any=false;for(const p of G.parts)if(p.ember){any=true;break}if(!any)return;
+  ctx.save();ctx.globalCompositeOperation='lighter';   // two passes, so the blend mode switches twice per frame, not per ember
+  for(const p of G.parts)if(p.ember){const k=p.life/p.max,a=Math.min(1,k*1.6)*(0.65+0.35*Math.sin(t*22+p.ph));ctx.globalAlpha=a*0.45;ctx.fillStyle=p.c;ctx.fillRect(p.x-p.s*1.9,p.y-p.s*1.9,p.s*3.8,p.s*3.8)}
+  ctx.globalCompositeOperation='source-over';
+  for(const p of G.parts)if(p.ember){const k=p.life/p.max,a=Math.min(1,k*1.6)*(0.65+0.35*Math.sin(t*22+p.ph)),r=p.s*(0.55+k*0.5);ctx.globalAlpha=a;ctx.fillStyle=k>0.5?'#fff3c4':p.c;ctx.fillRect(p.x-r,p.y-r,r*2,r*2)}
+  ctx.restore()}
 // which frame to show: death (dk = seconds since death) > attack > walk > idle
 function sheetPick(sh,u,tt,dk){const n=sh.S.n,row=(r)=>n[r]?r:0,HIT=sh.S.hit!=null?sh.S.hit:SHEET_HIT;
   if(dk!=null){const r=row(3);return [r,Math.min(n[r]-1,Math.floor(dk*SHEET_FPS.die))]}
@@ -1112,7 +1157,8 @@ function sheetPick(sh,u,tt,dk){const n=sh.S.n,row=(r)=>n[r]?r:0,HIT=sh.S.hit!=nu
 function sheetFlash(sh,row,f){const cf=sh.cf;if(FLC.width!==cf||FLC.height!==cf){FLC.width=cf;FLC.height=cf}const c=FLC.getContext('2d');c.globalCompositeOperation='source-over';c.clearRect(0,0,cf,cf);
   c.drawImage(sh.cv,f*cf,row*cf,cf,cf,0,0,cf,cf);c.globalCompositeOperation='source-atop';c.fillStyle='rgba(255,255,255,0.45)';c.fillRect(0,0,cf,cf);return FLC}
 function drawSheet(c,sh,u,tt,dk,M){const [row,f]=sheetPick(sh,u,tt,dk),cf=sh.cf,S=sh.S,s=M.h/S.ih*sh.ts,fl=u.flash>0&&dk==null;
-  c.drawImage(fl?sheetFlash(sh,row,f):sh.cv,fl?0:f*cf,fl?0:row*cf,cf,cf,-(S.ax+sh.r)*s,-(S.fy+sh.r)*s,cf*s,cf*s)}
+  c.drawImage(fl?sheetFlash(sh,row,f):sh.cv,fl?0:f*cf,fl?0:row*cf,cf,cf,-(S.ax+sh.r)*s,-(S.fy+sh.r)*s,cf*s,cf*s);
+  if(sh.fire)fireFx(sh,u,row,f,s,c,tt,dk)}
 // a sheet whose attack frame draws its own projectile or slash: launch point in game units (facing right), or null
 function sheetMuzzle(u){const id=sheetOf(u.k,u.tier),S=id&&SPR_SHEET[id];if(!S||!S.mz)return null;const s=SPR_META[u.k].h/S.ih*sheetScale(id);return [(S.mz[0]-S.ax)*s,(S.mz[1]-S.fy)*s]}
 function drawBody(c,u,P,tt,an,dk){
@@ -1328,6 +1374,7 @@ function hitAnchor(side,k,dmg){let m=(TYPES[k]&&TYPES[k].anchorMult)||1;const b=
   if(G.time>=OVERTIME)m*=2;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
 function dealHit(side,k,dmg,tgt,isA,x,y,src){
   const T=TYPES[k];if(isA)hitAnchor(side,k,dmg);
+  if((T.fire||k==='met')&&!G.sim)emberBurst(x,y-6,T.lob||k==='met'?10:5,50);
   const wood=T.fac==='verdant';
   if(T.splash){for(const e of G.units)if(e.side!==side&&!e.dead&&canHit(T,e)&&Math.hypot(e.x-x,(e.y-y)*0.6)<=T.splash+e.T.r)hurt(side,k,dmg,e,src);
     G.fx.push({t:'ring',x,y,r:T.splash,life:0.35,max:0.35,c:T.lob?PAL[side].glow:'#f6e3b8'});
@@ -1566,7 +1613,7 @@ function drawBattle(t,w,h,dpr){
   for(const d of G.decals){const k=d.t<0.15?d.t/0.15:1;ctx.globalAlpha=0.75*Math.min(1,(d.d-d.t)/2);ctx.fillStyle=d.c;ctx.beginPath();ctx.ellipse(d.x,d.y,d.r*k,d.r*d.sq*k,0,0,7);ctx.fill()}ctx.globalAlpha=1;
   for(const c of G.corpses)if(!c.u.T.air)drawCorpse(c,t);
   for(const u of ground)drawUnit(u,t);
-  for(const p of G.parts)if(!p.spark&&!p.leaf){ctx.globalAlpha=p.a*(p.life/p.max);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.s*(1.4-p.life/p.max*0.4),0,7);ctx.fill()}
+  for(const p of G.parts)if(!p.spark&&!p.leaf&&!p.ember){ctx.globalAlpha=p.a*(p.life/p.max);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.s*(1.4-p.life/p.max*0.4),0,7);ctx.fill()}
   ctx.globalAlpha=1;
   for(const c of G.corpses)if(c.u.T.air)drawCorpse(c,t);
   for(const u of air)drawUnit(u,t);
@@ -1579,8 +1626,8 @@ function drawBattle(t,w,h,dpr){
     if(wood&&p.lob){ctx.rotate(p.f*10);ctx.fillStyle=WOOD2;ctx.beginPath();ctx.ellipse(0,0,5,4,0,0,7);ctx.fill();ctx.shadowColor=p.c;ctx.shadowBlur=8;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(1.5,-1,1.8,0,7);ctx.fill()}
     else if(TYPES[p.k].acid){ctx.fillStyle=ACID;ctx.shadowColor=ACID;ctx.shadowBlur=8;ctx.beginPath();ctx.arc(0,0,p.lob?4.8:3.2,0,7);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle=p.c;ctx.lineWidth=1;ctx.stroke()}
     else if(p.k==='spn'){ctx.rotate(Math.atan2(p.ty-p.y,p.tx-p.x));ctx.strokeStyle=BONE;ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(-5,0);ctx.lineTo(5,0);ctx.stroke();ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(5,0,1.3,0,7);ctx.fill()}
-    else if(p.k==='met'){ctx.fillStyle=FIRE;ctx.shadowColor=FIRE;ctx.shadowBlur=18;ctx.beginPath();ctx.arc(0,0,7,0,7);ctx.fill();ctx.fillStyle='#ffe2a0';ctx.beginPath();ctx.arc(0,0,3.4,0,7);ctx.fill();if(roomP())G.parts.push({x:p.x,y:p.y,vx:rnd(-10,10),vy:-rnd(5,15),g:0,life:0.4,max:0.4,c:i2c(),s:2.5,a:0.7})}
-    else if(TYPES[p.k].fire){ctx.fillStyle=FIRE;ctx.shadowColor=FIRE;ctx.shadowBlur=10;ctx.beginPath();ctx.arc(0,0,p.lob?5:3.4,0,7);ctx.fill();ctx.fillStyle='#ffe2a0';ctx.beginPath();ctx.arc(0,0,p.lob?2.2:1.4,0,7);ctx.fill()}
+    else if(p.k==='met'){if(!G.sim&&Math.random()<0.7)emberBurst(p.x,p.y,1,18);ctx.fillStyle=FIRE;ctx.shadowColor=FIRE;ctx.shadowBlur=18;ctx.beginPath();ctx.arc(0,0,7,0,7);ctx.fill();ctx.fillStyle='#ffe2a0';ctx.beginPath();ctx.arc(0,0,3.4,0,7);ctx.fill();if(roomP())G.parts.push({x:p.x,y:p.y,vx:rnd(-10,10),vy:-rnd(5,15),g:0,life:0.4,max:0.4,c:i2c(),s:2.5,a:0.7})}
+    else if(TYPES[p.k].fire){if(!G.sim&&Math.random()<0.45)emberBurst(p.x,p.y-lift,1,14);ctx.fillStyle=FIRE;ctx.shadowColor=FIRE;ctx.shadowBlur=10;ctx.beginPath();ctx.arc(0,0,p.lob?5:3.4,0,7);ctx.fill();ctx.fillStyle='#ffe2a0';ctx.beginPath();ctx.arc(0,0,p.lob?2.2:1.4,0,7);ctx.fill()}
     else if(p.k==='arc'||p.k==='drn'||p.k==='aer'||p.k==='rai'){ctx.rotate(Math.atan2(p.ty-p.y,p.tx-p.x));ctx.strokeStyle=p.c;ctx.shadowColor=p.c;ctx.shadowBlur=8;ctx.lineWidth=p.k==='rai'?3.4:1.8;ctx.beginPath();ctx.moveTo(p.k==='rai'?-14:-8,0);ctx.lineTo(4,0);ctx.stroke();ctx.strokeStyle='#fff';ctx.lineWidth=0.8;ctx.stroke()}
     else if(p.k==='bow'||p.k==='bal'||p.k==='hrp'){ctx.rotate(Math.atan2(p.ty-p.y,p.tx-p.x));ctx.strokeStyle=p.k==='hrp'?METAL:BONEW;ctx.lineWidth=p.k==='bow'?1.3:2;ctx.beginPath();ctx.moveTo(-7,0);ctx.lineTo(5,0);ctx.stroke();ctx.fillStyle=p.c;ctx.shadowColor=p.c;ctx.shadowBlur=6;ctx.beginPath();ctx.moveTo(7,0);ctx.lineTo(3,-2);ctx.lineTo(3,2);ctx.fill()}
     else if(p.k==='cct'){ctx.rotate(p.f*12);ctx.fillStyle=BONEW;ctx.beginPath();ctx.arc(0,0,4,0,7);ctx.fill();ctx.fillStyle='#1c1a16';ctx.fillRect(-2,-1,1.4,1.4);ctx.fillRect(0.6,-1,1.4,1.4);ctx.fillStyle=p.c;ctx.globalAlpha=0.5;ctx.beginPath();ctx.arc(0,0,6,0,7);ctx.fill()}
@@ -1592,6 +1639,7 @@ function drawBattle(t,w,h,dpr){
     else if(p.k==='vin'){ctx.rotate(Math.atan2(p.ty-p.y,p.tx-p.x));ctx.fillStyle=MOSS;ctx.beginPath();ctx.moveTo(5,0);ctx.lineTo(-4,-2);ctx.lineTo(-4,2);ctx.closePath();ctx.fill()}
     else{ctx.fillStyle=p.c;ctx.shadowColor=p.c;ctx.shadowBlur=8;ctx.beginPath();ctx.arc(0,0,p.lob?4.5:(p.k==='sap'?3.4:2.8),0,7);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,0,p.lob?1.8:1.1,0,7);ctx.fill()}
     ctx.restore()}
+  drawEmbers(t);
   for(const p of G.parts)if(p.spark){ctx.globalAlpha=p.life/p.max;ctx.strokeStyle=p.c;ctx.lineWidth=p.s;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-p.vx*0.03,p.y-p.vy*0.03);ctx.stroke()}
   ctx.globalAlpha=1;
   for(const f of G.fx){if(f.dl>0)continue;const a=f.life/f.max;ctx.globalAlpha=a;if(drawFx2(f,a,t)||drawFx3(f,a,t)){ctx.globalAlpha=1;continue}
@@ -1989,7 +2037,7 @@ function drawUnit(u,t){
   if(u.hp<u.max){const bw=Math.max(18,T.r*2.4);ctx.fillStyle='rgba(30,15,5,0.65)';ctx.fillRect(u.x-bw/2,top,bw,3.2);
     ctx.fillStyle=u.hp/u.max>0.4?PAL[u.side].ui:'#ff4a3a';ctx.fillRect(u.x-bw/2,top,bw*Math.max(0,u.hp/u.max),3.2)}
   if(u.tier>1&&!SPR[u.k+u.tier]){ctx.fillStyle='#ffd77a';ctx.strokeStyle='#5a3a12';ctx.lineWidth=0.8;for(let i=0;i<u.tier-1;i++){ctx.beginPath();ctx.arc(u.x-3+i*6,top-4,1.9,0,7);ctx.fill();ctx.stroke()}}
-  if(u.burnT>0){for(let i=0;i<3;i++){const ph=(tt*2.2+i*0.33)%1;ctx.globalAlpha=1-ph;ctx.fillStyle=i%2?FIRE:'#ffd27a';ctx.beginPath();ctx.ellipse(u.x+Math.sin(i*2.3+tt*3)*T.r*0.7,u.y-T.ht*0.35-ph*T.ht*0.5,1.6,2.6,0,0,7);ctx.fill()}ctx.globalAlpha=1}
+  if(u.burnT>0){if(G&&!G.paused&&!G.sim&&Math.random()<0.07)emberBurst(u.x,u.y-T.ht*0.5,1,18);for(let i=0;i<3;i++){const ph=(tt*2.2+i*0.33)%1;ctx.globalAlpha=1-ph;ctx.fillStyle=i%2?FIRE:'#ffd27a';ctx.beginPath();ctx.ellipse(u.x+Math.sin(i*2.3+tt*3)*T.r*0.7,u.y-T.ht*0.35-ph*T.ht*0.5,1.6,2.6,0,0,7);ctx.fill()}ctx.globalAlpha=1}
   if(u.shMax>0&&u.sh>1){ctx.save();ctx.globalAlpha=(u.shHit>0?0.55:0.16)*Math.min(1,u.sh/u.shMax+0.3);ctx.strokeStyle=PAL[u.side].glow;ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(u.x,u.y-T.ht*0.5+(T.air?-6:0),T.r*1.35,T.ht*0.62,0,0,7);ctx.stroke();ctx.restore()}
   if(u.stunT>0){ctx.fillStyle='#9fe8ff';for(let i=0;i<3;i++){const an=tt*6+i*2.1;ctx.beginPath();ctx.arc(u.x+Math.cos(an)*7,top-6+Math.sin(an)*2,1.4,0,7);ctx.fill()}}
   if(u.acidS>0){ctx.fillStyle=ACID;for(let i=0;i<u.acidS+1;i++){const ph=(tt*1.5+i*0.37)%1;ctx.globalAlpha=1-ph;ctx.beginPath();ctx.arc(u.x+Math.sin(i*2.1+tt)*T.r*0.8,u.y-T.ht*0.3-ph*T.ht*0.6,1.3,0,7);ctx.fill()}ctx.globalAlpha=1}
