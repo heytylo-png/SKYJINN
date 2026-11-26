@@ -125,6 +125,8 @@ Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art
 
 **Sky**: the sky layer keeps its aspect ratio and is scaled to the battlefield height. It tiles at a very slow 0.05× parallax, alternating its own tile with a copy that has the moon (Desert Ruins) or sun (Sky Bridge) painted out (`SKY_BODY`, `skyAlt`). The moon stays round, and only one is ever on screen.
 
+**Unit icons** (`iconFrame`, `iconTo` in `index.html`): every unit icon is frame 1 of the idle row of the unit's sheet for its current tier, trimmed to its opaque pixels, then centred and scaled to the icon box with nearest-neighbour scaling. That covers the unit cards, the hold sheet, and the last-wave rows. Trimmed frames are cached per sheet and side, so each is built once; enemy icons face left. When a unit is upgraded or ascends, its card and open sheet switch to the new tier's frame. The old hand-drawn vector unit art has been removed.
+
 **Last wave**: the units each side sent last wave are shown on a small dark strip directly under that side's HP bar, scaled to fit its width, so they never cover a tower.
 
 ## UI art
