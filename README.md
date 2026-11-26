@@ -96,5 +96,9 @@ Row names and blending are set in `SHEETS` in `tools/fx.py`: additive for fire, 
 - Deaths play an effect and leave a decal by what the unit is made of (`MATERIAL` and `MAT_UNIT`): flesh → blood, Mutants → bile, machines → explosion and rubble, golems → debris and rubble, Undead → ghost and rubble, plants (Verdant) and spirits → their effect, no decal. Fliers leave no decal.
 - Decals use a random variant and random horizontal flip, draw beneath units, fade out over 8 s, and at most 40 stay on the ground (oldest removed first).
 
+**Depth**: every effect (hit and death effects, blood and debris, sparks, embers and motes, slashes, muzzle bursts and rings) takes the ground depth of the unit it belongs to when it is created, and is drawn right after that unit. A unit standing in front covers it, and nothing shows through a foreground character. Effects on fliers draw with the fliers. Effects that belong to no unit (projectile trails, faction powers) stay on top (`zItems`, `drawZ`, `zInstall` in `index.html`).
+
+**Size**: hit effects are capped at 34 px (0.75× the target's height), death effects at 54 px, and splash explosions at 1.2× the splash radius. Blood and acid sprays fly about half as far with fewer drops, so splatter stays around the unit.
+
 ## Match end
 A match lasts 6 minutes. The last minute is overtime (`OVERTIME` in `index.html`): the home-defence bonus is off and bases take double damage. If both bases still have the same HP at the time limit, the side whose front line has pushed further wins, then the side with more kills; only then is it a draw. A campaign win decided this way earns 1 star.
