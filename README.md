@@ -16,8 +16,7 @@ Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Pai
 - `art/source/` — original art on magenta backgrounds
 - `art/towers/src/` — faction towers, 4 damage states each (`tools/towers.py`)
 - `art/bases/` — the earlier single-image base art (used only if a tower sheet is missing)
-- `art/maps/layers/` — layered battle maps: `<map>_sky/_mid/_ground.png` for Desert Ruins, Sky Bridge and Volcanic Wastes (`tools/maps.py`)
-- `art/maps/` — older single-image map art (Frozen Spire and Verdant Falls still use it)
+- `art/maps/layers/` — the battle maps: `<map>_sky/_mid/_ground.png` for Desert Ruins, Sky Bridge and Volcanic Wastes (`tools/maps.py`)
 - `tools/cut.py` — removes the magenta background and trims a sprite
 - `art/units/anim.json` — per-unit animation regions (wing flaps, flames, tails, cloth, wheels, glows)
 - `tools/embed.py` — re-embeds `art/units` (sprites, `meta.json`, `anim.json`) into `index.html` (run from repo root; needs Pillow). Sprites are embedded as lossless WebP
@@ -108,7 +107,10 @@ Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art
 - **Drawing**: each layer is scaled to the canvas height with nearest-neighbour scaling, then tiled across the screen with whole-pixel tile edges (no gaps). The order is sky, mid, ground, then the battle.
 - **Parallax**: sky scrolls at 0.15× the camera, mid at 0.45×, ground at 1× (`MAP_PAR`).
 - **Lanes** (`gy` in `MAPS`, world px where 300 = canvas height): unit feet stay between the ground layer's walkable line and the bottom 5% of the screen. That is 83–95% for the desert and 74–95% for the volcano. The bridge uses 74–88%: on the planks below the rope rail, ending at the deck's bottom edge, since below that is open sky.
-- Frozen Spire and Verdant Falls have no layered art yet and keep their old single-image art (`drawLegacyMap`).
+- These three are the only maps. Campaign stages and daily challenges that used the former Frozen Spire and Verdant Falls now use Sky Bridge and Volcanic Wastes.
+- **Portrait screens**: the battlefield canvas fills everything above the gold/units bar. The view always shows at least `MIN_VIS_W` (380) world units across; the 300-unit-tall world sits at the bottom of the canvas, and the sky's top colour continues upward to fill the rest (nothing is stretched or repeated).
+
+**Unit size** (`UNIT_SCALE` 1.8, `CHAMP_SCALE` 2 in `index.html`): units and champions are drawn this much bigger than their base sprite size. This is visual only: hit boxes, ranges and the balance simulator are unchanged. Towers are sized to about 2.5× a normal unit's drawn height (`TOWER_H`).
 
 ## Faction towers
 Each side's Sky Anchor is drawn from `art/towers/src/tower_<faction>.png` (512×512, a 2×2 grid of 256×256 states, base bottom-centre). `python3 tools/towers.py` measures each state's base line and the top of the structure (ignoring the painted smoke), then embeds them in `index.html` as `TOWER_DATA`.
