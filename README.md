@@ -14,6 +14,7 @@ Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Pai
 - `index.html` — the full game
 - `art/units/` — cut-out unit sprites (`<unit><tier>.png`) + `meta.json` (height, foot anchor)
 - `art/source/` — original art on magenta backgrounds
+- `art/projectiles/` — projectile sheets (`tools/projectiles.py`)
 - `art/towers/src/` — faction towers, 4 damage states each (`tools/towers.py`)
 - `art/bases/` — the earlier single-image base art (used only if a tower sheet is missing)
 - `art/maps/layers/` — the battle maps: `<map>_sky/_mid/_ground.png` for Desert Ruins, Sky Bridge and Volcanic Wastes (`tools/maps.py`)
@@ -111,6 +112,21 @@ Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art
 - **Portrait screens**: the battlefield canvas fills everything above the gold/units bar. The view always shows at least `MIN_VIS_W` (380) world units across; the 300-unit-tall world sits at the bottom of the canvas, and the sky's top colour continues upward to fill the rest (nothing is stretched or repeated).
 
 **Unit size** (`UNIT_SCALE` 1.8, `CHAMP_SCALE` 2 in `index.html`): units and champions are drawn this much bigger than their base sprite size. This is visual only: hit boxes, ranges and the balance simulator are unchanged. Towers are sized to about 2.5× a normal unit's drawn height (`TOWER_H`).
+
+## Projectiles
+Drawn projectiles come from `art/projectiles/proj_<sheet>.png`: four 256×256 sheets, each a 4×4 grid of 64×64 cells. Each row is one projectile with 4 looping frames, all pointing right. `python3 tools/projectiles.py` embeds them as `PROJ_DATA`.
+
+| Sheet | Row 1 | Row 2 | Row 3 | Row 4 |
+|---|---|---|---|---|
+| `physical` | wooden arrow (Bone Archer T1–2) | gold rune arrow (Runebow Archer, Skyward Arbalest) | ghost arrow (Bone Archer T3, Bone Ballista) | chained harpoon (Harpoon Crew) |
+| `magic` | fireball (Firecaller, Wyvern, Ancient Wyrm) | spirit bolt (Sparkcaster, Storm Coil, Skyskiff, Wraith, Lich King) | plasma (Arc Gunner, Aero Drone, Drone Swarm, Interceptor, Rail Cannon) | holy orb (Sun Trebuchet T2–3, Knight tower shots) |
+| `siege` | boulder (Corpse Catapult, Sun Trebuchet T1) | lava rock (Magma Golem) | rune shell (Rune Mortar) | rocket (Rocket Battery, Gyrocopter, Warboss barrage) |
+| `organic` | bile glob (Acid Spitter, Gore Wing, Bile Cannon) | bone spine (Spine Hurler) | sap blob (Sap Gunner) | seed pod (Grove Catapult) |
+
+- **Animation and rotation**: frames loop at 12 fps (`PROJ_FPS`). Each projectile is rotated to its flight angle. Lobbed shots follow the arc, and bent shots (Interceptor, Bone Ballista, Skyward Arbalest) follow the bend. A shot flying left is flipped so it stays right side up.
+- **Size and blending**: drawn at half the unit sprite scale (`PROJ_SCALE`), with the head on the target. The magic sheet is drawn additively.
+- **Unchanged**: Goblin guns (Grunt Squad, Sniper, Flak Truck, Junk Tank, the Warboss's gatling) keep their tracer lines. Vine Lasher, Mothwing and Gryphon Rider shots keep their drawn shapes.
+- **Mapping**: `PROJ_SPR` in `index.html` maps each unit to its sheet and row.
 
 ## Faction towers
 Each side's Sky Anchor is drawn from `art/towers/src/tower_<faction>.png` (512×512, a 2×2 grid of 256×256 states, base bottom-centre). `python3 tools/towers.py` measures each state's base line and the top of the structure (ignoring the painted smoke), then embeds them in `index.html` as `TOWER_DATA`.
