@@ -1,4 +1,124 @@
 {
+ "aer1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 93.0,
+  "hit": 2,
+  "ih": 63,
+  "mz": [
+   88,
+   78
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_aero_drone_t1.png"
+ },
+ "aer2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 99.0,
+  "hit": 2,
+  "ih": 82,
+  "mz": [
+   72,
+   86
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_aero_drone_t2.png"
+ },
+ "aer3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 99.0,
+  "hit": 2,
+  "ih": 81,
+  "mz": [
+   92,
+   88
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_aero_drone_t3.png"
+ },
+ "arc1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 105,
+  "mz": [
+   84,
+   60
+  ],
+  "n": [
+   4,
+   8,
+   4,
+   4
+  ],
+  "src": "auto_arc_gunner_t1.png"
+ },
+ "arc2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 106,
+  "mz": [
+   88,
+   60
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_arc_gunner_t2.png"
+ },
+ "arc3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 106,
+  "mz": [
+   94,
+   62
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_arc_gunner_t3.png"
+ },
  "bik1": {
   "F": 128,
   "air": false,
@@ -227,6 +347,66 @@
   ],
   "src": "mutant_brood_mother_t3.png"
  },
+ "col1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 100,
+  "mz": [
+   110,
+   60
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_colossus_prime_t1.png"
+ },
+ "col2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 108,
+  "mz": [
+   110,
+   64
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_colossus_prime_t2.png"
+ },
+ "col3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 108,
+  "mz": [
+   110,
+   110
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_colossus_prime_t3.png"
+ },
  "dgd1": {
   "F": 128,
   "air": false,
@@ -286,6 +466,66 @@
    4
   ],
   "src": "dragon_dragonguard_t3.png"
+ },
+ "drn1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 97,
+  "mz": [
+   84,
+   62
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_drone_swarm_t1.png"
+ },
+ "drn2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 105,
+  "mz": [
+   84,
+   52
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_drone_swarm_t2.png"
+ },
+ "drn3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 102,
+  "mz": [
+   84,
+   48
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_drone_swarm_t3.png"
  },
  "fcl1": {
   "F": 128,
@@ -647,6 +887,57 @@
   ],
   "src": "goblin_gyrocopter_t3.png"
  },
+ "hnd1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 83,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_hound_unit_t1.png"
+ },
+ "hnd2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 91,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_hound_unit_t2.png"
+ },
+ "hnd3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 92,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_hound_unit_t3.png"
+ },
  "hrp1": {
   "F": 128,
   "air": false,
@@ -706,6 +997,66 @@
    4
   ],
   "src": "dragon_harpoon_crew_t3.png"
+ },
+ "itc1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 99,
+  "mz": [
+   56,
+   28
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_interceptor_t1.png"
+ },
+ "itc2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 107,
+  "mz": [
+   110,
+   36
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_interceptor_t2.png"
+ },
+ "itc3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 105,
+  "mz": [
+   110,
+   40
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_interceptor_t3.png"
  },
  "jtk1": {
   "F": 128,
@@ -1084,6 +1435,66 @@
   ],
   "src": "mutant_abomination_t3.png"
  },
+ "rai1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 82,
+  "mz": [
+   104,
+   36
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_rail_cannon_t1.png"
+ },
+ "rai2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 93,
+  "mz": [
+   118,
+   52
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_rail_cannon_t2.png"
+ },
+ "rai3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 100,
+  "mz": [
+   112,
+   46
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_rail_cannon_t3.png"
+ },
  "rap1": {
   "F": 128,
   "air": false,
@@ -1203,6 +1614,126 @@
    4
   ],
   "src": "goblin_rocket_battery_t3.png"
+ },
+ "rpb1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 99,
+  "mz": [
+   100,
+   50
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_repair_bot_t1.png"
+ },
+ "rpb2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 121.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": [
+   100,
+   86
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_repair_bot_t2.png"
+ },
+ "rpb3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 119.0,
+  "hit": 2,
+  "ih": 109,
+  "mz": [
+   104,
+   72
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_repair_bot_t3.png"
+ },
+ "sen1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   116,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_sentinel_t1.png"
+ },
+ "sen2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   118,
+   58
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_sentinel_t2.png"
+ },
+ "sen3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 103,
+  "mz": [
+   118,
+   60
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "auto_sentinel_t3.png"
  },
  "shm1": {
   "F": 128,
