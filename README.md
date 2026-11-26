@@ -59,5 +59,24 @@ Drawn idle, walk, attack and death animation for any unit. When a unit has a she
 
 **Playback** (`SHEET_FPS` and `SHEET_HIT` in `index.html`): idle 4 fps loop, walk 8 fps loop, attack 10 fps timed so the hit frame shows at the moment of the hit (frame 2 by default; for cleaned sheets, the frame with the drawn effect or the furthest reach), death 8 fps then holds the last frame while it fades.
 
+## Hit effects and ground decals
+Drawn effect sheets live in `art/fx/src/` (4×4 on magenta). `python3 tools/fx.py` keys out the magenta (translucent smoke drawn over magenta is un-mixed back to grey), keeps each frame where it was drawn in its cell so a row plays back as drawn, scales each row to fit 112 px, and embeds everything in `index.html` as `FX_DATA` and `DECAL_DATA`.
+
+| Sheet | Rows (top to bottom) |
+|---|---|
+| `fx_explosions.png` | explosion, debris, fire, smoke |
+| `fx_hits_a.png` | Mutant blood, Dragon fire, Undead ghost, Automaton lightning |
+| `fx_hits_b.png` | Knight holy, Verdant sap, Djinn sand, Goblin shrapnel |
+| `fx_impacts.png` | blood, spark, dust, crystal |
+| `decals_ground.png` | 16 stills: blood, scorch, rubble, bile (4 each) |
+
+Row names and blending are set in `SHEETS` in `tools/fx.py`: additive for fire, magic, electric and holy rows, normal for blood, dust, smoke and debris (the explosion's last frame is smoke, so it's drawn normally).
+
+**In the game** (`FX_FPS`, `FX_MAX`, `DECAL_FADE`, `DECAL_MAX` in `index.html`): each effect plays once at 14 fps with its base at the target's feet, then is removed; at most 90 play at once.
+- Every hit plays the attacker's faction row on the target, flipped to face away from the attacker. Hits on a shielded unit play `crystal`; base-tower shots play `spark`.
+- Siege splash hits and airstrike bombs play `explosion` (fire-type siege plays `fire`), meteors add `smoke`, and each leaves a scorch decal.
+- Deaths play an effect and leave a decal by what the unit is made of (`MATERIAL` and `MAT_UNIT`): flesh → blood, Mutants → bile, machines → explosion and rubble, golems → debris and rubble, Undead → ghost and rubble, plants (Verdant) and spirits → their effect, no decal. Fliers leave no decal.
+- Decals use a random variant and random horizontal flip, draw beneath units, fade out over 8 s, and at most 40 stay on the ground (oldest removed first).
+
 ## Match end
 A match lasts 6 minutes. The last minute is overtime (`OVERTIME` in `index.html`): the home-defence bonus is off and bases take double damage. If both bases still have the same HP at the time limit, the side whose front line has pushed further wins, then the side with more kills; only then is it a draw. A campaign win decided this way earns 1 star.

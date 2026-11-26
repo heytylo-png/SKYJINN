@@ -1,0 +1,346 @@
+{
+ "fx": {
+  "fx_explosions": [
+   {
+    "name": "explosion",
+    "y": 0,
+    "w": 112,
+    "h": 89,
+    "n": 4,
+    "blend": [
+     "add",
+     "add",
+     "add",
+     "normal"
+    ]
+   },
+   {
+    "name": "debris",
+    "y": 89,
+    "w": 112,
+    "h": 81,
+    "n": 4,
+    "blend": [
+     "normal",
+     "normal",
+     "normal",
+     "normal"
+    ]
+   },
+   {
+    "name": "fire",
+    "y": 170,
+    "w": 112,
+    "h": 100,
+    "n": 4,
+    "blend": [
+     "add",
+     "add",
+     "add",
+     "add"
+    ]
+   },
+   {
+    "name": "smoke",
+    "y": 270,
+    "w": 112,
+    "h": 86,
+    "n": 4,
+    "blend": [
+     "normal",
+     "normal",
+     "normal",
+     "normal"
+    ]
+   }
+  ],
+  "fx_hits_a": [
+   {
+    "name": "hit_mutant",
+    "y": 0,
+    "w": 112,
+    "h": 79,
+    "n": 4,
+    "blend": [
+     "normal",
+     "normal",
+     "normal",
+     "normal"
+    ]
+   },
+   {
+    "name": "hit_dragon",
+    "y": 79,
+    "w": 112,
+    "h": 80,
+    "n": 4,
+    "blend": [
+     "add",
+     "add",
+     "add",
+     "add"
+    ]
+   },
+   {
+    "name": "hit_undead",
+    "y": 159,
+    "w": 112,
+    "h": 74,
+    "n": 4,
+    "blend": [
+     "add",
+     "add",
+     "add",
+     "add"
+    ]
+   },
+   {
+    "name": "hit_auto",
+    "y": 233,
+    "w": 112,
+    "h": 88,
+    "n": 4,
+    "blend": [
+     "add",
+     "add",
+     "add",
+     "add"
+    ]
+   }
+  ],
+  "fx_hits_b": [
+   {
+    "name": "hit_knight",
+    "y": 0,
+    "w": 112,
+    "h": 86,
+    "n": 4,
+    "blend": [
+     "add",
+     "add",
+     "add",
+     "add"
+    ]
+   },
+   {
+    "name": "hit_verdant",
+    "y": 86,
+    "w": 112,
+    "h": 88,
+    "n": 4,
+    "blend": [
+     "normal",
+     "normal",
+     "normal",
+     "normal"
+    ]
+   },
+   {
+    "name": "hit_djinn",
+    "y": 174,
+    "w": 112,
+    "h": 81,
+    "n": 4,
+    "blend": [
+     "normal",
+     "normal",
+     "normal",
+     "normal"
+    ]
+   },
+   {
+    "name": "hit_goblin",
+    "y": 255,
+    "w": 112,
+    "h": 88,
+    "n": 4,
+    "blend": [
+     "normal",
+     "normal",
+     "normal",
+     "normal"
+    ]
+   }
+  ],
+  "fx_impacts": [
+   {
+    "name": "blood",
+    "y": 0,
+    "w": 112,
+    "h": 82,
+    "n": 4,
+    "blend": [
+     "normal",
+     "normal",
+     "normal",
+     "normal"
+    ]
+   },
+   {
+    "name": "spark",
+    "y": 82,
+    "w": 112,
+    "h": 76,
+    "n": 4,
+    "blend": [
+     "add",
+     "add",
+     "add",
+     "add"
+    ]
+   },
+   {
+    "name": "dust",
+    "y": 158,
+    "w": 112,
+    "h": 77,
+    "n": 4,
+    "blend": [
+     "normal",
+     "normal",
+     "normal",
+     "normal"
+    ]
+   },
+   {
+    "name": "crystal",
+    "y": 235,
+    "w": 112,
+    "h": 77,
+    "n": 4,
+    "blend": [
+     "add",
+     "add",
+     "add",
+     "add"
+    ]
+   }
+  ]
+ },
+ "decals": {
+  "v": [
+   [
+    0,
+    16,
+    96,
+    24
+   ],
+   [
+    96,
+    10,
+    96,
+    35
+   ],
+   [
+    192,
+    9,
+    96,
+    38
+   ],
+   [
+    288,
+    8,
+    96,
+    40
+   ],
+   [
+    0,
+    72,
+    96,
+    23
+   ],
+   [
+    96,
+    69,
+    96,
+    30
+   ],
+   [
+    192,
+    67,
+    96,
+    34
+   ],
+   [
+    288,
+    67,
+    96,
+    33
+   ],
+   [
+    0,
+    127,
+    96,
+    25
+   ],
+   [
+    96,
+    125,
+    96,
+    29
+   ],
+   [
+    192,
+    121,
+    96,
+    37
+   ],
+   [
+    288,
+    125,
+    96,
+    30
+   ],
+   [
+    0,
+    184,
+    96,
+    23
+   ],
+   [
+    96,
+    182,
+    96,
+    27
+   ],
+   [
+    192,
+    179,
+    96,
+    33
+   ],
+   [
+    288,
+    179,
+    96,
+    34
+   ]
+  ],
+  "groups": {
+   "blood": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "scorch": [
+    4,
+    5,
+    6,
+    7
+   ],
+   "rubble": [
+    8,
+    9,
+    10,
+    11
+   ],
+   "bile": [
+    12,
+    13,
+    14,
+    15
+   ]
+  }
+ }
+}
