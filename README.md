@@ -111,7 +111,7 @@ Row names and blending are set in `SHEETS` in `tools/fx.py`: additive for fire, 
 Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art/maps/layers/`: `<map>_sky.png` (opaque), `<map>_mid.png` and `<map>_ground.png` (transparent). All are 720 px tall and loop seamlessly left to right. `python3 tools/maps.py` embeds them in `index.html` as `MAP_LAYERS`: mid and ground lossless (crisp pixels), sky lossy.
 
 - **Drawing**: each layer is scaled to the canvas height with nearest-neighbour scaling, then tiled across the screen with whole-pixel tile edges (no gaps). The order is sky, mid, ground, then the battle.
-- **Parallax**: sky scrolls at 0.15× the camera, mid at 0.45×, ground at 1× (`MAP_PAR`).
+- **Parallax**: sky scrolls at 0.05× the camera, mid at 0.45×, ground at 1× (`MAP_PAR`).
 - **Lanes** (`gy` in `MAPS`, world px where 300 = canvas height): unit feet stay between the ground layer's walkable line and the bottom 5% of the screen. That is 83–95% for the desert and 74–95% for the volcano. The bridge uses 74–88%: on the planks below the rope rail, ending at the deck's bottom edge, since below that is open sky.
 - These three are the only maps. Campaign stages and daily challenges that used the former Frozen Spire and Verdant Falls now use Sky Bridge and Volcanic Wastes.
 
@@ -123,7 +123,7 @@ Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art
 - **Flyers** get a smaller ring at 40% opacity on the ground below them.
 - **Health bars** use the team colour. The white hit flash is unchanged.
 
-**Sky**: the sky layer is drawn at least 2× its width, and always wider than the screen, so its moon never appears twice.
+**Sky**: the sky layer keeps its aspect ratio and is scaled to the battlefield height. It tiles at a very slow 0.05× parallax, alternating its own tile with a copy that has the moon (Desert Ruins) or sun (Sky Bridge) painted out (`SKY_BODY`, `skyAlt`). The moon stays round, and only one is ever on screen.
 
 **Last wave**: the units each side sent last wave are shown on a small dark strip directly under that side's HP bar, scaled to fit its width, so they never cover a tower.
 

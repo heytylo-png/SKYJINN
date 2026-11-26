@@ -1748,21 +1748,34 @@ function towerBreak(side,st){if(G.sim)return;const k=G.fac[side],D=TOWER_DATA[k]
   G.bshake[side]=0.6;shake(2.5);snd('boom',BX[side])}
 const BASEI={};for(const k in BASE_SRC){const im=new Image();im.onload=()=>{BASEI[k]=im};im.src=BASE_SRC[k]}
 // ---- layered battle maps (tools/maps.py): sky, mid, ground, each scaled to the canvas height and tiled seamlessly ----
-const MAP_PAR={sky:0.15,mid:0.45,ground:1};      // parallax: how fast each layer scrolls with the camera
+const MAP_PAR={sky:0.05,mid:0.45,ground:1};      // parallax: how fast each layer scrolls with the camera
 const MLI={};for(const m in MAP_LAYERS){MLI[m]={};for(const L in MAP_LAYERS[m]){const im=new Image();im.onload=()=>{MLI[m][L]=im};im.src=MAP_LAYERS[m][L]}}
 const mapKey=m=>m==='dunes'?'desert':m;
 // draw one layer across the screen in device pixels: integer tile edges so there are never gaps, nearest-neighbour scaling
 // the layer's full height maps to the 300-unit world (bottom-aligned); with fill, it is also stretched up to the top of the
 // canvas so the sky covers any extra height in portrait
-function drawLayer(img,par,sx,sy,fill){const W=cv.width,k=V.s*V.dpr,wh=Math.round(H*k),top=Math.round(V.oy*V.dpr),sc=wh/img.height;
-  // the sky is stretched to at least 2x its width and always wider than the screen, so its moon never shows twice
-  const tw=fill?Math.max(img.width*sc*2,W*1.05):img.width*sc;
-  const off=(-cam.x*par+sx*par)*k,y=Math.round(sy*par*k);let i=Math.floor(-off/tw);
+// Every layer keeps its aspect ratio and is scaled to the battlefield height. The sky alternates its own tile with a
+// copy that has the moon / sun painted out (skyAlt), so the pattern only repeats every two tiles: the moon stays round
+// and only one is ever on screen.
+// moon / sun box in sky-image pixels, and how far sideways to borrow clean sky from (the patch is solid past the body's
+// edge and soft only at its rim)
+const SKY_BODY={desert:{x:217,y:42,w:220,h:220,dx:420},bridge:{x:575,y:320,w:160,h:140,dx:-250}};
+const SKYALT={};
+function skyAlt(map,img){const key=mapKey(map),B=SKY_BODY[key];if(!B)return img;if(SKYALT[key])return SKYALT[key];
+  const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const x=c.getContext('2d');x.drawImage(img,0,0);
+  const p=document.createElement('canvas');p.width=B.w;p.height=B.h;const px=p.getContext('2d');px.drawImage(img,B.x+B.dx,B.y,B.w,B.h,0,0,B.w,B.h);
+  const g=px.createRadialGradient(B.w/2,B.h/2,Math.min(B.w,B.h)*0.42,B.w/2,B.h/2,Math.min(B.w,B.h)*0.5);g.addColorStop(0,'#000');g.addColorStop(1,'rgba(0,0,0,0)');
+  px.globalCompositeOperation='destination-in';px.fillStyle=g;px.fillRect(0,0,B.w,B.h);x.drawImage(p,B.x,B.y);
+  return SKYALT[key]=c}
+function drawLayer(img,par,sx,sy,fill){const W=cv.width,k=V.s*V.dpr,wh=Math.round(H*k),top=Math.round(V.oy*V.dpr);
+  const sc=wh/img.height,tw=img.width*sc,th=wh,alt=fill?skyAlt(G?G.map:'dunes',img):img;
+  const off=(-cam.x*par+sx*par)*k,y=Math.round(sy*par*k),ty=top+y;let i=Math.floor(-off/tw);
   for(;;i++){const x0=Math.round(off+i*tw),x1=Math.round(off+(i+1)*tw);if(x0>=W)break;if(x1<=0)continue;
-    ctx.drawImage(img,0,0,img.width,img.height,x0,top+y,x1-x0,wh);
+    const im=(((i%2)+2)%2)?alt:img;   // odd tiles: no moon
+    ctx.drawImage(im,0,0,img.width,img.height,x0,ty,x1-x0,th);
     // sky above the world in portrait: stretch only the sky's top 2 rows upward, i.e. continue the top colour of each
     // column, so the sky reads taller without repeating clouds or the moon
-    if(fill&&top+y>0)ctx.drawImage(img,0,0,img.width,2,x0,0,x1-x0,top+y+1)}}
+    if(fill&&ty>0)ctx.drawImage(im,0,0,img.width,2,x0,0,x1-x0,ty+1)}}
 function drawMapLayers(map,sx,sy){const L=MLI[mapKey(map)]||{};
   ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;
   for(const n of ['sky','mid','ground'])if(L[n])drawLayer(L[n],MAP_PAR[n],sx,sy,n==='sky');
