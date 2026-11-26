@@ -119,6 +119,66 @@
   ],
   "src": "auto_arc_gunner_t3.png"
  },
+ "bal1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 92,
+  "mz": [
+   118,
+   20
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_bone_ballista_t1.png"
+ },
+ "bal2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 97,
+  "mz": [
+   120,
+   14
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_bone_ballista_t2.png"
+ },
+ "bal3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 106,
+  "mz": [
+   114,
+   18
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_bone_ballista_t3.png"
+ },
  "bik1": {
   "F": 128,
   "air": false,
@@ -290,6 +350,66 @@
   ],
   "src": "mutant_bloat_brute_t3.png"
  },
+ "bow1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 109,
+  "mz": [
+   117.6,
+   50.3
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_bone_archer_t1.png"
+ },
+ "bow2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 109,
+  "mz": [
+   119.9,
+   44.1
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_bone_archer_t2.png"
+ },
+ "bow3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   123.2,
+   46.7
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_bone_archer_t3.png"
+ },
  "brd1": {
   "F": 128,
   "air": false,
@@ -346,6 +466,63 @@
    4
   ],
   "src": "mutant_brood_mother_t3.png"
+ },
+ "cct1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 90,
+  "mz": [
+   110,
+   23
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_corpse_catapult_t1.png"
+ },
+ "cct2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 105,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_corpse_catapult_t2.png"
+ },
+ "cct3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 109,
+  "mz": [
+   116,
+   18
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_corpse_catapult_t3.png"
  },
  "col1": {
   "F": 128,
@@ -706,6 +883,126 @@
    4
   ],
   "src": "goblin_warboss_mega_mech_t3.png"
+ },
+ "ghl1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 89,
+  "mz": [
+   119.8,
+   54.9
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_ghoul_t1.png"
+ },
+ "ghl2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 100,
+  "mz": [
+   122.7,
+   63.9
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_ghoul_t2.png"
+ },
+ "ghl3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 105,
+  "mz": [
+   116,
+   60
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_ghoul_t3.png"
+ },
+ "gkn1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": [
+   119.4,
+   90.7
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_grave_knight_t1.png"
+ },
+ "gkn2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 113,
+  "mz": [
+   120.6,
+   82.4
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_grave_knight_t2.png"
+ },
+ "gkn3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   122.1,
+   92.7
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_grave_knight_t3.png"
  },
  "gor1": {
   "F": 128,
@@ -1195,6 +1492,66 @@
   ],
   "src": "mutant_larva_t1.png"
  },
+ "lch1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 123,
+  "mz": [
+   108,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_lich_king_t1.png"
+ },
+ "lch2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 122,
+  "mz": [
+   108,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_lich_king_t2.png"
+ },
+ "lch3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 124,
+  "mz": [
+   108,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_lich_king_t3.png"
+ },
  "lep1": {
   "F": 128,
   "air": false,
@@ -1434,6 +1791,66 @@
    4
   ],
   "src": "mutant_abomination_t3.png"
+ },
+ "nec1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 124,
+  "mz": [
+   110,
+   40
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_necromancer_t1.png"
+ },
+ "nec2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 123,
+  "mz": [
+   108,
+   48
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_necromancer_t2.png"
+ },
+ "nec3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 121,
+  "mz": [
+   108,
+   40
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_necromancer_t3.png"
  },
  "rai1": {
   "F": 128,
@@ -1795,6 +2212,66 @@
   ],
   "src": "dragon_ember_shaman_t3.png"
  },
+ "skl1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 113,
+  "mz": [
+   120.0,
+   82.6
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_skeleton_horde_t1.png"
+ },
+ "skl2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   120.4,
+   82.5
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_skeleton_horde_t2.png"
+ },
+ "skl3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   119.1,
+   79.0
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_skeleton_horde_t3.png"
+ },
  "skt1": {
   "F": 128,
   "air": false,
@@ -2025,6 +2502,66 @@
    4
   ],
   "src": "mutant_acid_spitter_t3.png"
+ },
+ "wra1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 120.0,
+  "hit": 3,
+  "ih": 109,
+  "mz": [
+   110,
+   36
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_wraith_t1.png"
+ },
+ "wra2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 120.5,
+  "hit": 3,
+  "ih": 116,
+  "mz": [
+   110,
+   36
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_wraith_t2.png"
+ },
+ "wra3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 119.0,
+  "hit": 3,
+  "ih": 116,
+  "mz": [
+   109,
+   32
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "undead_wraith_t3.png"
  },
  "wym1": {
   "F": 128,
