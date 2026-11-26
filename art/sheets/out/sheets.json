@@ -1,4 +1,64 @@
 {
+ "bik1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 108,
+  "mz": [
+   98,
+   45
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_dirt_bike_raider_t1.png"
+ },
+ "bik2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": [
+   88,
+   47
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_dirt_bike_raider_t2.png"
+ },
+ "bik3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 105,
+  "mz": [
+   90,
+   48
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_dirt_bike_raider_t3.png"
+ },
  "bil1": {
   "F": 128,
   "air": false,
@@ -287,6 +347,126 @@
   ],
   "src": "dragon_firecaller_t3.png"
  },
+ "flk1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   94,
+   16
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_flak_truck_t1.png"
+ },
+ "flk2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 106,
+  "mz": [
+   96,
+   28
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_flak_truck_t2.png"
+ },
+ "flk3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 106,
+  "mz": [
+   94,
+   44
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_flak_truck_t3.png"
+ },
+ "gbc1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   106,
+   70
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_warboss_mega_mech_t1.png"
+ },
+ "gbc2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   104,
+   74
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_warboss_mega_mech_t2.png"
+ },
+ "gbc3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   62,
+   78
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_warboss_mega_mech_t3.png"
+ },
  "gor1": {
   "F": 128,
   "air": true,
@@ -347,6 +527,126 @@
   ],
   "src": "mutant_gore_wing_t3.png"
  },
+ "grt1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 106,
+  "mz": [
+   116.6,
+   62.1
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_grunt_squad_t1.png"
+ },
+ "grt2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 103,
+  "mz": [
+   117.8,
+   66.6
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_grunt_squad_t2.png"
+ },
+ "grt3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 107,
+  "mz": [
+   119.8,
+   66.3
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_grunt_squad_t3.png"
+ },
+ "gyr1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 110.0,
+  "hit": 2,
+  "ih": 95,
+  "mz": [
+   108,
+   68
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_gyrocopter_t1.png"
+ },
+ "gyr2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 116.0,
+  "hit": 1,
+  "ih": 107,
+  "mz": [
+   116,
+   76
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_gyrocopter_t2.png"
+ },
+ "gyr3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 107.0,
+  "hit": 2,
+  "ih": 100,
+  "mz": [
+   104,
+   86
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_gyrocopter_t3.png"
+ },
  "hrp1": {
   "F": 128,
   "air": false,
@@ -406,6 +706,66 @@
    4
   ],
   "src": "dragon_harpoon_crew_t3.png"
+ },
+ "jtk1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 97,
+  "mz": [
+   98,
+   64
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_junk_tank_t1.png"
+ },
+ "jtk2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 98,
+  "mz": [
+   100,
+   60
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_junk_tank_t2.png"
+ },
+ "jtk3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 107,
+  "mz": [
+   96,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_junk_tank_t3.png"
  },
  "kob1": {
   "F": 128,
@@ -604,6 +964,66 @@
   ],
   "src": "dragon_magma_golem_t3.png"
  },
+ "mec1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 110,
+  "mz": [
+   92,
+   100
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_field_mechanic_t1.png"
+ },
+ "mec2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 111,
+  "mz": [
+   100,
+   60
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_field_mechanic_t2.png"
+ },
+ "mec3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 115,
+  "mz": [
+   98,
+   64
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_field_mechanic_t3.png"
+ },
  "muc1": {
   "F": 128,
   "air": false,
@@ -724,6 +1144,66 @@
   ],
   "src": "dragon_raptor_rider_t3.png"
  },
+ "rkt1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": [
+   100,
+   24
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_rocket_battery_t1.png"
+ },
+ "rkt2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 109,
+  "mz": [
+   96,
+   36
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_rocket_battery_t2.png"
+ },
+ "rkt3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 110,
+  "mz": [
+   88,
+   24
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_rocket_battery_t3.png"
+ },
  "shm1": {
   "F": 128,
   "air": false,
@@ -837,6 +1317,66 @@
    4
   ],
   "src": "mutant_skitterling_t3.png"
+ },
+ "snp1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 83,
+  "mz": [
+   100,
+   75
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_sniper_t1.png"
+ },
+ "snp2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 90,
+  "mz": [
+   102,
+   67
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "goblin_sniper_t2.png"
+ },
+ "snp3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 91,
+  "mz": [
+   104,
+   62
+  ],
+  "n": [
+   4,
+   8,
+   4,
+   4
+  ],
+  "src": "goblin_sniper_t3.png"
  },
  "spn1": {
   "F": 128,
