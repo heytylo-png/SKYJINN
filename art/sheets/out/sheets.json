@@ -299,6 +299,57 @@
   ],
   "src": "mutant_bile_cannon_t3.png"
  },
+ "blm1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_bloom_shrine_t1.png"
+ },
+ "blm2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 109,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_bloom_shrine_t2.png"
+ },
+ "blm3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 109,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_bloom_shrine_t3.png"
+ },
  "blt1": {
   "F": 128,
   "air": false,
@@ -466,6 +517,117 @@
    4
   ],
   "src": "mutant_brood_mother_t3.png"
+ },
+ "cat1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 88,
+  "mz": [
+   108,
+   30
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_grove_catapult_t1.png"
+ },
+ "cat2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   96,
+   28
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_grove_catapult_t2.png"
+ },
+ "cat3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 108,
+  "mz": [
+   112,
+   22
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_grove_catapult_t3.png"
+ },
+ "cav1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_lance_cavalier_t1.png"
+ },
+ "cav2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_lance_cavalier_t2.png"
+ },
+ "cav3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_lance_cavalier_t3.png"
  },
  "cct1": {
   "F": 128,
@@ -1304,6 +1466,57 @@
   ],
   "src": "goblin_grunt_squad_t3.png"
  },
+ "gry1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 111.0,
+  "hit": 2,
+  "ih": 111,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_gryphon_rider_t1.png"
+ },
+ "gry2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 116.5,
+  "hit": 2,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_gryphon_rider_t2.png"
+ },
+ "gry3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 116.5,
+  "hit": 2,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_gryphon_rider_t3.png"
+ },
  "gyr1": {
   "F": 128,
   "air": true,
@@ -1475,6 +1688,66 @@
   ],
   "src": "dragon_harpoon_crew_t3.png"
  },
+ "irb1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 113,
+  "mz": [
+   118,
+   112
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_ironbark_t1.png"
+ },
+ "irb2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 110,
+  "mz": [
+   112,
+   110
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_ironbark_t2.png"
+ },
+ "irb3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": [
+   112,
+   112
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_ironbark_t3.png"
+ },
  "itc1": {
   "F": 128,
   "air": false,
@@ -1594,6 +1867,66 @@
    4
   ],
   "src": "goblin_junk_tank_t3.png"
+ },
+ "knc1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 115,
+  "mz": [
+   112,
+   77
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_grand_paladin_t1.png"
+ },
+ "knc2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   112,
+   80
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_grand_paladin_t2.png"
+ },
+ "knc3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 119,
+  "mz": [
+   112,
+   80
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_grand_paladin_t3.png"
  },
  "kob1": {
   "F": 128,
@@ -2089,6 +2422,66 @@
   ],
   "src": "djinn_rune_mortar_t3.png"
  },
+ "mth1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 108.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   90,
+   100
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_mothwing_t1.png"
+ },
+ "mth2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 107.0,
+  "hit": 2,
+  "ih": 102,
+  "mz": [
+   90,
+   100
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_mothwing_t2.png"
+ },
+ "mth3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 107.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   90,
+   100
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_mothwing_t3.png"
+ },
  "muc1": {
   "F": 128,
   "air": false,
@@ -2208,6 +2601,117 @@
    4
   ],
   "src": "undead_necromancer_t3.png"
+ },
+ "pal1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   108,
+   112
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_paladin_t1.png"
+ },
+ "pal2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   118,
+   114
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_paladin_t2.png"
+ },
+ "pal3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.5,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   110,
+   110
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_paladin_t3.png"
+ },
+ "prs1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 121,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_banner_priest_t1.png"
+ },
+ "prs2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 124.0,
+  "hit": 2,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_banner_priest_t2.png"
+ },
+ "prs3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_banner_priest_t3.png"
  },
  "rai1": {
   "F": 128,
@@ -2329,6 +2833,66 @@
   ],
   "src": "dragon_raptor_rider_t3.png"
  },
+ "rbw1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 117,
+  "mz": [
+   100,
+   46
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_runebow_archer_t1.png"
+ },
+ "rbw2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 115,
+  "mz": [
+   112,
+   50
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_runebow_archer_t2.png"
+ },
+ "rbw3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 117,
+  "mz": [
+   108,
+   46
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_runebow_archer_t3.png"
+ },
  "rkt1": {
   "F": 128,
   "air": false,
@@ -2448,6 +3012,66 @@
    4
   ],
   "src": "auto_repair_bot_t3.png"
+ },
+ "sap1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   108,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_sap_gunner_t1.png"
+ },
+ "sap2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 108,
+  "mz": [
+   108,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_sap_gunner_t2.png"
+ },
+ "sap3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 109,
+  "mz": [
+   108,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_sap_gunner_t3.png"
  },
  "sen1": {
   "F": 128,
@@ -2920,6 +3544,66 @@
   ],
   "src": "mutant_spine_hurler_t3.png"
  },
+ "spr1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": [
+   117,
+   89
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_sproutling_t1.png"
+ },
+ "spr2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   121,
+   84
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_sproutling_t2.png"
+ },
+ "spr3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 108,
+  "mz": [
+   119,
+   75
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_sproutling_t3.png"
+ },
  "spt1": {
   "F": 128,
   "air": false,
@@ -2979,6 +3663,288 @@
    4
   ],
   "src": "mutant_acid_spitter_t3.png"
+ },
+ "sqr1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 113,
+  "mz": [
+   116,
+   50
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_squire_t1.png"
+ },
+ "sqr2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 113,
+  "mz": [
+   116,
+   52
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_squire_t2.png"
+ },
+ "sqr3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 117,
+  "mz": [
+   118,
+   52
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_squire_t3.png"
+ },
+ "stg1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 110,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_clockwork_stag_t1.png"
+ },
+ "stg2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_clockwork_stag_t2.png"
+ },
+ "stg3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 111,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_clockwork_stag_t3.png"
+ },
+ "tre1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_sun_trebuchet_t1.png"
+ },
+ "tre2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   116,
+   12
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_sun_trebuchet_t2.png"
+ },
+ "tre3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   118,
+   18
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_sun_trebuchet_t3.png"
+ },
+ "vec1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 113,
+  "mz": [
+   112,
+   112
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_elder_root_t1.png"
+ },
+ "vec2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 117,
+  "mz": [
+   112,
+   112
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_elder_root_t2.png"
+ },
+ "vec3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 120,
+  "mz": [
+   112,
+   112
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_elder_root_t3.png"
+ },
+ "vin1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_vine_lasher_t1.png"
+ },
+ "vin2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 108,
+  "mz": [
+   110,
+   38
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_vine_lasher_t2.png"
+ },
+ "vin3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "verdant_vine_lasher_t3.png"
  },
  "war1": {
   "F": 128,
@@ -3219,5 +4185,65 @@
    4
   ],
   "src": "dragon_wyvern_t3.png"
+ },
+ "xbw1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 110,
+  "mz": [
+   84,
+   30
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_skyward_arbalest_t1.png"
+ },
+ "xbw2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": [
+   88,
+   16
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_skyward_arbalest_t2.png"
+ },
+ "xbw3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": [
+   92,
+   26
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "knight_skyward_arbalest_t3.png"
  }
 }
