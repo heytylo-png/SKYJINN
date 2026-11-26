@@ -8,7 +8,7 @@ Open `index.html` in a phone browser (landscape). Everything — code, sprites, 
 ## Factions (8)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
 
-Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins, Undead, Automatons. All eight factions are painted.
+Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins, Undead, Automatons. All eight factions are painted.
 
 ## Layout
 - `index.html` — the full game
@@ -61,9 +61,9 @@ Drawn idle, walk, attack and death animation for any unit. When a unit has a she
 
 **Magic glow** (Djinn): a fourth glow kind, `magic`, puts a soft cyan halo on the drawn teal magic (orbs, beams, lamp light, Storm Coil lightning), and glowing parts shed fine sparkles.
 
-**Cut-off art** (`tools/declip.py`): some drawn frames have art running into the frame edge (a lance tip, a lightning bolt, a slash, a dust cloud), which ends in a hard straight line, or small pieces of the neighbouring frame spilled across the cell boundary. `python3 tools/declip.py art/sheets/src/<files>.png` fixes both in place. It removes small detached pieces that sit against the edge, then fades art touching the top, left or right edge to transparent over 12 px, only along the stretch of edge it touches. The bottom edge is the ground line and is left alone. Run it once on new sheets before `tools/sheets.py`. Frames with nothing at the edge are untouched.
+**Cut-off art** (`tools/declip.py`): some drawn frames have art running into the frame edge (a lance tip, a lightning bolt, a slash, a dust cloud), which ends in a hard straight line, or small pieces of the neighbouring frame spilled across the cell boundary. `python3 tools/declip.py art/sheets/src/<files>.png` fixes both in place. It removes small detached pieces that sit against the edge, then fades art touching the top, left or right edge to transparent over 12 px, only along the stretch of edge it touches. The bottom edge is the ground line and is left alone. Edges the unit's idle pose already reaches (a trebuchet wider than its frame, wings taller than it) are also left alone, so solid parts never fade. Run it once on new sheets before `tools/sheets.py`. Frames with nothing at the edge are untouched.
 
-**Launch angle** (`LAUNCH_ANG` in `index.html`): for units whose drawn missiles leave the launcher at an angle (Interceptor: 30° at tiers 1–2, 20° at tier 3; Bone Ballista: 40°, 35° at tier 3), the projectile is drawn on a curve that starts along that angle and bends onto the target. Only the drawing bends, so hits land at the same moment as before.
+**Launch angle** (`LAUNCH_ANG` in `index.html`): for units whose drawn missiles leave the launcher at an angle (Interceptor: 30° at tiers 1–2, 20° at tier 3; Bone Ballista: 40°, 35° at tier 3; Skyward Arbalest: 45°, 40° at tier 3), the projectile is drawn on a curve that starts along that angle and bends onto the target. Only the drawing bends, so hits land at the same moment as before.
 
 **Ability-only frames** (`SHEET_SALVO` in `index.html`): an attack frame can be kept for the champion ability instead of playing on every shot. The Warboss Mega-Mech's rocket frame plays only when its 6-second barrage fires, held for 0.5 s (`SALVO_HOLD`); the six rockets launch from just past the drawn missile tips (a point per tier, in frame pixels). Ordinary gatling shots play the first three attack frames.
 
