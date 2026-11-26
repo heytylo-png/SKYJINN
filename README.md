@@ -61,6 +61,10 @@ Drawn idle, walk, attack and death animation for any unit. When a unit has a she
 
 **Magic glow** (Djinn): a fourth glow kind, `magic`, puts a soft cyan halo on the drawn teal magic (orbs, beams, lamp light, Storm Coil lightning), and glowing parts shed fine sparkles.
 
+**Holy glow** (Knights): a fifth glow kind, `holy`, puts a warm gold halo on the brightest pale gold in the art: crowns, halos, blades, bow tips, holy slashes and the trebuchet's fireball. The ordinary gold trim and white robes don't glow. Glowing parts shed rising golden sparkles.
+
+**Field flowers** (Verdant): small pixel flowers (white, yellow, pink, lilac) sprout where Verdant units walk, bloom around the Bloom Shrine when it heals, and spring up where a Verdant unit falls. Each grows a stem, opens its petals, sways, then wilts and fades (`FLOWER_RATE`, `FLOWER_LIFE`, `FLOWER_MAX` in `index.html`).
+
 **Cut-off art** (`tools/declip.py`): some drawn frames have art running into the frame edge (a lance tip, a lightning bolt, a slash, a dust cloud), which ends in a hard straight line, or small pieces of the neighbouring frame spilled across the cell boundary. `python3 tools/declip.py art/sheets/src/<files>.png` fixes both in place. It removes small detached pieces that sit against the edge, then fades art touching the top, left or right edge to transparent over 12 px, only along the stretch of edge it touches. The bottom edge is the ground line and is left alone. Edges the unit's idle pose already reaches (a trebuchet wider than its frame, wings taller than it) are also left alone, so solid parts never fade. Run it once on new sheets before `tools/sheets.py`. Frames with nothing at the edge are untouched.
 
 **Launch angle** (`LAUNCH_ANG` in `index.html`): for units whose drawn missiles leave the launcher at an angle (Interceptor: 30° at tiers 1–2, 20° at tier 3; Bone Ballista: 40°, 35° at tier 3; Skyward Arbalest: 45°, 40° at tier 3), the projectile is drawn on a curve that starts along that angle and bends onto the target. Only the drawing bends, so hits land at the same moment as before.

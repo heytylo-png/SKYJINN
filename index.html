@@ -1109,14 +1109,16 @@ function sheetCanvas(id,side){const key=id+'|'+side;if(SHEETC[key])return SHEETC
   return SHEETC[key]={cv,cf,r,F,S,ts:sheetScale(id),fire}}
 // ---- fire glow & embers on drawn sheets (Dragons) ----
 // Bright fire pixels in each frame (flames, breath, fireballs, lava) get a soft additive halo, and embers drift up from them.
-const FIRE_GLOW={dragon:'fire',auto:'energy',undead:'soul',djinn:'magic'}; // factions whose drawn fire / energy glows: fire sheds embers, energy sheds fine discharge motes
+const FIRE_GLOW={dragon:'fire',auto:'energy',undead:'soul',djinn:'magic',knight:'holy'}; // factions whose drawn fire / energy glows: fire sheds embers, energy sheds fine discharge motes
+const isHolyPx=(r,g,b,a)=>a>100&&r>248&&g>218&&b<200&&r-b>60; // the brightest pale gold: halos, crowns, blades, holy light (not the gold trim)
 const isSoulPx=(r,g,b,a)=>a>100&&g>185&&b>160&&g-r>70&&r<170;
 const isEnergyPx=(r,g,b,a)=>a>100&&b>215&&g>150&&b-r>55&&g+b>420;
 // per glow kind: which pixels glow, halo colour (a = halo strength 0..1), halo strength when baked
 const GLOW_KIND={fire:{px:(r,g,b,a)=>isFirePx(r,g,b,a),col:a=>[255,140+(a*80|0),40+(a*40|0)],alpha:0.8},
   energy:{px:isEnergyPx,col:a=>[110+(a*110|0),200+(a*45|0),255],alpha:0.6},
   soul:{px:isSoulPx,col:a=>[90+(a*110|0),255,200+(a*40|0)],alpha:0.55},
-  magic:{px:isSoulPx,col:a=>[120+(a*100|0),245,255],alpha:0.5}};
+  magic:{px:isSoulPx,col:a=>[120+(a*100|0),245,255],alpha:0.5},
+  holy:{px:isHolyPx,col:a=>[255,205+(a*45|0),110+(a*100|0)],alpha:0.55}};
 const FIRE_GLOW_ALPHA=0.8, FIRE_EMBER_RATE=2.5, FIRE_EMBER_ATK=4; // halo strength; embers/s per 100 fire px; attack-frame multiplier
 const EMBER_C=['#ffe9b0','#ffd27a','#ffb050','#ff8a2a'];
 const isFirePx=(r,g,b,a)=>a>100&&r>200&&g>110&&b<150&&r-b>110&&r+g>340;
@@ -1147,7 +1149,7 @@ function fireFx(sh,u,row,f,s,c,tt,dk){const fb=sh.fire;if(!fb)return;const n=fb.
   const en=fb.kind!=='fire',rate=n/100*(en?MOTE_RATE:FIRE_EMBER_RATE)*(row===2?(en?MOTE_ATK:FIRE_EMBER_ATK):1)*(dk!=null?0.4:1),ps=fb.pts[row][f];
   if(!ps.length||Math.random()>rate/60)return;
   const p=ps[(Math.random()*ps.length)|0],dir=u.side?-1:1,gs=(1+u.g*0.3)*(1+u.ev*0.09);
-  if(en){const sl=fb.kind==='soul';mote(u.x+dir*(p[0]-sh.S.ax)*s*gs,u.y+(p[1]-sh.S.fy)*s*gs,sl?SOUL_C:fb.kind==='magic'?'#a8f6ff':MOTE_C,sl?6:10,rnd(0.6,1.1));if(sl)G.parts[G.parts.length-1].vy-=10;return}
+  if(en){const sl=fb.kind==='soul'||fb.kind==='holy';mote(u.x+dir*(p[0]-sh.S.ax)*s*gs,u.y+(p[1]-sh.S.fy)*s*gs,fb.kind==='soul'?SOUL_C:fb.kind==='holy'?HOLY_C[(Math.random()*3)|0]:fb.kind==='magic'?'#a8f6ff':MOTE_C,sl?6:10,rnd(0.6,1.1));if(sl)G.parts[G.parts.length-1].vy-=10;return}
   G.parts.push({x:u.x+dir*(p[0]-sh.S.ax)*s*gs,y:u.y+(p[1]-sh.S.fy)*s*gs,vx:rnd(-10,10)-dir*4,vy:-rnd(14,34),g:-14,life:rnd(0.5,1.1),max:1.1,c:EMBER_C[(Math.random()*4)|0],s:rnd(0.6,1.2),a:1,ember:1,ph:rnd(0,7)})}
 function emberBurst(x,y,n,sp){for(let i=0;i<n&&roomP();i++)G.parts.push({x:x+rnd(-4,4),y:y+rnd(-4,4),vx:rnd(-1,1)*(sp||40),vy:-rnd(10,sp||40),g:-10,life:rnd(0.4,0.9),max:0.9,c:EMBER_C[(Math.random()*4)|0],s:rnd(0.45,1),a:1,ember:1,ph:rnd(0,7)})}
 function drawMotes(t){let any=false;for(const p of G.parts)if(p.mote){any=true;break}if(!any)return;
@@ -1258,7 +1260,7 @@ function newGame(diff,spec,camp,daily){
   const map=camp?(camp.st.map||'dunes'):daily?daily.map:optMap;applyMap(map);
   const others=Object.keys(FAC).filter(f=>f!==pickFac),ef=camp?camp.st.e:daily?daily.e:pickEnemy||(optEnemy!=='random'?optEnemy:others[Math.floor(Math.random()*others.length)]);
   G={diff,map,fac:[pickFac,ef],time:0,wave:0,waveT:FIRST,gold:camp?[200,200+(camp.st.boss?300:0)]:daily?daily.gold.slice():[optGold,optGold],daily:daily||null,camp:camp||null,egm:camp&&camp.st.egm||1,income:[40,40],incLvl:[0,0],roster:[{},{}],tier:[{},{}],ck:[0,0],
-     anchor:[ANCHOR,ANCHOR],bshake:[0,0],shk:0,units:[],corpses:[],decals:[],sfx:[],sdec:[],shells:[],souls:[],proj:[],fx:[],parts:[],shields:[],zones:[],
+     anchor:[ANCHOR,ANCHOR],bshake:[0,0],shk:0,units:[],corpses:[],decals:[],sfx:[],sdec:[],shells:[],souls:[],flowers:[],proj:[],fx:[],parts:[],shields:[],zones:[],
      wishWaves:2,aw:[0,0],awT:[0,0],tcd:[0,0],queue:[[],[]],sup:[0,0],relT:[0,0],armed:null,over:false,paused:false,lastEnemy:{},lastOwn:{},kills:[0,0],spec:!!spec,speed:1};
   G.um=[[1,1],[1,1]];if(daily){G.um=[daily.um.slice(),daily.um.slice()]}
   if(!spec&&!G.sim){const u=upOf(pickFac);G.um[0][0]*=1+0.04*u.hp;G.um[0][1]*=1+0.04*u.dmg;G.gold[0]+=25*u.gold}
@@ -1512,7 +1514,7 @@ function updUnit(u,dt){
       for(let i=0;i<4&&roomP();i++)G.parts.push({x:l.x,y:l.y-4,vx:rnd(-20,20),vy:-rnd(10,30),g:120,life:0.4,max:0.4,c:'#e8f0b0',s:1.6,a:0.9})}}
     else if(T.aoe){
       if(u.cd<=0){let n=0;for(const a of G.units)if(a.side===u.side&&!a.dead&&a!==u&&a.hp<a.max&&Math.hypot(a.x-u.x,(a.y-u.y)*0.6)<=T.range){a.hp=Math.min(a.max,a.hp+u.heal*(1+u.g));n++}
-        if(n){u.cd=T.cd;u.atk=0.22,u.ha=0;G.fx.push({t:'ring',x:u.x,y:u.y,r:T.range,life:0.5,max:0.5,c:HEAL});snd('heal',u.x)}}
+        if(n){u.cd=T.cd;u.atk=0.22,u.ha=0;G.fx.push({t:'ring',x:u.x,y:u.y,r:T.range,life:0.5,max:0.5,c:HEAL});snd('heal',u.x);if(T.fac==='verdant')flowerBurst(u.x,u.y,5,T.range*0.55)}}
     }else{
       let best=null,br=1;
       for(const a of G.units)if(a.side===u.side&&!a.dead&&a!==u&&a.hp<a.max&&Math.abs(a.x-u.x)<=T.range){const r=a.hp/a.max;if(r<br){br=r;best=a}}
@@ -1565,7 +1567,7 @@ function update(dt){
   for(let i=G.parts.length-1;i>=0;i--){const p=G.parts[i];p.life-=dt;if(p.life<=0){G.parts.splice(i,1);continue}p.vy+=p.g*dt;if(p.mote){p.vx+=rnd(-70,70)*dt;p.vy+=rnd(-70,70)*dt;p.vx*=1-2.2*dt;p.vy*=1-2.2*dt}p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.leaf){p.rot+=p.vr*dt;p.vx*=0.98}
     if(p.fl!=null&&p.y>=p.fl&&p.vy>0){p.y=p.fl;if(p.drop){if(p.dc&&G.decals.length<90)G.decals.push({x:p.x,y:p.fl,r:p.s*rnd(1.6,2.6),c:p.dc,t:0,d:rnd(7,10),sq:rnd(0.3,0.45)});G.parts.splice(i,1);continue}
       p.vy*=-0.32;p.vx*=0.55;p.vr=(p.vr||0)*0.5;if(Math.abs(p.vy)<14){p.vy=0;p.g=0;p.vx*=0.8}}}
-  updSfx(dt);updShells(dt);updSouls(dt);
+  updSfx(dt);updShells(dt);updSouls(dt);updFlowers(dt);
   for(const d of G.decals)d.t+=dt;if(G.decals.length&&G.decals[0].t>G.decals[0].d)G.decals=G.decals.filter(d=>d.t<d.d);
   updZones(dt);
   for(let i=G.shields.length-1;i>=0;i--){G.shields[i].life-=dt;if(G.shields[i].life<=0)G.shields.splice(i,1)}
@@ -1645,7 +1647,7 @@ function drawBattle(t,w,h,dpr){
   const ground=G.units.filter(u=>!u.T.air).sort((a,b)=>a.y-b.y),air=G.units.filter(u=>u.T.air).sort((a,b)=>a.y-b.y);
   for(const u of air){ctx.fillStyle='rgba(70,40,15,0.2)';ctx.beginPath();ctx.ellipse(u.x,GY[1]+4,14,3,0,0,7);ctx.fill()}
   for(const d of G.decals){const k=d.t<0.15?d.t/0.15:1;ctx.globalAlpha=0.75*Math.min(1,(d.d-d.t)/2);ctx.fillStyle=d.c;ctx.beginPath();ctx.ellipse(d.x,d.y,d.r*k,d.r*d.sq*k,0,0,7);ctx.fill()}ctx.globalAlpha=1;
-  drawDecals();drawShells(0);
+  drawDecals();drawFlowers(t);drawShells(0);
   for(const c of G.corpses)if(!c.u.T.air)drawCorpse(c,t);
   for(const u of ground)drawUnit(u,t);
   for(const p of G.parts)if(!p.spark&&!p.leaf&&!p.ember&&!p.mote){ctx.globalAlpha=p.a*(p.life/p.max);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.s*(1.4-p.life/p.max*0.4),0,7);ctx.fill()}
@@ -2017,6 +2019,7 @@ function stepFx(u,tt){if(!G)return;const T=u.T,mv=(SPR_META[u.k]&&SPR_META[u.k].
   for(let i=0;i<k&&roomP();i++)G.parts.push({x:u.x-dir*rnd(0,6)+rnd(-T.r*0.6,T.r*0.6),y:u.y+rnd(-1,1),vx:-dir*rnd(8,30)+rnd(-12,12),vy:-rnd(4,14),g:10,life:rnd(0.35,0.6),max:0.6,c,s:rnd(1.4,big?3.4:2.4),a:0.5});
   if(mv==='stomp'&&T.champ)shake(1.2)}
 function unitFx(u,tt){const T=u.T,dir=u.side?-1:1;stepFx(u,tt);
+  if(T.fac==='verdant'&&!T.air&&u.moving&&G&&!G.paused&&!G.sim&&Math.random()<FLOWER_RATE*(T.r>=13||T.champ?1.8:1)/60)flower(u.x+rnd(-T.r*0.7,T.r*0.7),u.y+rnd(-1,3));
   if(G&&!u._sp&&!G.paused){u._sp=1;if((u.sa||0)<0.3){const c=T.air?fxc(T,u.side):dustC();G.fx.push({t:'ring',x:u.x,y:T.air?u.y-10:u.y+1,r:T.r*1.6,life:0.35,max:0.35,c});if(!T.air)puff(u.x,u.y,4,c,30)}}
   if(CAST.has(u.k)&&u.eng&&!(u.atk>0)&&u.cd<0.4&&!sheetMuzzle(u)){const k=smooth(1-Math.max(0,u.cd)/0.4),m=MUZ[u.k]||[12,-20],x=u.x+dir*m[0],y=u.y+m[1],c=fxc(T,u.side);
     ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=0.2+0.45*k;ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,1.5+k*4+Math.sin(tt*30)*0.4,0,7);ctx.fill();
@@ -2084,6 +2087,7 @@ function decal(group,x,y,w){if(!DECAL_DATA||G.sim)return;const g=DECAL_DATA.grou
 function deathFx(u){if(G.sim)return;const m=matOf(u),gs=(1+u.g*0.3)*(1+u.ev*0.09),h=Math.max(22,Math.min(80,htOf(u)*gs*1.2)),y=u.T.air?u.y+6:u.y+2;
   sfx(DEATH_FX[m],u.x,y,h,u.side===1);if(m==='machine'&&u.T.r>=12)sfx('smoke',u.x,y,h*1.1,u.side===1,0.18);
   if(u.T.fac==='undead')soulRise(u);
+  if(u.T.fac==='verdant'&&!u.T.air)flowerBurst(u.x,u.y,Math.min(10,4+u.T.r/3|0),u.T.r*1.3);
   if(u.T.fac==='auto')moteBurst(u.x,u.y-htOf(u)*0.45,Math.min(40,14+u.T.r*1.4|0),PAL[u.side].glow,Math.max(10,u.T.r*1.1));
   if(!u.T.air&&DEATH_DECAL[m])decal(DEATH_DECAL[m],u.x,u.y+2,Math.max(22,u.T.r*3.2*gs))}
 function boomFx(x,y,r,kind){if(G.sim)return;sfx(kind||'explosion',x,y+4,r*1.7,Math.random()<0.5);decal('scorch',x,y+2,r*1.6)}
@@ -2103,6 +2107,7 @@ function bendProj(p,u,dir){const A=LAUNCH_ANG[u.k],t=sheetOf(u.k,u.tier),deg=A[t
 function projAng(p){const lx=p.tx-p.x,ly=p.ty-p.y,L=Math.hypot(lx,ly)||1,k=p.bend?p.bend*Math.PI/p.d0*Math.cos(Math.PI*Math.max(0,p.f)):0;return p.bend?Math.atan2(ly/L+p.bn[1]*k,lx/L+p.bn[0]*k):Math.atan2(ly,lx)}
 const bendOf=p=>p.bend?Math.sin(Math.PI*Math.max(0,p.f))*p.bend:0;
 // ---- souls: a fallen Undead's soul leaves the body and floats away, swaying, then fades ----
+const HOLY_C=['#fff3c0','#ffe08a','#ffd060'];
 const SOUL_C='#8dffe0', SOUL_LIFE=2.8, SOUL_MAX=36;
 function soulRise(u){if(G.sim)return;if(G.souls.length>=SOUL_MAX)G.souls.shift();const gs=(1+u.g*0.3)*(1+u.ev*0.09);
   G.souls.push({x:u.x,y:u.y-htOf(u)*gs*0.55,s:Math.max(0.7,Math.min(1.9,u.T.r/8))*(u.T.champ?1.3:1),t:-0.25,ph:rnd(0,7),vx:rnd(-6,6)*(u.side?1:-1)})}
@@ -2115,6 +2120,23 @@ function drawSouls(t){const S=G.souls;if(!S.length)return;ctx.save();
     for(let i=7;i>=0;i--){const cx=o.x+Math.sin(w+i*0.8)*i*0.7*s,cy=o.y+i*2.3*s,r=Math.max(0.6,(3.6-i*0.4)*s);ctx.globalAlpha=a*(0.38-i*0.035);ctx.fillStyle=i<1?'#b8fff0':i<4?SOUL_C:'#3fd8b0';ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.fill()}
     ctx.globalAlpha=a*0.1;ctx.fillStyle='#3fd8b0';ctx.beginPath();ctx.arc(o.x,o.y+2*s,8*s,0,7);ctx.fill();
     ctx.globalCompositeOperation='source-over';ctx.globalAlpha=a*0.85;ctx.fillStyle='#163a36';ctx.fillRect(o.x-1.6*s,o.y-0.6*s,1.1*s,1.3*s);ctx.fillRect(o.x+0.5*s,o.y-0.6*s,1.1*s,1.3*s)}
+  ctx.restore()}
+// ---- field flowers (Verdant): small flowers sprout where Verdant walk, around the Bloom Shrine when it heals and where a
+// Verdant unit falls. Each grows a stem, opens its petals, sways, then wilts and fades. Drawn as crisp pixel squares.
+const FLOWER_RATE=1.4, FLOWER_LIFE=7, FLOWER_MAX=140;   // flowers/s per walking unit; seconds each lasts; most at once
+const FLOWER_C=['#ffffff','#fff2a8','#ffb8d8','#d8b8ff','#ffd27a','#ff9ab0'];
+function flower(x,y){if(G.sim)return;if(G.flowers.length>=FLOWER_MAX)G.flowers.shift();
+  G.flowers.push({x,y:Math.max(GY[0]-2,Math.min(GY[1]+6,y)),t:-rnd(0,0.15),life:FLOWER_LIFE*rnd(0.8,1.15),c:FLOWER_C[(Math.random()*FLOWER_C.length)|0],s:rnd(0.8,1.3),h:rnd(2.5,5),ph:rnd(0,7),n:Math.random()<0.3?4:5})}
+function flowerBurst(x,y,n,r){if(G.sim)return;for(let i=0;i<n;i++){const a=rnd(0,6.3),d=rnd(0.2,1)*r;flower(x+Math.cos(a)*d,y+Math.sin(a)*d*0.35);G.flowers[G.flowers.length-1].t=-i*0.05}}
+function updFlowers(dt){const F=G.flowers;for(const f of F)f.t+=dt;while(F.length&&F[0].t>F[0].life)F.shift();if(F.length>8&&F.some(f=>f.t>f.life))G.flowers=F.filter(f=>f.t<=f.life)}
+function drawFlowers(t){const F=G.flowers;if(!F.length)return;ctx.save();
+  for(const f of F){if(f.t<=0)continue;const g=Math.min(1,f.t/0.35),op=Math.max(0,Math.min(1,(f.t-0.3)/0.5)),w=Math.max(0,Math.min(1,(f.life-f.t)/1.6)),s=f.s;
+    const sw=Math.sin(t*2+f.ph)*0.8*s,hh=f.h*s*g*(0.6+0.4*w),tx=f.x+sw*g,ty=f.y-hh;
+    ctx.globalAlpha=Math.min(1,w*1.4);ctx.fillStyle='#4f8a2e';ctx.fillRect(f.x-0.4*s,ty,0.8*s,hh);   // stem
+    if(op<=0){ctx.fillStyle='#7fbf45';ctx.fillRect(tx-0.8*s,ty-0.8*s,1.6*s,1.6*s);continue}           // bud
+    const pr=(0.6+1.2*op)*s*(0.7+0.3*w),ps=(0.9+0.5*op)*s*(0.6+0.4*w);ctx.fillStyle=f.c;
+    for(let i=0;i<f.n;i++){const a=i/f.n*6.283+f.ph;ctx.fillRect(tx+Math.cos(a)*pr-ps/2,ty+Math.sin(a)*pr*0.75-ps/2,ps,ps)}
+    ctx.fillStyle='#ffcf3a';ctx.fillRect(tx-0.7*s,ty-0.7*s,1.4*s,1.4*s)}                                // centre
   ctx.restore()}
 // ---- spent shell casings: gun units throw brass out behind the gun as they fire; it bounces, lies on the ground, then fades ----
 // unit key -> [casings per shot, size 0 small | 1 rifle | 2 cannon]
