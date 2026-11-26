@@ -3,7 +3,11 @@
 Mobile tug-of-war auto-battler (inspired by Art of War: Red Tides). Fantasy mixed with advanced technology.
 
 ## Play
-Open `index.html` in a phone browser (landscape). Everything — code, sprites, maps — is embedded in that one file.
+Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedded in that one file.
+
+**Landscape only.** In portrait, a full-screen prompt (logo, rotating phone, "Rotate your phone to play") covers the game, and a running match pauses behind it, resuming when the phone is turned back. The first tap on any start-menu button asks the browser for fullscreen and a landscape orientation lock. Where that's unsupported (iOS Safari), the game just continues. The ⛶ button next to music toggles fullscreen.
+
+**Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
 
 ## Factions (8)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
@@ -14,6 +18,7 @@ Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Pai
 - `index.html` — the full game
 - `art/units/` — cut-out unit sprites (`<unit><tier>.png`) + `meta.json` (height, foot anchor)
 - `art/source/` — original art on magenta backgrounds
+- `art/ui/` — menu background, logo, faction emblems, wish icons (`tools/ui.py`)
 - `art/projectiles/` — projectile sheets (`tools/projectiles.py`)
 - `art/towers/src/` — faction towers, 4 damage states each (`tools/towers.py`)
 - `art/bases/` — the earlier single-image base art (used only if a tower sheet is missing)
@@ -109,9 +114,17 @@ Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art
 - **Parallax**: sky scrolls at 0.15× the camera, mid at 0.45×, ground at 1× (`MAP_PAR`).
 - **Lanes** (`gy` in `MAPS`, world px where 300 = canvas height): unit feet stay between the ground layer's walkable line and the bottom 5% of the screen. That is 83–95% for the desert and 74–95% for the volcano. The bridge uses 74–88%: on the planks below the rope rail, ending at the deck's bottom edge, since below that is open sky.
 - These three are the only maps. Campaign stages and daily challenges that used the former Frozen Spire and Verdant Falls now use Sky Bridge and Volcanic Wastes.
-- **Portrait screens**: the battlefield canvas fills everything above the gold/units bar. The view always shows at least `MIN_VIS_W` (380) world units across; the 300-unit-tall world sits at the bottom of the canvas, and the sky's top colour continues upward to fill the rest (nothing is stretched or repeated).
 
-**Unit size** (`UNIT_SCALE` 1.8, `CHAMP_SCALE` 2 in `index.html`): units and champions are drawn this much bigger than their base sprite size. This is visual only: hit boxes, ranges and the balance simulator are unchanged. Towers are sized to about 2.5× a normal unit's drawn height (`TOWER_H`).
+**Unit size**: the battlefield is 300 world units tall and fills all the height above the unit bar. A normal unit is drawn about 18% of that height (`UNIT_SCALE` 2.37), a champion about 28% (`CHAMP_SCALE` 1.81), and a full tower about 45% (`TOWER_H` 135). This is visual only: hit boxes, ranges and the balance simulator are unchanged.
+
+**Last wave**: the units each side sent last wave are shown on a small dark strip directly under that side's HP bar, scaled to fit its width, so they never cover a tower.
+
+## UI art
+`art/ui/` holds the menu art; `python3 tools/ui.py` embeds it as `UI_ART`.
+- **Start menu background**: `title_bg.png`, cover-fit, under a 40% black overlay.
+- **Logo**: `logo.png` replaces the text title. It is at most 80% of the screen width, keeps its aspect ratio, is capped in height so the whole menu fits without scrolling, and floats 3 px up and down.
+- **Faction emblems** (`emblem_<faction>.png`): shown on the faction picker buttons, on the Campaign stage cards (the opponent's emblem), and beside each side's label in the AI vs AI HUD.
+- **Wish buttons**: the Wish button shows `wish_<faction>.png` for the player's faction, and the Shield button shows `wish_shield.png`. Icons are greyed and dim while charging, and turn full colour with a pulse when ready.
 
 ## Projectiles
 Drawn projectiles come from `art/projectiles/proj_<sheet>.png`: four 256×256 sheets, each a 4×4 grid of 64×64 cells. Each row is one projectile with 4 looping frames, all pointing right. `python3 tools/projectiles.py` embeds them as `PROJ_DATA`.
