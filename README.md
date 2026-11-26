@@ -55,6 +55,8 @@ Drawn idle, walk, attack and death animation for any unit. When a unit has a she
 
 **Fire glow and embers** (`FIRE_GLOW` in `index.html`, Dragons): bright fire pixels in each frame (flames, breath, fireballs, lava) get a soft orange halo baked into the frames once at match start, and small embers drift up from them, more on attack frames. Fire projectiles trail embers, fire impacts and meteors burst into them, and burning units shed them. Tunables: `FIRE_GLOW_ALPHA`, `FIRE_EMBER_RATE`, `FIRE_EMBER_ATK`.
 
+**Ability-only frames** (`SHEET_SALVO` in `index.html`): an attack frame can be kept for the champion ability instead of playing on every shot. The Warboss Mega-Mech's rocket frame plays only when its 6-second barrage fires, held for 0.5 s (`SALVO_HOLD`); the six rockets launch from just past the drawn missile tips (a point per tier, in frame pixels). Ordinary gatling shots play the first three attack frames.
+
 **Shell casings** (`SHELL` in `index.html`): gun units throw spent brass out behind the gun each time they fire. Casings tumble, bounce, lie on the ground (fliers' casings fall to the ground below them), then fade after 3.5 s; at most 140 at once. Each entry is `[casings per shot, size]` with size 0 small, 1 rifle, 2 cannon. Currently: Grunt Squad, Sniper, Dirt Bike Raider, Gyrocopter, Flak Truck, Junk Tank and Warboss Mega-Mech.
 
 **Tier 3** units drawn with their own tier-3 sheet are drawn 15% bigger to show off the tier-3 glow (`SHEET_TIER_SCALE` in `index.html`); the health bar and projectile launch point scale with them.

@@ -1150,10 +1150,16 @@ function drawEmbers(t){let any=false;for(const p of G.parts)if(p.ember){any=true
   for(const p of G.parts)if(p.ember){const k=p.life/p.max,a=Math.min(1,k*1.6)*(0.65+0.35*Math.sin(t*22+p.ph)),r=p.s*(0.55+k*0.5);ctx.globalAlpha=a;ctx.fillStyle=k>0.5?'#fff3c4':p.c;ctx.fillRect(p.x-r,p.y-r,r*2,r*2)}
   ctx.restore()}
 // which frame to show: death (dk = seconds since death) > attack > walk > idle
+// attack frames that only play with the champion ability (e.g. the Warboss's rocket frame), not on every shot.
+// unit key -> [frame index, where the drawn rockets leave on that frame per tier, in sheet frame pixels]
+const SHEET_SALVO={gbc:[3,{1:[124,10],2:[126,14],3:[126,8]}]}, SALVO_HOLD=0.5;
+function salvoPt(u){const sv=SHEET_SALVO[u.k],id=sv&&sheetOf(u.k,u.tier),S=id&&SPR_SHEET[id];if(!S)return null;const t=+id.slice(-1),p=sv[1][t]||sv[1][1];
+  const s=SPR_META[u.k].h/S.ih*sheetScale(id)*(1+u.g*0.3)*(1+u.ev*0.09);return [(p[0]-S.ax)*s,(p[1]-S.fy)*s]}
 function sheetPick(sh,u,tt,dk){const n=sh.S.n,row=(r)=>n[r]?r:0,HIT=sh.S.hit!=null?sh.S.hit:SHEET_HIT;
   if(dk!=null){const r=row(3);return [r,Math.min(n[r]-1,Math.floor(dk*SHEET_FPS.die))]}
+  const sv=SHEET_SALVO[u.k];if(sv&&n[2]>sv[0]&&u.salvoT>0)return [2,sv[0]];
   const lead=HIT/SHEET_FPS.atk,hit=u.ha!=null&&u.ha<(n[2]-HIT)/SHEET_FPS.atk,wind=u.eng&&!(u.atk>0)&&u.cd<lead;
-  if(n[2]&&(hit||wind)){const ta=hit?lead+u.ha:lead-Math.max(0,u.cd);return [2,Math.min(n[2]-1,Math.floor(ta*SHEET_FPS.atk))]}
+  if(n[2]&&(hit||wind)){const ta=hit?lead+u.ha:lead-Math.max(0,u.cd);let f=Math.min(n[2]-1,Math.floor(ta*SHEET_FPS.atk));if(sv&&f===sv[0])f=HIT;return [2,f]}
   if(u.moving&&n[1])return [1,Math.floor(tt*SHEET_FPS.walk)%n[1]];
   return [0,Math.floor(tt*SHEET_FPS.idle)%n[0]]}
 function sheetFlash(sh,row,f){const cf=sh.cf;if(FLC.width!==cf||FLC.height!==cf){FLC.width=cf;FLC.height=cf}const c=FLC.getContext('2d');c.globalCompositeOperation='source-over';c.clearRect(0,0,cf,cf);
@@ -1413,9 +1419,10 @@ function champAbility(u,dir){
   else if(T.ability==='breath'){for(const e of G.units)if(e.side!==u.side&&!e.dead){const dx=(e.x-x)*dir;if(dx>-10&&dx<130){hurt(u.side,'wym',35,e,u);e.burnT=3;e.burnSrc=u.side}}
     for(let i=0;i<30&&roomP();i++)G.parts.push({x:x+dir*20,y:y-16,vx:dir*rnd(80,200),vy:rnd(20,110),g:0,life:rnd(0.3,0.6),max:0.6,c:i%3?FIRE:'#ffd27a',s:rnd(2,4),a:0.9});snd('boom',x);shake(3)}
   else if(T.ability==='barrage'){const foes=G.units.filter(e=>e.side!==u.side&&!e.dead&&!e.T.air&&(e.x-x)*dir>-10&&(e.x-x)*dir<260);
-    for(let i=0;i<6;i++){const tg=foes.length?foes[Math.floor(Math.random()*foes.length)]:null,tx=tg?tg.x+rnd(-15,15):x+dir*rnd(60,200),ty=tg?tg.y:rnd(GY[0],GY[1]),sx=x+dir*4,sy=y-60;
+    const sp=salvoPt(u),ox=sp?sp[0]:4,oy=sp?sp[1]:-60;u.salvoT=SALVO_HOLD;
+    for(let i=0;i<6;i++){const tg=foes.length?foes[Math.floor(Math.random()*foes.length)]:null,tx=tg?tg.x+rnd(-15,15):x+dir*rnd(60,200),ty=tg?tg.y:rnd(GY[0],GY[1]),sx=x+dir*(ox+rnd(0,8)),sy=y+oy-rnd(0,6);
       G.proj.push({side:u.side,k:'rkt',dmg:40,x:sx,y:sy,tgt:null,anchor:false,tx,ty,sp:300+i*25,d0:Math.hypot(tx-sx,ty-sy)||1,lob:1,c:PAL[u.side].glow,f:0,trail:[],src:u})}
-    puff(x-dir*10,y-60,8,'#8a8a80',40);snd('rocket',x);snd('thump',x)}
+    puff(x+dir*(ox-14),y+oy+4,8,'#8a8a80',40);snd('rocket',x);snd('thump',x)}
   else if(T.ability==='holy'){for(const a of G.units)if(a.side===u.side&&!a.dead&&Math.abs(a.x-x)<110){a.hp=Math.min(a.max,a.hp+50);a.buffT=Math.max(a.buffT,3)}
     for(const e of G.units)if(e.side!==u.side&&!e.dead&&Math.abs(e.x-x)<70)hurt(u.side,'knc',35,e,u);
     G.fx.push({t:'ring',x,y,r:110,life:0.7,max:0.7,c:GOLD});G.fx.push({t:'ring',x,y,r:60,life:0.5,max:0.5,c:'#fff2c0'});for(let i=0;i<14;i++)sparks(x+rnd(-60,60),y-rnd(0,60),1,GOLD);snd('shield',x)}
@@ -1464,7 +1471,7 @@ function raiseShield(side,x){G.shields.push({side,x,r:80,life:6,max:6});snd('shi
 function updUnit(u,dt){
   const T=u.T,dir=u.side===0?1:-1,eb=BX[1-u.side];
   u.cd-=dt*(u.supT>0?0.85:1)*(T.fac==='auto'?1+Math.min(0.3,G.time/600):1);if(u.supT>0)u.supT-=dt;u.flash=Math.max(0,u.flash-dt);if(u.mir>0)u.mir-=dt;u.atk=Math.max(0,u.atk-dt);u.buffT=Math.max(0,u.buffT-dt);
-  const wasMoving=u.moving;u.moving=false;u.eng=0;u.sa=(u.sa||0)+dt;if(u.ha!=null)u.ha+=dt;
+  const wasMoving=u.moving;u.moving=false;u.eng=0;u.sa=(u.sa||0)+dt;if(u.ha!=null)u.ha+=dt;if(u.salvoT>0)u.salvoT-=dt;
   if(u.acidT>0){u.acidT-=dt;hurt(u.acidSrc,'acid',5*u.acidS*dt,u);if(u.dead)return;if(u.acidT<=0)u.acidS=0}
   if(u.burnT>0){u.burnT-=dt;hurt(u.burnSrc,'burn',6*dt,u);if(u.dead)return}
   if(u.shMax>0){u.shT-=dt;if(u.shHit>0)u.shHit-=dt;if(u.shT<=0&&u.sh<u.shMax)u.sh=Math.min(u.shMax,u.sh+u.shMax*0.15*dt)}
@@ -1862,7 +1869,7 @@ function champFx(u,dir){const T=u.T,x=u.x,y=T.air?(GY[0]+GY[1])/2:u.y,by=bodyY(u
     for(const e of G.units)if(e.side!==u.side&&!e.dead&&Math.abs(e.x-x)<100)G.fx.push({t:'arc',x,y:by,x2:e.x,y2:bodyY(e),c:'#9fe8ff',life:0.3,max:0.3,dl:0.18+rnd(0,0.12)})}
   else if(T.ability==='breath'){G.fx.push({t:'cone',x:x+dir*20,y:u.y-16,dir,len:T.air?170:140,sp:0.4,rot:T.air?0.55:0,c0:'#fff2c0',c1:'#ff8a2a',life:0.6,max:0.6});
     for(let i=0;i<3;i++)scorch(x+dir*(40+i*35),y+rnd(-6,6),26,'#2a1d14',6)}
-  else if(T.ability==='barrage'){G.fx.push({t:'muzzle',x:x+dir*4,y:y-60,dir,c:'#ffb050',s:2.4,life:0.2,max:0.2});G.fx.push({t:'boom',x:x-dir*6,y:y-52,r:28,c:'#ffb050',life:0.35,max:0.35})}
+  else if(T.ability==='barrage'){const sp=salvoPt(u),mx=x+dir*(sp?sp[0]:4),my=sp?u.y+sp[1]:y-60;G.fx.push({t:'muzzle',x:mx,y:my,dir,c:'#ffb050',s:2.4,life:0.2,max:0.2});G.fx.push({t:'boom',x:mx-dir*14,y:my+6,r:28,c:'#ffb050',life:0.35,max:0.35})}
   else if(T.ability==='holy'){G.zones.push({t:'light',side:u.side,x,r:38,life:0.7,max:0.7});for(let i=0;i<2;i++)G.fx.push({t:'shock',x,y,r:110+i*24,w:4-i,c:i?'#ffe9a8':'#ffffff',life:0.7,max:0.7,dl:i*0.1});
     for(let i=0;i<10&&roomP();i++)G.parts.push({x:x+rnd(-60,60),y:y-rnd(60,130),vx:rnd(-10,10),vy:rnd(10,25),g:4,life:rnd(1.2,1.8),max:1.8,c:i%3?'#fff6d8':'#e2b448',s:rnd(1.4,2.2),a:0.9,leaf:1,rot:rnd(0,6),vr:rnd(-3,3)})}}
 function drawFx3(f,a,t){
