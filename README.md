@@ -18,6 +18,7 @@ Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Pai
 - `index.html` — the full game
 - `art/units/` — cut-out unit sprites (`<unit><tier>.png`) + `meta.json` (height, foot anchor)
 - `art/source/` — original art on magenta backgrounds
+- `art/wish_fx/` — faction power effect sheets (`tools/wishfx.py`)
 - `art/ui/` — menu background, logo, faction emblems, wish icons (`tools/ui.py`)
 - `art/projectiles/` — projectile sheets (`tools/projectiles.py`)
 - `art/towers/src/` — faction towers, 4 damage states each (`tools/towers.py`)
@@ -150,6 +151,25 @@ Drawn projectiles come from `art/projectiles/proj_<sheet>.png`: four 256×256 sh
 - **Size and blending**: drawn at half the unit sprite scale (`PROJ_SCALE`), with the head on the target. The magic sheet is drawn additively.
 - **Unchanged**: Goblin guns (Grunt Squad, Sniper, Flak Truck, Junk Tank, the Warboss's gatling) keep their tracer lines. Vine Lasher, Mothwing and Gryphon Rider shots keep their drawn shapes.
 - **Mapping**: `PROJ_SPR` in `index.html` maps each unit to its sheet and row.
+
+## Faction power effects
+`art/wish_fx/wish_fx_<name>.png`: 1024×1024, a 4×4 grid of 256×256 frames read left to right, top to bottom. `python3 tools/wishfx.py` embeds them as `WFX_DATA`, along with each sheet's drawn width and base line measured from its loop frames.
+
+- **Playback** (12 fps): frames 1–4 build up once, frames 5–12 loop while the power is active (at least one full loop, so short powers still read), and frames 13–16 fade out once after it ends.
+- **Placement**: each effect is drawn bottom-centre at the target on the ground, scaled so its drawn width matches the power's area. Effects draw over ground units and under fliers.
+- **Blending**: additive for `emp` and `divine_judgment`, normal for the rest.
+
+| Sheet | Power | Notes |
+|---|---|---|
+| `sandstorm` | Djinn Sandstorm | moves forward with the storm |
+| `overgrowth` | Verdant Overgrowth | 3 copies side by side, offset in time and mirrored |
+| `acid_rain` | Mutant Acid Rain | |
+| `emp` | Automaton EMP Blast | |
+| `airstrike` | Goblin Airstrike | the sheet draws the bombs and blasts; damage is unchanged |
+| `divine_judgment` | Knight Divine Judgment | |
+| `shield_dome` | Shield Dome (all factions) | a 20% teal ellipse on the ground behind units |
+
+Those powers keep their short screen flash; their old vector drawings, runes and rings are no longer drawn. Undead and Dragon wishes keep their drawn visuals until their sheets arrive.
 
 ## Faction towers
 Each side's Sky Anchor is drawn from `art/towers/src/tower_<faction>.png` (512×512, a 2×2 grid of 256×256 states, base bottom-centre). `python3 tools/towers.py` measures each state's base line and the top of the structure (ignoring the painted smoke), then embeds them in `index.html` as `TOWER_DATA`.
