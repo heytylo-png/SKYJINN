@@ -524,6 +524,126 @@
   ],
   "src": "undead_corpse_catapult_t3.png"
  },
+ "cog1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   115.9,
+   68.8
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_cogling_t1.png"
+ },
+ "cog2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   118.5,
+   70.5
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_cogling_t2.png"
+ },
+ "cog3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 112,
+  "mz": [
+   119.2,
+   67.4
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_cogling_t3.png"
+ },
+ "coil1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 117.0,
+  "hit": 2,
+  "ih": 111,
+  "mz": [
+   74,
+   8
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_storm_coil_t1.png"
+ },
+ "coil2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 120.0,
+  "hit": 2,
+  "ih": 117,
+  "mz": [
+   66,
+   12
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_storm_coil_t2.png"
+ },
+ "coil3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 123.0,
+  "hit": 2,
+  "ih": 122,
+  "mz": [
+   64,
+   10
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_storm_coil_t3.png"
+ },
  "col1": {
   "F": 128,
   "air": false,
@@ -643,6 +763,66 @@
    4
   ],
   "src": "dragon_dragonguard_t3.png"
+ },
+ "djc1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 115,
+  "mz": [
+   112,
+   64
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_ifrit_sultan_t1.png"
+ },
+ "djc2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 115,
+  "mz": [
+   112,
+   70
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_ifrit_sultan_t2.png"
+ },
+ "djc3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": [
+   112,
+   70
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_ifrit_sultan_t3.png"
  },
  "drn1": {
   "F": 128,
@@ -1475,6 +1655,63 @@
   ],
   "src": "dragon_kobold_pack_t3.png"
  },
+ "lan1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 115,
+  "mz": [
+   118.6,
+   49.5
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_djinn_lancer_t1.png"
+ },
+ "lan2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 120,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_djinn_lancer_t2.png"
+ },
+ "lan3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": [
+   118,
+   48
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_djinn_lancer_t3.png"
+ },
  "lar1": {
   "F": 128,
   "air": false,
@@ -1731,6 +1968,126 @@
    4
   ],
   "src": "goblin_field_mechanic_t3.png"
+ },
+ "men1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 103.0,
+  "hit": 2,
+  "ih": 89,
+  "mz": [
+   118.2,
+   52.0
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_mender_lamp_t1.png"
+ },
+ "men2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 108.0,
+  "hit": 2,
+  "ih": 100,
+  "mz": [
+   100,
+   38
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_mender_lamp_t2.png"
+ },
+ "men3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 124.0,
+  "hit": 2,
+  "ih": 122,
+  "mz": [
+   119.1,
+   43.9
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_mender_lamp_t3.png"
+ },
+ "mor1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 81,
+  "mz": [
+   119.7,
+   22.2
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_rune_mortar_t1.png"
+ },
+ "mor2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 101,
+  "mz": [
+   110,
+   16
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_rune_mortar_t2.png"
+ },
+ "mor3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 113,
+  "mz": [
+   114,
+   20
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_rune_mortar_t3.png"
  },
  "muc1": {
   "F": 128,
@@ -2326,6 +2683,66 @@
   ],
   "src": "mutant_skitterling_t3.png"
  },
+ "sky1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 114.0,
+  "hit": 2,
+  "ih": 110,
+  "mz": [
+   96,
+   56
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_skyskiff_t1.png"
+ },
+ "sky2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 117.5,
+  "hit": 2,
+  "ih": 115,
+  "mz": [
+   98,
+   50
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_skyskiff_t2.png"
+ },
+ "sky3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 116.0,
+  "hit": 2,
+  "ih": 115,
+  "mz": [
+   96,
+   34
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_skyskiff_t3.png"
+ },
  "snp1": {
   "F": 128,
   "air": false,
@@ -2385,6 +2802,66 @@
    4
   ],
   "src": "goblin_sniper_t3.png"
+ },
+ "spk1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 111,
+  "mz": [
+   118.7,
+   55.8
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_sparkcaster_t1.png"
+ },
+ "spk2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   108,
+   42
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_sparkcaster_t2.png"
+ },
+ "spk3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   110,
+   42
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_sparkcaster_t3.png"
  },
  "spn1": {
   "F": 128,
@@ -2502,6 +2979,66 @@
    4
   ],
   "src": "mutant_acid_spitter_t3.png"
+ },
+ "war1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 104,
+  "mz": [
+   119.8,
+   70.7
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_brass_warden_t1.png"
+ },
+ "war2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 111,
+  "mz": [
+   120.2,
+   84.0
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_brass_warden_t2.png"
+ },
+ "war3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   112,
+   90
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "djinn_brass_warden_t3.png"
  },
  "wra1": {
   "F": 128,
