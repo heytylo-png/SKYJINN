@@ -14,8 +14,10 @@ Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Pai
 - `index.html` — the full game
 - `art/units/` — cut-out unit sprites (`<unit><tier>.png`) + `meta.json` (height, foot anchor)
 - `art/source/` — original art on magenta backgrounds
-- `art/bases/` — base tower art per faction
-- `art/maps/` — map backgrounds (Desert Ruins, Sky Bridge, Volcanic Wastes)
+- `art/towers/src/` — faction towers, 4 damage states each (`tools/towers.py`)
+- `art/bases/` — the earlier single-image base art (used only if a tower sheet is missing)
+- `art/maps/layers/` — layered battle maps: `<map>_sky/_mid/_ground.png` for Desert Ruins, Sky Bridge and Volcanic Wastes (`tools/maps.py`)
+- `art/maps/` — older single-image map art (Frozen Spire and Verdant Falls still use it)
 - `tools/cut.py` — removes the magenta background and trims a sprite
 - `art/units/anim.json` — per-unit animation regions (wing flaps, flames, tails, cloth, wheels, glows)
 - `tools/embed.py` — re-embeds `art/units` (sprites, `meta.json`, `anim.json`) into `index.html` (run from repo root; needs Pillow). Sprites are embedded as lossless WebP
@@ -99,6 +101,23 @@ Row names and blending are set in `SHEETS` in `tools/fx.py`: additive for fire, 
 **Depth**: every effect (hit and death effects, blood and debris, sparks, embers and motes, slashes, muzzle bursts and rings) takes the ground depth of the unit it belongs to when it is created, and is drawn right after that unit. A unit standing in front covers it, and nothing shows through a foreground character. Effects on fliers draw with the fliers. Effects that belong to no unit (projectile trails, faction powers) stay on top (`zItems`, `drawZ`, `zInstall` in `index.html`).
 
 **Size**: hit effects are capped at 34 px (0.75× the target's height), death effects at 54 px, and splash explosions at 1.2× the splash radius. Blood and acid sprays fly about half as far with fewer drops, so splatter stays around the unit.
+
+## Battle maps
+Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art/maps/layers/`: `<map>_sky.png` (opaque), `<map>_mid.png` and `<map>_ground.png` (transparent). All are 720 px tall and loop seamlessly left to right. `python3 tools/maps.py` embeds them in `index.html` as `MAP_LAYERS`: mid and ground lossless (crisp pixels), sky lossy.
+
+- **Drawing**: each layer is scaled to the canvas height with nearest-neighbour scaling, then tiled across the screen with whole-pixel tile edges (no gaps). The order is sky, mid, ground, then the battle.
+- **Parallax**: sky scrolls at 0.15× the camera, mid at 0.45×, ground at 1× (`MAP_PAR`).
+- **Lanes** (`gy` in `MAPS`, world px where 300 = canvas height): unit feet stay between the ground layer's walkable line and the bottom 5% of the screen. That is 83–95% for the desert and 74–95% for the volcano. The bridge uses 74–88%: on the planks below the rope rail, ending at the deck's bottom edge, since below that is open sky.
+- Frozen Spire and Verdant Falls have no layered art yet and keep their old single-image art (`drawLegacyMap`).
+
+## Faction towers
+Each side's Sky Anchor is drawn from `art/towers/src/tower_<faction>.png` (512×512, a 2×2 grid of 256×256 states, base bottom-centre). `python3 tools/towers.py` measures each state's base line and the top of the structure (ignoring the painted smoke), then embeds them in `index.html` as `TOWER_DATA`.
+
+- **State by base HP**: top-left above 66%, top-right 33–66%, bottom-left 1–33%, bottom-right at 0 (destroyed).
+- **Breaking**: when a tower drops to a worse state, three `debris` bursts (`fx_explosions` row 2) play over it, and the tower and screen shake briefly (`towerBreak`).
+- **Drawing**: the enemy tower is mirrored. All towers share one scale (`TOWER_H`, 138 world px for full-height art), so they keep their drawn proportions.
+- **Shots**: the tower's shot starts just below the top of its current state's art (`towerShotY`).
+- **End screen**: shows both towers in their final state, so the loser's is rubble.
 
 ## Match end
 A match lasts 6 minutes. The last minute is overtime (`OVERTIME` in `index.html`): the home-defence bonus is off and bases take double damage. If both bases still have the same HP at the time limit, the side whose front line has pushed further wins, then the side with more kills; only then is it a draw. A campaign win decided this way earns 1 star.
