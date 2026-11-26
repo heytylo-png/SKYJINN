@@ -14,7 +14,8 @@ Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Pai
 - `index.html` — the full game
 - `art/units/` — cut-out unit sprites (`<unit><tier>.png`) + `meta.json` (height, foot anchor)
 - `art/source/` — original art on magenta backgrounds
-- `art/bases/` — base tower art per faction
+- `art/towers/src/` — faction towers, 4 damage states each (`tools/towers.py`)
+- `art/bases/` — the earlier single-image base art (used only if a tower sheet is missing)
 - `art/maps/` — map backgrounds (Desert Ruins, Sky Bridge, Volcanic Wastes)
 - `tools/cut.py` — removes the magenta background and trims a sprite
 - `art/units/anim.json` — per-unit animation regions (wing flaps, flames, tails, cloth, wheels, glows)
@@ -99,6 +100,15 @@ Row names and blending are set in `SHEETS` in `tools/fx.py`: additive for fire, 
 **Depth**: every effect (hit and death effects, blood and debris, sparks, embers and motes, slashes, muzzle bursts and rings) takes the ground depth of the unit it belongs to when it is created, and is drawn right after that unit. A unit standing in front covers it, and nothing shows through a foreground character. Effects on fliers draw with the fliers. Effects that belong to no unit (projectile trails, faction powers) stay on top (`zItems`, `drawZ`, `zInstall` in `index.html`).
 
 **Size**: hit effects are capped at 34 px (0.75× the target's height), death effects at 54 px, and splash explosions at 1.2× the splash radius. Blood and acid sprays fly about half as far with fewer drops, so splatter stays around the unit.
+
+## Faction towers
+Each side's Sky Anchor is drawn from `art/towers/src/tower_<faction>.png` (512×512, a 2×2 grid of 256×256 states, base bottom-centre). `python3 tools/towers.py` measures each state's base line and the top of the structure (ignoring the painted smoke), then embeds them in `index.html` as `TOWER_DATA`.
+
+- **State by base HP**: top-left above 66%, top-right 33–66%, bottom-left 1–33%, bottom-right at 0 (destroyed).
+- **Breaking**: when a tower drops to a worse state, three `debris` bursts (`fx_explosions` row 2) play over it, and the tower and screen shake briefly (`towerBreak`).
+- **Drawing**: the enemy tower is mirrored. All towers share one scale (`TOWER_H`, 138 world px for full-height art), so they keep their drawn proportions.
+- **Shots**: the tower's shot starts just below the top of its current state's art (`towerShotY`).
+- **End screen**: shows both towers in their final state, so the loser's is rubble.
 
 ## Match end
 A match lasts 6 minutes. The last minute is overtime (`OVERTIME` in `index.html`): the home-defence bonus is off and bases take double damage. If both bases still have the same HP at the time limit, the side whose front line has pushed further wins, then the side with more kills; only then is it a draw. A campaign win decided this way earns 1 star.
