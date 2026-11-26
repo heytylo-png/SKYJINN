@@ -115,7 +115,15 @@ Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art
 - **Lanes** (`gy` in `MAPS`, world px where 300 = canvas height): unit feet stay between the ground layer's walkable line and the bottom 5% of the screen. That is 83–95% for the desert and 74–95% for the volcano. The bridge uses 74–88%: on the planks below the rope rail, ending at the deck's bottom edge, since below that is open sky.
 - These three are the only maps. Campaign stages and daily challenges that used the former Frozen Spire and Verdant Falls now use Sky Bridge and Volcanic Wastes.
 
-**Unit size**: the battlefield is 300 world units tall and fills all the height above the unit bar. A normal unit is drawn about 18% of that height (`UNIT_SCALE` 2.37), a champion about 28% (`CHAMP_SCALE` 1.81), and a full tower about 45% (`TOWER_H` 135). This is visual only: hit boxes, ranges and the balance simulator are unchanged.
+**Unit size**: the battlefield is 300 world units tall and fills all the height above the unit bar. Units are drawn at `UNIT_SCALE` 1.54 and champions at `CHAMP_SCALE` 1.27 (35% and 30% smaller than the earlier 2.37 and 1.81). A full tower is about 45% of the battlefield height (`TOWER_H` 135). This is visual only: hit boxes, ranges and the balance simulator are unchanged.
+
+**Team marker** (`teamRing`): sprites are drawn plain, with no team-coloured outline or glow.
+- **Ground units** stand on a thin flat ring in the team colour (player `#3fe0d0`, enemy `#ff7a3a`): about 1.2× the unit's width and 0.3× as tall, 2 px, 70% opacity, with a soft dark shadow inside.
+- **Champions** get a 3 px ring and a small gold diamond at the front.
+- **Flyers** get a smaller ring at 40% opacity on the ground below them.
+- **Health bars** use the team colour. The white hit flash is unchanged.
+
+**Sky**: the sky layer is drawn at least 2× its width, and always wider than the screen, so its moon never appears twice.
 
 **Last wave**: the units each side sent last wave are shown on a small dark strip directly under that side's HP bar, scaled to fit its width, so they never cover a tower.
 
