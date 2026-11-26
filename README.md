@@ -14,6 +14,7 @@ Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Pai
 - `index.html` — the full game
 - `art/units/` — cut-out unit sprites (`<unit><tier>.png`) + `meta.json` (height, foot anchor)
 - `art/source/` — original art on magenta backgrounds
+- `art/ui/` — menu background, logo, faction emblems, wish icons (`tools/ui.py`)
 - `art/projectiles/` — projectile sheets (`tools/projectiles.py`)
 - `art/towers/src/` — faction towers, 4 damage states each (`tools/towers.py`)
 - `art/bases/` — the earlier single-image base art (used only if a tower sheet is missing)
@@ -112,6 +113,13 @@ Desert Ruins, Sky Bridge and Volcanic Wastes are drawn from three layers in `art
 - **Portrait screens**: the battlefield canvas fills everything above the gold/units bar. The view always shows at least `MIN_VIS_W` (380) world units across; the 300-unit-tall world sits at the bottom of the canvas, and the sky's top colour continues upward to fill the rest (nothing is stretched or repeated).
 
 **Unit size** (`UNIT_SCALE` 1.8, `CHAMP_SCALE` 2 in `index.html`): units and champions are drawn this much bigger than their base sprite size. This is visual only: hit boxes, ranges and the balance simulator are unchanged. Towers are sized to about 2.5× a normal unit's drawn height (`TOWER_H`).
+
+## UI art
+`art/ui/` holds the menu art; `python3 tools/ui.py` embeds it as `UI_ART`.
+- **Start menu background**: `title_bg.png`, cover-fit, under a 40% black overlay.
+- **Logo**: `logo.png` replaces the text title. It is at most 80% of the screen width, keeps its aspect ratio, is capped in height so the whole menu fits without scrolling, and floats 3 px up and down.
+- **Faction emblems** (`emblem_<faction>.png`): shown on the faction picker buttons, on the Campaign stage cards (the opponent's emblem), and beside each side's label in the AI vs AI HUD.
+- **Wish buttons**: the Wish button shows `wish_<faction>.png` for the player's faction, and the Shield button shows `wish_shield.png`. Icons are greyed and dim while charging, and turn full colour with a pulse when ready.
 
 ## Projectiles
 Drawn projectiles come from `art/projectiles/proj_<sheet>.png`: four 256×256 sheets, each a 4×4 grid of 64×64 cells. Each row is one projectile with 4 looping frames, all pointing right. `python3 tools/projectiles.py` embeds them as `PROJ_DATA`.
