@@ -1418,6 +1418,7 @@ function attack(u,tgt,isA){
   if(T.proj){const m=dm||MUZ[u.k]||[12,-20],sx=u.x+dir*m[0],sy=u.y+m[1]-(T.air?0:0);
     G.proj.push({side:u.side,k:u.k,dmg:d,x:sx,y:sy,tgt:isA?null:tgt,anchor:isA,tx,ty:isA?ty:bodyY(tgt),sp:T.proj,d0:Math.hypot(tx-sx,ty-sy)||1,lob:T.lob,c:PAL[u.side].glow,f:0,trail:[],src:u,ox:sx,oy:sy});
     if(!G.sim&&!dm){const cs=CAST.has(u.k);G.fx.push({t:'muzzle',x:sx,y:sy,dir,c:cs?fxc(T,u.side):PAL[u.side].glow,s:T.role==='siege'||T.role==='aa'||T.champ?1.6:cs?1.2:1,cast:cs,life:0.12,max:0.12});if(T.lob||T.role==='siege')puff(u.x-dir*6,u.y,4,dustC(),35)}
+    if(LAUNCH_ANG[u.k])bendProj(G.proj[G.proj.length-1],u,dir);
     if(SHELL[u.k])ejectShells(u,m,dir);
     if(T.lob){snd('thump',u.x);puff(sx,sy,3,'#cbb08a',25)}else snd('zap',u.x)}
   else{dealHit(u.side,u.k,d,tgt,isA,tx,ty,u);if(!G.sim&&!dm)slashFx(u,isA?null:tgt,tx,ty)}
@@ -1554,7 +1555,7 @@ function update(dt){
     if(p.tgt&&!p.tgt.dead){p.tx=p.tgt.x;p.ty=bodyY(p.tgt)}
     const dx=p.tx-p.x,dy=p.ty-p.y,d=Math.hypot(dx,dy),st=p.sp*dt;
     if(d<=st){dealHit(p.side,p.k,p.dmg,p.tgt,p.anchor,p.tx,p.lob?(p.tgt?p.tgt.y:p.ty):p.ty,p.src);beamMotes(p,p.tx,p.ty);G.proj.splice(i,1)}
-    else{p.x+=dx/d*st;p.y+=dy/d*st;p.f=Math.min(1,1-d/p.d0);const lift=p.lob?Math.sin(Math.PI*p.f)*60:0;p.trail.push([p.x,p.y-lift]);if(p.trail.length>(p.lob?10:5))p.trail.shift()}}
+    else{p.x+=dx/d*st;p.y+=dy/d*st;p.f=Math.min(1,1-d/p.d0);const lift=p.lob?Math.sin(Math.PI*p.f)*60:0,bo=bendOf(p);p.trail.push([p.x+(p.bn?p.bn[0]*bo:0),p.y-lift+(p.bn?p.bn[1]*bo:0)]);if(p.trail.length>(p.lob?10:5))p.trail.shift()}}
   G.units=G.units.filter(u=>!u.dead);
   for(const c of G.corpses)c.t+=dt;G.corpses=G.corpses.filter(c=>c.t<c.d);
   for(let i=G.fx.length-1;i>=0;i--){const f=G.fx[i];if(f.dl>0){f.dl-=dt;continue}f.life-=dt;if(f.life<=0)G.fx.splice(i,1)}
@@ -1654,12 +1655,16 @@ function drawBattle(t,w,h,dpr){
   ctx.globalAlpha=1;
   for(const p of G.proj){const lift=p.lob?Math.sin(Math.PI*p.f)*60:0,wood=TYPES[p.k].fac==='verdant';
     ctx.strokeStyle=p.c;ctx.globalAlpha=0.45;ctx.lineWidth=p.k==='met'?6:p.lob?3:2;ctx.beginPath();p.trail.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke();ctx.globalAlpha=1;
-    ctx.save();ctx.translate(p.x,p.y-lift);
+    const bo=bendOf(p);ctx.save();ctx.translate(p.x+(p.bn?p.bn[0]*bo:0),p.y-lift+(p.bn?p.bn[1]*bo:0));
     if(wood&&p.lob){ctx.rotate(p.f*10);ctx.fillStyle=WOOD2;ctx.beginPath();ctx.ellipse(0,0,5,4,0,0,7);ctx.fill();ctx.shadowColor=p.c;ctx.shadowBlur=8;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(1.5,-1,1.8,0,7);ctx.fill()}
     else if(TYPES[p.k].acid){ctx.fillStyle=ACID;ctx.shadowColor=ACID;ctx.shadowBlur=8;ctx.beginPath();ctx.arc(0,0,p.lob?4.8:3.2,0,7);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle=p.c;ctx.lineWidth=1;ctx.stroke()}
     else if(p.k==='spn'){ctx.rotate(Math.atan2(p.ty-p.y,p.tx-p.x));ctx.strokeStyle=BONE;ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(-5,0);ctx.lineTo(5,0);ctx.stroke();ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(5,0,1.3,0,7);ctx.fill()}
     else if(p.k==='met'){if(!G.sim&&Math.random()<0.7)emberBurst(p.x,p.y,1,18);ctx.fillStyle=FIRE;ctx.shadowColor=FIRE;ctx.shadowBlur=18;ctx.beginPath();ctx.arc(0,0,7,0,7);ctx.fill();ctx.fillStyle='#ffe2a0';ctx.beginPath();ctx.arc(0,0,3.4,0,7);ctx.fill();if(roomP())G.parts.push({x:p.x,y:p.y,vx:rnd(-10,10),vy:-rnd(5,15),g:0,life:0.4,max:0.4,c:i2c(),s:2.5,a:0.7})}
     else if(TYPES[p.k].fire){if(!G.sim&&Math.random()<0.45)emberBurst(p.x,p.y-lift,1,14);ctx.fillStyle=FIRE;ctx.shadowColor=FIRE;ctx.shadowBlur=10;ctx.beginPath();ctx.arc(0,0,p.lob?5:3.4,0,7);ctx.fill();ctx.fillStyle='#ffe2a0';ctx.beginPath();ctx.arc(0,0,p.lob?2.2:1.4,0,7);ctx.fill()}
+    else if(p.k==='itc'){const lx=p.tx-p.x,ly=p.ty-p.y,L=Math.hypot(lx,ly)||1,k=p.bend?p.bend*Math.PI/p.d0*Math.cos(Math.PI*Math.max(0,p.f)):0;ctx.rotate(Math.atan2(ly/L+p.bn[1]*k,lx/L+p.bn[0]*k));
+      ctx.fillStyle='#e8eef2';ctx.fillRect(-5,-1.3,8,2.6);ctx.fillStyle='#6f7c86';ctx.fillRect(-5,-1.3,2,2.6);ctx.fillStyle=p.c;ctx.beginPath();ctx.moveTo(3,-1.3);ctx.lineTo(6,0);ctx.lineTo(3,1.3);ctx.fill();
+      ctx.globalCompositeOperation='lighter';ctx.fillStyle='#7fd8ff';ctx.shadowColor='#7fd8ff';ctx.shadowBlur=8;ctx.beginPath();ctx.ellipse(-7,0,3,1.6,0,0,7);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-6,0,0.9,0,7);ctx.fill();ctx.globalCompositeOperation='source-over';
+      if(!G.sim&&Math.random()<0.35&&roomP())G.parts.push({x:p.x+(p.bn?p.bn[0]*bo:0),y:p.y+(p.bn?p.bn[1]*bo:0),vx:rnd(-5,5),vy:-rnd(2,8),g:-4,life:0.45,max:0.45,c:'#aab4ba',s:1.6,a:0.4})}
     else if(p.k==='arc'||p.k==='drn'||p.k==='aer'||p.k==='rai'){ctx.rotate(Math.atan2(p.ty-p.y,p.tx-p.x));ctx.strokeStyle=p.c;ctx.shadowColor=p.c;ctx.shadowBlur=8;ctx.lineWidth=p.k==='rai'?3.4:1.8;ctx.beginPath();ctx.moveTo(p.k==='rai'?-14:-8,0);ctx.lineTo(4,0);ctx.stroke();ctx.strokeStyle='#fff';ctx.lineWidth=0.8;ctx.stroke()}
     else if(p.k==='bow'||p.k==='bal'||p.k==='hrp'){ctx.rotate(Math.atan2(p.ty-p.y,p.tx-p.x));ctx.strokeStyle=p.k==='hrp'?METAL:BONEW;ctx.lineWidth=p.k==='bow'?1.3:2;ctx.beginPath();ctx.moveTo(-7,0);ctx.lineTo(5,0);ctx.stroke();ctx.fillStyle=p.c;ctx.shadowColor=p.c;ctx.shadowBlur=6;ctx.beginPath();ctx.moveTo(7,0);ctx.lineTo(3,-2);ctx.lineTo(3,2);ctx.fill()}
     else if(p.k==='cct'){ctx.rotate(p.f*12);ctx.fillStyle=BONEW;ctx.beginPath();ctx.arc(0,0,4,0,7);ctx.fill();ctx.fillStyle='#1c1a16';ctx.fillRect(-2,-1,1.4,1.4);ctx.fillRect(0.6,-1,1.4,1.4);ctx.fillStyle=p.c;ctx.globalAlpha=0.5;ctx.beginPath();ctx.arc(0,0,6,0,7);ctx.fill()}
@@ -2084,6 +2089,13 @@ function drawDecals(){if(!DECIMG||!DECIMG.complete||!G.sdec.length)return;ctx.sa
   for(const d of G.sdec){const [vx,vy,vw,vh]=d.v,s=d.w/vw,k=d.t/DECAL_FADE;ctx.globalAlpha=Math.min(1,d.t/0.12)*0.92*(1-k*k);
     ctx.save();ctx.translate(d.x,d.y);ctx.scale(d.flip,1);ctx.drawImage(DECIMG,vx,vy,vw,vh,-vw*s/2,-vh*s/2,vw*s,vh*s);ctx.restore()}
   ctx.restore()}
+// ---- launch angle: drawn missiles that leave the launcher at an angle fly a curve that starts on that angle and ends on the target.
+// Only the drawing bends (the hit lands at the same time as a straight shot). unit key -> degrees above horizontal per tier
+const LAUNCH_ANG={itc:{1:30,2:30,3:20}};
+function bendProj(p,u,dir){const A=LAUNCH_ANG[u.k],t=sheetOf(u.k,u.tier),deg=A[t?+t.slice(-1):1]||A[1],lx=p.tx-p.x,ly=p.ty-p.y,L=Math.hypot(lx,ly)||1;
+  const ax=dir*Math.cos(deg*Math.PI/180),ay=-Math.sin(deg*Math.PI/180),dl=Math.atan2(lx*ay-ly*ax,lx*ax+ly*ay);
+  p.bend=Math.max(-0.5,Math.min(0.5,Math.tan(Math.max(-1.2,Math.min(1.2,dl)))/Math.PI))*L;p.bn=[-ly/L,lx/L]}
+const bendOf=p=>p.bend?Math.sin(Math.PI*Math.max(0,p.f))*p.bend:0;
 // ---- spent shell casings: gun units throw brass out behind the gun as they fire; it bounces, lies on the ground, then fades ----
 // unit key -> [casings per shot, size 0 small | 1 rifle | 2 cannon]
 const SHELL={grt:[1,0],snp:[1,1],bik:[1,0],gyr:[1,0],flk:[2,1],jtk:[1,2],gbc:[3,0]};
