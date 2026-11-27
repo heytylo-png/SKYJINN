@@ -1106,9 +1106,9 @@ function hurt(side,k,dmg,e,src){
       if(od.acid){for(const f of G.units)if(f.side!==e.side&&!f.dead&&!f.T.air&&Math.hypot(f.x-e.x,(f.y-e.y)*0.6)<=34){f.acidS=Math.min(3,f.acidS+2);f.acidT=3;f.acidSrc=e.side}
         G.fx.push({t:'ring',x:e.x,y:e.y,r:34,life:0.5,max:0.5,c:ACID});acidSplash(e.x,bodyY(e),9)}}}
 }
-const LATE=240,BREACH=40,EARLY=150,EARLY_K=0.5;   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
+const LATE=240,BREACH=40,EARLY=150,EARLY_K=0.5;   // EARLY: fortified bases (half damage) until the armies exist   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
 function hitAnchor(side,k,dmg){const T=TYPES[k];let m=(T&&T.anchorMult)||1;if(T&&T.champ)m*=1.5;const b=1-side;if(shielded(b,BX[b]))m*=0.3;
-  if(G.time>=OVERTIME)m*=2;else if(G.time>=LATE)m*=1.5;else if(G.time<EARLY)m*=EARLY_K;   // early fortification: no knockout rushes before the armies existG.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
+  if(G.time>=OVERTIME)m*=2;else if(G.time>=LATE)m*=1.5;else if(G.time<EARLY)m*=EARLY_K;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
 function dealHit(side,k,dmg,tgt,isA,x,y,src){
   const T=TYPES[k];if(isA)hitAnchor(side,k,dmg);
   if((T.fire||k==='met'&&!wfxOn('meteor_shower'))&&!G.sim)emberBurst(x,y-6,T.lob||k==='met'?10:5,50);
