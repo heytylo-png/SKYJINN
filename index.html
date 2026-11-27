@@ -543,7 +543,7 @@ const WISHES={
  goblin:{icon:'✈',name:'Airstrike',short:'Bomb',tip:'Tap where to call an Airstrike ✈',desc:'Bombers carpet-bomb a wide stretch of the battlefield.'},
  knight:{icon:'✨',name:'Divine Judgment',short:'Smite',tip:'Tap where to call down Judgment ✨',desc:'A pillar of holy light smites enemies, empowers nearby allies and cleanses their acid.'}};
 const GMAX=0.18,GRATE=0.02;
-const FACMOD={djinn:{hp:1.04,dmg:1.019},verdant:{hp:1.066,dmg:1.027},mutant:{hp:1.007,dmg:1.018},knight:{hp:0.999,dmg:0.96},goblin:{hp:0.911,dmg:0.848},undead:{hp:1.267,dmg:1.187},auto:{hp:0.95,dmg:0.96},dragon:{hp:1.276,dmg:1.233},none:{hp:1.0,dmg:1.0}};
+const FACMOD={djinn:{hp:1.04,dmg:1.019},verdant:{hp:1.013,dmg:0.976},mutant:{hp:1.007,dmg:1.018},knight:{hp:0.979,dmg:0.941},goblin:{hp:0.966,dmg:0.899},undead:{hp:1.318,dmg:1.234},auto:{hp:0.921,dmg:0.931},dragon:{hp:1.276,dmg:1.233},none:{hp:1.0,dmg:1.0}};
 const HOME=150,HOME_DMG=0.1,HOME_DEF=0.1,CAP=999,QMAX=80,OVERTIME=300; // last minute: no home-defence bonus, base damage x2
 const homeK=()=>G.time<OVERTIME?1:0;
 const SUP={champion:6,swarm:1,tank:3,ranged:2,diver:2,air:3,aa:2,siege:3,support:2};
@@ -1106,7 +1106,7 @@ function hurt(side,k,dmg,e,src){
       if(od.acid){for(const f of G.units)if(f.side!==e.side&&!f.dead&&!f.T.air&&Math.hypot(f.x-e.x,(f.y-e.y)*0.6)<=34){f.acidS=Math.min(3,f.acidS+2);f.acidT=3;f.acidSrc=e.side}
         G.fx.push({t:'ring',x:e.x,y:e.y,r:34,life:0.5,max:0.5,c:ACID});acidSplash(e.x,bodyY(e),9)}}}
 }
-const LATE=180,LATE_K=[2,3],BREACH=60,EARLY=150,EARLY_K=0.5;   // EARLY: fortified bases (half damage) until the armies exist   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
+const LATE=240,LATE_K=[2,3],BREACH=60,EARLY=150,EARLY_K=0.6,SD_PRESS=1.5;   // EARLY: fortified bases (half damage) until the armies exist   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
 function hitAnchor(side,k,dmg){const T=TYPES[k];let m=(T&&T.anchorMult)||1;if(T&&T.champ)m*=1.5;const b=1-side;if(shielded(b,BX[b]))m*=0.3;
   if(G.time>=OVERTIME)m*=LATE_K[1];else if(G.time>=LATE)m*=LATE_K[0];else if(G.time<EARLY)m*=EARLY_K;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
 function dealHit(side,k,dmg,tgt,isA,x,y,src){
@@ -1310,7 +1310,9 @@ function update(dt){zArm();
     const focus=Math.min(f0,f1)+(Math.abs(f1-f0)<400?Math.abs(f1-f0)/2:120);
     cam.x+=(focus-V.visW/2-cam.x)*Math.min(1,dt*1.5)}
   clampCam();
-  if(G.time>=OVERTIME&&!G.ot){G.ot=1;if(!G.sim){toast('☠ SUDDEN DEATH: base damage ×3, no home defence bonus',1);G.fx.push({t:'screen',c:'#ff5a2a',life:0.6,max:0.6,a:0.25});snd('wave')}}
+  if(G.time>=OVERTIME){const mid=WORLD/2,n=[0,0];for(const u of G.units)if(!u.dead&&!u.T.air){if(u.side===1&&u.x<mid)n[0]++;else if(u.side===0&&u.x>mid)n[1]++}
+    for(const b of [0,1])if(n[b])G.anchor[b]=Math.max(0,G.anchor[b]-n[b]*SD_PRESS*dt*(shielded(b,BX[b])?0.3:1))}   // sudden death: ground held in a base's half wears it down
+  if(G.time>=OVERTIME&&!G.ot){G.ot=1;if(!G.sim){toast('☠ SUDDEN DEATH: base damage ×3 · enemies in your half wear your base down',1);G.fx.push({t:'screen',c:'#ff5a2a',life:0.6,max:0.6,a:0.25});snd('wave')}}
   if(G.anchor[0]<=0||G.anchor[1]<=0||G.time>=MATCH)endGame();
 }
 function clampCam(){cam.x=V.visW>=WORLD?(WORLD-V.visW)/2:Math.max(0,Math.min(WORLD-V.visW,cam.x))}
