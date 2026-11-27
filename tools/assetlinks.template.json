@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.skyjinn.game",
+      "sha256_cert_fingerprints": [
+        "C6:64:20:20:4B:AA:1B:D9:1D:4F:A0:CA:E5:F5:1B:76:40:E8:84:35:FE:63:22:37:25:C5:C9:BF:21:45:D8:64",
+        "REPLACE_WITH_GOOGLE_PLAY_APP_SIGNING_KEY_SHA256"
+      ]
+    }
+  }
+]
