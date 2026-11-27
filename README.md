@@ -14,7 +14,26 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 - `music_desert`, `music_bridge` and `music_volcano` loop in battle on the matching map.
 - `sting_victory` or `sting_defeat` plays once on the end screen, after the battle music stops.
 
-One `<audio>` element plays the music (loop, volume 0.5) and crossfades over 1 s when the track changes. Stings play at 0.7 on their own element. Browsers block autoplay, so music starts on the first tap. The 🎵 toggle is saved to localStorage. Music pauses while the tab is hidden and resumes when it comes back. The service worker pre-caches the tracks for offline play. Sound effects are still procedural (WebAudio).
+One `<audio>` element plays the music (loop, volume 0.5) and crossfades over 1 s when the track changes. Stings play at 0.7 on their own element. Browsers block autoplay, so music starts on the first tap. The 🎵 toggle is saved to localStorage. Music pauses while the tab is hidden and resumes when it comes back. The service worker pre-caches the tracks for offline play. 
+
+**Sound effects.** Sampled SFX from `art/sfx/` (Kenney Impact Sounds, CC0) are embedded as `SFX_DATA` by `tools/sfx.py`. At startup they are decoded into Web Audio buffers. Each play picks a random variant at ±8% playback rate and goes through the SFX gain, so 🔊 mutes them. Per-sound minimum gaps still apply, and off-screen sounds are skipped.
+- Melee unit attacks play a `slash` swing, and the impact lands about 0.09 s later.
+- Tank and champion melee plays `hit_heavy`.
+- Every other hit on a unit sounds like the target's material:
+  - `hit_metal`: Knights, Automatons, Goblin vehicles and armored units.
+  - `hit_flesh`: Mutants, Dragons and other organic units.
+  - `hit_wood`: Verdant and wooden siege.
+  - `hit_bone`: Undead.
+  - `hit_stone`: Magma Golem and Storm Coil.
+  - `hit_light`: swarm units.
+- `base_hit`: anything hitting a tower.
+- `wave_start`: each wave.
+- `buy`: buying a unit or income.
+- `upgrade`: unit tier ups and Forge upgrades.
+- `ui_click`: menu buttons.
+- `ui_nope`: can't afford.
+
+Gun, rocket, zap, bolt, boom, heal, shield, death and acid sounds are still synthesized.
 
 ## Factions (8)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
