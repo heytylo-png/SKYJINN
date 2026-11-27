@@ -1,6 +1,6 @@
 // node simrun.js <reps> <out.json> : every ordered faction pair x 3 maps x {normal,hard}, reps each, 4 pages in parallel
 const {chromium}=require('playwright');const fs=require('fs');
-const D2=(process.env.DIFFS||'normal,hard').split(',');const F=['djinn','verdant','mutant','knight','goblin','undead','auto','dragon'],M=['dunes','bridge','volcano'],D=['normal','hard'];
+const D2=(process.env.DIFFS||'normal,hard').split(',');const F=['djinn','verdant','mutant','knight','goblin','undead','auto','dragon','demon','frost','void'],M=['dunes','bridge','volcano'],D=['normal','hard'];
 const reps=+process.argv[2]||1,outF=process.argv[3]||'simres.json';
 const jobs=[];for(let r=0;r<reps;r++)for(const a of F)for(const b of F)if(a!==b)for(const m of M)for(const d of D2)jobs.push([a,b,m,d]);
 (async()=>{const t0=Date.now();const res=[];let next=0;
