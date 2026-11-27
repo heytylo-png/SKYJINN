@@ -1248,7 +1248,8 @@ function updUnit(u,dt){
   for(let ii=lo;ii<EN.length;ii++){const e=EN[ii];if(e.x>u.x+sight)break;if(e.dead||!canHit(T,e))continue;   // x-sorted foes within sight only
     const d=dist(u,e);if(d>sight)continue;let w=d;if(T.prio&&e.T.tags.some(t=>T.prio.includes(t)))w*=0.4;if(w<bw){bw=w;best=e}}
   // at the enemy gate the base itself is a target: hit it whenever it is closer than the nearest foe
-  if(best&&Math.abs(u.x-eb)<=T.range+34&&Math.abs(u.x-eb)<dist(u,best))best=null;
+  if(best&&Math.abs(u.x-eb)<=T.range+34){const bd=dist(u,best),cr=Math.max(T.range+T.r+best.T.r,(bodyW(u)+bodyW(best))*0.5*0.9+T.range*0.5);
+    if(T.proj||Math.abs(u.x-eb)<bd||bd>cr)best=null}   // ranged / siege fire on the base; melee too unless a foe is in contact
   if(best){
     const d=dist(u,best),reach=Math.max(T.range+T.r+best.T.r,T.air||best.T.air?0:(bodyW(u)+bodyW(best))*0.5*0.9+T.range*0.5);
     if(d<=reach){u.eng=1;if(u.cd<=0)attack(u,best,false)}
