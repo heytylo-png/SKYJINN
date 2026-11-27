@@ -231,6 +231,60 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
 @media (orientation:landscape) and (max-height:420px){#app .win{border-width:14px;border-image-width:14px}#app .ov h2{height:28px;font-size:17px}#app .ov .fac button,#app .stg{border-width:7px!important;border-image-width:7px!important}}
 @media (orientation:landscape) and (max-height:380px){#app .ov h2{height:26px;font-size:16px}#app #logo{height:min(12vh,42px)}#forge .lbl{display:none}#app .stg canvas{width:22px!important;height:21px!important}#app .stg .st{width:12px;height:12px}#app .stg .sn{font-size:11px}#app .win{border-width:12px;border-image-width:12px;gap:3px}#app .sub,#app .ov .fac,#stages,#fgRows,#dlBody{border-width:9px!important;border-image-width:9px!important}
   #app .ov .chips button{--bw:6px;--py:0px;--px:7px;font-size:11px}#app .ov .btns.more button{--bw:7px;--py:1px;font-size:11px}#app .ov .btns.diff button{--bw:8px;--py:1px;font-size:13px}#app .ov .btns.diff #bPlay{--py:2px;font-size:14px}}
+/* ---- polish pass: crowns, locked factions, end stats, world map, briefing, settings sliders, unlocks ---- */
+.cri{width:20px;height:10px;image-rendering:pixelated;vertical-align:middle;display:inline-block;flex:none}
+#app .ov .fac button.lockd,#app .ov .fac button.lockd.on{border-image:var(--k-card_locked) 61 122 122 61 fill/8px 14px 14px 8px!important;border-width:8px 14px 14px 8px!important;filter:none}
+#app .ov .fac button.lockd>*{opacity:.5}
+#app .ov .fac button .fp{display:flex;align-items:center;justify-content:center;gap:2px;font-size:10px;line-height:12px}
+#app .ov .chips button.lk{opacity:.55!important}
+#app #endTw{max-height:15vh}
+#endRow{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+#endStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 14px;min-width:220px}
+#endStats div{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;line-height:17px;border-bottom:1px solid rgba(255,215,122,.2)}
+#app #endStats b{color:#ffd77a!important}
+#mvp{display:flex;align-items:center;gap:6px;border:8px solid transparent;border-image:var(--k-card_selected) 64 fill/8px;image-rendering:pixelated;padding:0 4px;text-align:left}
+#mvp.hide{display:none}
+#app #mvp canvas{width:54px;height:50px;image-rendering:auto;flex:none}
+#mvp div{display:flex;flex-direction:column}
+#app #mvp .mt{font-size:10px;letter-spacing:2px;color:#ffd77a!important}
+#app #mvp .mn{font-size:13px}#app #mvp .md{font-size:11px}
+#app .wmapw{padding:0!important}
+#wmap{position:relative;width:min(92vw,660px);height:min(44vh,230px);background:#1c140c center/cover no-repeat;overflow:hidden;image-rendering:auto}
+#wpath{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#app .node{position:absolute;transform:translate(-50%,-50%);width:64px;padding:0 1px!important;gap:0!important}
+#app .node canvas{width:32px!important;height:30px!important}
+#app .node .sn{font-size:11px;line-height:13px}
+#app .node .st{width:11px;height:11px}
+#app .node.boss::before{content:'';position:absolute;left:50%;top:-18px;transform:translateX(-50%);width:24px;height:12px;background:var(--k-crown) center/100% 100% no-repeat;image-rendering:pixelated}
+#app .node.next{animation:nodeP 1.2s ease-in-out infinite}
+@keyframes nodeP{0%,100%{filter:drop-shadow(0 0 0 rgba(255,215,122,0))}50%{filter:drop-shadow(0 0 6px rgba(255,215,122,.95))}}
+#wmap .wtag{position:absolute;left:8px;top:5px;font-size:11px;letter-spacing:2px;display:flex;align-items:center;gap:4px}
+#wmap .wtag canvas{width:22px;height:21px}
+#app #brBody{flex-direction:row;gap:12px;max-width:min(560px,94vw);padding:2px 8px!important}
+#app #brBody canvas{width:72px;height:68px;flex:none;image-rendering:auto}
+#brBody .bt{display:flex;flex-direction:column;gap:3px;text-align:left}
+#app #brBody .story{font-size:13px;line-height:18px;font-style:italic}
+#app #brBody .bm{font-size:11px;color:#ffd77a!important}
+#brBody .ss{display:flex;gap:2px}
+#app .setg{gap:5px;padding:2px 8px!important;width:min(94vw,460px)}
+.srow{display:flex;align-items:center;gap:10px;width:100%}
+.srow>span:first-child{flex:0 0 150px;white-space:nowrap;text-align:left;display:flex;align-items:center;gap:5px;font-size:13px}
+.sld{position:relative;flex:1;height:20px;min-width:110px}
+.sld .tr{position:absolute;inset:0;border-style:solid;border-color:transparent;border-width:0 18px;border-image:var(--k-bar_progress) 0 79 fill/0 18px;image-rendering:pixelated}
+.sld .fl{position:absolute;left:11px;top:5.5px;height:9px;background:#ffd77a;box-shadow:inset 0 3px rgba(255,255,255,.35)}
+.sld .kn{position:absolute;top:50%;width:10px;height:18px;transform:translate(-50%,-50%);background:#ffe9a8;border:2px solid #140b05;box-shadow:inset -2px -2px #c9973a;pointer-events:none}
+.sld input{position:absolute;left:0;top:-6px;width:100%;height:32px;opacity:0;cursor:pointer;margin:0}
+.srow b{flex:0 0 40px;text-align:right;font-size:12px}
+.srow .chips{flex:1;justify-content:flex-start!important}
+#setNote{min-height:14px}
+#app .tints{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:min(94vw,680px)}
+#app .tints button{display:flex;flex-direction:column;align-items:center;gap:1px;--bw:8px;--py:2px;--px:6px;min-width:76px;font-size:12px}
+#app .tints button canvas{width:40px;height:38px;image-rendering:auto}
+#app .tints button small{display:flex;align-items:center;gap:2px;font-size:10px}
+#coachS{border:8px solid transparent;border-image:var(--k-btn_brass) 64 fill/8px;image-rendering:pixelated;padding:2px 8px;font-weight:800;color:#fff;text-shadow:var(--to);font-size:12px;white-space:nowrap}
+#coachS:active{transform:translateY(2px)}
+#confirm{z-index:9}
+@media (orientation:landscape) and (max-height:420px){#wmap{height:min(40vh,200px)}#app .node{width:56px}#app .node canvas{width:26px!important;height:24px!important}#endStats div{font-size:11px;line-height:15px}#app #mvp canvas{width:44px;height:40px}.srow>span:first-child{flex-basis:140px;font-size:12px}#app .tints button{min-width:64px}#app .tints button canvas{width:30px;height:28px}}
 </style>
 </head>
 <body>
@@ -243,7 +297,7 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
     <button id="bMusic" class="tbtn" aria-label="Music"><img data-k="icon_music" alt=""></button>
     <button id="bFull" class="tbtn" title="Fullscreen" aria-label="Fullscreen"><img data-k="icon_fullscreen" alt=""></button>
     <div id="toast"></div>
-    <div id="coach" class="hide"><div id="coachT"></div><button id="coachB">Next</button></div>
+    <div id="coach" class="hide"><div id="coachT"></div><button id="coachB">Next</button><button id="coachS">Skip</button></div>
   </div>
   <div id="bar">
     <div id="goldBox"><div id="goldL"><img class="ki" data-k="icon_gold" alt=""><div id="gold">0</div></div><button id="bInc"></button></div>
@@ -277,21 +331,21 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
       <button data-d="hard">Hard</button>
       <button id="bPlay" class="teal"><img class="ki" data-k="icon_battle" alt="">PLAY</button>
     </div>
-    <div class="btns more"><button id="bCamp">🏆 Campaign <span id="campStars"></span></button><button id="bTut">🎓 Tutorial</button><button id="bWatch">👁 AI vs AI</button><button id="bDaily">📅 Daily Challenge <span id="dailyTag"></span></button><button id="bForge">⚒ Forge <span id="gemTag"></span></button></div>
+    <div class="btns more"><button id="bCamp">🏆 Campaign <span id="campStars"></span></button><button id="bShop">Unlocks <span id="crownTag"></span></button><button id="bWatch">👁 AI vs AI</button><button id="bDaily">📅 Daily Challenge <span id="dailyTag"></span></button><button id="bForge">⚒ Forge <span id="gemTag"></span></button></div>
   </div>
   <div id="end" class="ov hide">
     <h2 id="endT"></h2>
     <div class="sub"><p id="endS"></p>
     <canvas id="endTw" width="440" height="150" class="hide"></canvas>
     <p id="endStars" class="hide"></p>
+    <div id="endRow"><div id="endStats"></div><div id="mvp" class="hide"><canvas id="mvpC" width="108" height="100"></canvas><div><span class="mt">MVP</span><span class="mn" id="mvpN"></span><span class="md" id="mvpD"></span></div></div></div>
     <p id="endGems" class="hide"></p></div>
-    <div class="btns"><button id="endNext" class="hide teal">Next stage ▶</button><button id="endCamp" class="hide">Campaign</button><button id="again">Play again</button></div>
+    <div class="btns"><button id="endNext" class="hide teal">Next stage ▶</button><button id="rematch">Rematch</button><button id="endCamp">Campaign</button><button id="again">Menu</button></div>
   </div>
   <div id="camp" class="ov hide">
-    <h2>🏆 Campaign</h2>
-    <p class="lbl">CHOOSE YOUR FACTION</p>
+    <h2>🏆 Campaign <span id="campCr"></span></h2>
     <div class="chips" id="cCamp"><button data-c="djinn" class="on">Djinn</button><button data-c="verdant">Verdant</button><button data-c="mutant">Mutants</button><button data-c="knight">Knights</button><button data-c="goblin">Goblins</button><button data-c="undead">Undead</button><button data-c="auto">Automatons</button><button data-c="dragon">Dragons</button></div>
-    <div id="stages"></div>
+    <div class="sub wmapw"><div id="wmap"><svg id="wpath" viewBox="0 0 100 100" preserveAspectRatio="none"></svg><div class="wtag" id="wtag"></div><div id="wnodes"></div></div></div>
     <p id="campNote" class="hint"></p>
     <div class="btns"><button id="campBack">Back</button></div>
   </div>
@@ -308,14 +362,40 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
     <div id="dlBody"></div>
     <div class="btns"><button id="dlGo" class="teal">Fight ▶</button><button id="dlBack">Back</button></div>
   </div>
+  <div id="brief" class="ov hide">
+    <h2 id="brT"></h2>
+    <div class="sub" id="brBody"></div>
+    <div class="btns"><button id="brGo" class="teal">Fight ▶</button><button id="brBack">Back</button></div>
+  </div>
+  <div id="shop" class="ov hide">
+    <h2>Unlocks <span id="shopCr"></span></h2>
+    <p class="lbl">FACTIONS</p>
+    <div class="fac" id="shopFac"></div>
+    <p class="lbl">UNIT TINTS</p>
+    <div class="sub"><div class="tints" id="shopTint"></div></div>
+    <p class="hint" id="shopNote"></p>
+    <div class="btns"><button id="shopBack">Back</button></div>
+  </div>
   <div id="settings" class="ov hide">
     <h2>Settings</h2>
-    <div class="sets"><button id="sSnd"><img class="ki" data-k="icon_sound" alt=""><span></span></button><button id="sMus"><img class="ki" data-k="icon_music" alt=""><span></span></button><button id="sFull"><img class="ki" data-k="icon_fullscreen" alt=""><span></span></button></div>
-    <div class="btns"><button id="setBack">Back</button></div>
+    <div class="sub setg">
+      <div class="srow"><span><img class="ki" data-k="icon_music" alt="">Music</span><div class="sld" id="slMus"><div class="tr"></div><div class="fl"></div><div class="kn"></div><input type="range" min="0" max="100" step="5" aria-label="Music volume"></div><b id="vMus"></b></div>
+      <div class="srow"><span><img class="ki" data-k="icon_sound" alt="">Sound FX</span><div class="sld" id="slSfx"><div class="tr"></div><div class="fl"></div><div class="kn"></div><input type="range" min="0" max="100" step="5" aria-label="Sound effects volume"></div><b id="vSfx"></b></div>
+      <div class="srow"><span><img class="ki" data-k="icon_battle" alt="">Game speed</span><div class="chips" id="cSpeed"><button data-s="1">1×</button><button data-s="1.5">1.5×</button><button data-s="2">2×</button></div></div>
+      <div class="srow"><span>💥 Damage numbers</span><div class="chips" id="cDnum"><button data-v="1">On</button><button data-v="0">Off</button></div></div>
+    </div>
+    <div class="btns more"><button id="sFull"><span></span></button><button id="sTut">🎓 Replay tutorial</button><button id="sReset">⚠ Reset progress</button></div>
+    <p class="hint" id="setNote"></p>
+    <div class="btns"><button id="setBack" class="teal">Back</button></div>
   </div>
   <div id="pause" class="ov hide">
     <h2>Paused</h2>
-    <div class="btns"><button id="resume" class="teal">Resume</button><button id="quit">Quit</button></div>
+    <div class="btns"><button id="resume" class="teal">Resume</button><button id="pSet">Settings</button><button id="quit">Quit</button></div>
+  </div>
+  <div id="confirm" class="ov hide">
+    <h2 id="cfT"></h2>
+    <div class="sub"><p id="cfB"></p></div>
+    <div class="btns"><button id="cfYes" class="teal"></button><button id="cfNo">Cancel</button></div>
   </div>
   <div id="sheet" class="hide">
     <canvas id="shIc" width="128" height="120"></canvas>
@@ -559,6 +639,12 @@ let G=null,V={s:1,w:0,h:0,dpr:1,visW:1200},cam={x:0,idle:0},pickFac='djinn',pick
 const T0=performance.now()/1000;
 const rnd=(a,b)=>a+Math.random()*(b-a);
 
+// ======================= SETTINGS (localStorage) =======================
+const SET={mus:0.5,sfx:0.7,speed:1,dnum:1};
+try{const o=JSON.parse(localStorage.getItem('skyjinn-settings')||'{}');if(o&&typeof o==='object')Object.assign(SET,o)}catch(e){}
+SET.mus=Math.max(0,Math.min(1,+SET.mus||0));SET.sfx=Math.max(0,Math.min(1,+SET.sfx||0));if(![1,1.5,2].includes(+SET.speed))SET.speed=1;SET.speed=+SET.speed;
+function saveSet(){try{localStorage.setItem('skyjinn-settings',JSON.stringify(SET))}catch(e){}}
+
 // ======================= SOUND =======================
 const AU={c:null,muted:false,last:{},noise:null};
 const MINGAP={laser:0.05,explosion:0.12,explosion_big:0.25,shield:0.3,emp:0.3,bolt:0.15,hit_metal:0.045,hit_flesh:0.045,hit_wood:0.045,hit_bone:0.045,hit_stone:0.045,hit_light:0.045,hit_heavy:0.08,slash:0.05,base_hit:0.18,ui_click:0.04,ui_nope:0.1,gun:0.04,rocket:0.15,clang:0.05,splat:0.05,hit:0.045,zap:0.05,die:0.06,boom:0.12,base:0.18,thump:0.1,heal:0.25,wood:0.06};
@@ -566,7 +652,7 @@ function auInit(){
   if(AU.c){AU.c.resume&&AU.c.resume();return}
   try{const C=window.AudioContext||window.webkitAudioContext;AU.c=new C();
     const b=AU.c.createBuffer(1,AU.c.sampleRate,AU.c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;AU.noise=b;
-    AU.out=AU.c.createGain();AU.out.gain.value=0.7;AU.out.connect(AU.c.destination);}catch(e){AU.c=null}
+    AU.out=AU.c.createGain();AU.out.gain.value=SET.sfx;AU.out.connect(AU.c.destination);}catch(e){AU.c=null}
   sfxLoad()}
 // ---- sampled SFX: SFX_DATA[cat] = base64 MP3 variants, decoded once into AudioBuffers ----
 const SFXB={},SFX_VOL={hit_metal:0.45,hit_flesh:0.5,hit_wood:0.5,hit_bone:0.5,hit_stone:0.5,hit_light:0.4,hit_heavy:0.6,slash:0.3,base_hit:0.6,wave_start:0.6,buy:0.5,upgrade:0.6,ui_click:0.45,ui_nope:0.5,zap:0.35,laser:0.3,bolt:0.5,explosion:0.55,explosion_big:0.7,rocket:0.45,shield:0.5,splat:0.45,heal:0.4,emp:0.6};
@@ -587,7 +673,7 @@ function env(g,t,a,peak,dec){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialR
 function tone(type,f0,f1,dur,vol,t){const c=AU.c,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(Math.max(20,f1),t+dur);env(g,t,0.005,vol,dur);o.connect(g);g.connect(AU.out);o.start(t);o.stop(t+dur+0.05)}
 function noise(dur,vol,ftype,freq,t,q){const c=AU.c,s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=AU.noise;f.type=ftype;f.frequency.value=freq;f.Q.value=q||1;env(g,t,0.004,vol,dur);s.connect(f);f.connect(g);g.connect(AU.out);s.start(t,Math.random()*0.5);s.stop(t+dur+0.05)}
 // ---- music: one looping <audio> element, 1 s crossfade between tracks; stings on their own element ----
-const MUS={on:true,want:null,cur:null,el:null,sting:null,fade:null,armed:false,hidden:false,VOL:0.5,SVOL:0.7};
+const MUS={on:true,want:null,cur:null,el:null,sting:null,fade:null,armed:false,hidden:false,VOL:SET.mus,SVOL:Math.min(1,SET.mus*1.4)};
 try{if(localStorage.getItem('skyjinn-music')==='off')MUS.on=false}catch(e){}
 const MUS_SRC=k=>'audio/'+k+'.mp3';
 function musEl(){if(!MUS.el){const a=new Audio();a.loop=true;a.preload='auto';a.volume=0;MUS.el=a}return MUS.el}
@@ -747,12 +833,13 @@ const SHEET_TIER_SCALE={3:1.15}; // units drawn with their own tier-3 sheet are 
 const sheetScale=id=>id?SHEET_TIER_SCALE[+id.slice(-1)]||1:1;
 function loadSheets(){for(const id in SPR_SHEET){const img=new Image();img.onload=()=>{SHEET[id]=img;for(const k in SHEETC)if(k.startsWith(id))delete SHEETC[k]};img.src=SPR_SHEET[id].d}}
 function sheetOf(k,t){for(let x=t||1;x>=1;x--)if(SHEET[k+x])return k+x;return null}
-function sheetCanvas(id,side){const key=id+'|'+side;if(SHEETC[key])return SHEETC[key];if(bakeBudget<=0)return null;
+function sheetCanvas(id,side){const tn=side===0?activeTint():'none',key=id+'|'+side+'|'+tn;if(SHEETC[key])return SHEETC[key];if(bakeBudget<=0)return null;
   {const T1=TYPES[id.slice(0,-1)];if(T1&&FIRE_GLOW[T1.fac]&&!(id in FIREC)){if(bakeBudget<2)return null;bakeBudget--}}bakeBudget--;
   const S=SPR_SHEET[id],img=SHEET[id],F=S.F,T0=TYPES[id.slice(0,-1)],fire=T0&&FIRE_GLOW[T0.fac]?(id in FIREC?FIREC[id]:(FIREC[id]=fireBake(id,S,img,F,FIRE_GLOW[T0.fac]))):null;
   const r=fire?fire.gp:3,cf=F+r*2,cv=document.createElement('canvas');cv.width=cf*Math.max(...S.n);cv.height=cf*4;const c=cv.getContext('2d'); // fire sheets get a wider margin for the halo
   const fc=document.createElement('canvas');fc.width=F;fc.height=F;const fx=fc.getContext('2d');
   for(let row=0;row<4;row++)for(let i=0;i<S.n[row];i++){fx.clearRect(0,0,F,F);fx.drawImage(img,i*F,row*F,F,F,0,0,F,F);glowInto(c,fc,F,F,i*cf+r,row*cf+r,side,3)}
+  if(tn!=='none')tintPx(cv,tn);   // cosmetic tint on the player's units (the glow halo keeps its colour)
   if(fire){c.save();c.globalCompositeOperation='lighter';c.globalAlpha=GLOW_KIND[fire.kind].alpha;c.drawImage(fire.gl,0,0);c.restore()} // bake the fire halo in once: no per-frame blending cost
   return SHEETC[key]={cv,cf,r,F,S,ts:sheetScale(id),fire}}
 // ---- fire glow & embers on drawn sheets (Dragons) ----
@@ -909,6 +996,13 @@ function loadEmb(){if(embLoaded)return;embLoaded=true;for(const f in UI_ART.embl
 // draw a faction emblem into a button's canvas (redrawn once the image has decoded)
 function emblemTo(canvas,f){loadEmb();const im=EMB[f];if(!canvas||!im)return;const go=()=>{const c=canvas.getContext('2d'),w=canvas.width,h=canvas.height,s=Math.min(w,h);
   c.clearRect(0,0,w,h);c.imageSmoothingEnabled=false;c.drawImage(im,(w-s)/2,(h-s)/2,s,s)};if(im.complete&&im.naturalWidth)go();else im.addEventListener('load',go,{once:true})}
+// ---- cosmetic unit tints (bought with crowns): a colour matrix baked into the player's sheets and icons ----
+const hueM=d=>{const a=d*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return [.213+c*.787-s*.213,.715-c*.715-s*.715,.072-c*.072+s*.928,.213-c*.213+s*.143,.715+c*.285+s*.140,.072-c*.072-s*.283,.213-c*.213-s*.787,.715-c*.715+s*.715,.072+c*.928+s*.072]};
+const TINTS=[{id:'none',n:'Original',p:0},{id:'frost',n:'Frost',p:4,m:hueM(180)},{id:'ember',n:'Ember',p:4,m:hueM(-45)},{id:'venom',n:'Venom',p:6,m:hueM(100)},
+  {id:'royal',n:'Royal',p:6,m:hueM(245)},{id:'gilded',n:'Gilded',p:10,m:[.5,.9,.22,.42,.8,.18,.26,.5,.12]},{id:'shadow',n:'Shadow',p:10,m:[.24,.42,.1,.2,.36,.1,.34,.5,.22]}];
+function tintPx(c,id){const T=TINTS.find(t=>t.id===id);if(!T||!T.m||!c.width||!c.height)return;const x=c.getContext('2d'),im=x.getImageData(0,0,c.width,c.height),d=im.data,m=T.m;
+  for(let i=0;i<d.length;i+=4){if(!d[i+3])continue;const r=d[i],g=d[i+1],b=d[i+2];d[i]=m[0]*r+m[1]*g+m[2]*b;d[i+1]=m[3]*r+m[4]*g+m[5]*b;d[i+2]=m[6]*r+m[7]*g+m[8]*b}x.putImageData(im,0,0)}
+function activeTint(){try{return G&&G.spec?'none':(META.tint||'none')}catch(e){return 'none'}}
 // ---- pixel UI kit ----
 const KIMG={};
 const KI=(k,c)=>`<img class="${c||'ki'}" src="${UI_KIT[k].d}" alt="">`;
@@ -927,15 +1021,15 @@ function uiArtInit(){kitInit();loadEmb();const rl=$('rotLogo');if(rl)rl.src=UI_A
 const setWishIcon=f=>{const im=$('bBolt').querySelector('.wi');if(UI_ART.wish[f])im.src=UI_ART.wish[f]};
 // ---- unit icons: frame 1 of the idle row of the unit's sheet for a tier, trimmed to its opaque pixels, built once ----
 const ICONF={};   // sheet id + side -> trimmed canvas
-function iconFrame(k,tier,side){const id=sheetOf(k,tier||1);if(!id||!SHEET[id])return null;const key=id+'|'+side;if(ICONF[key])return ICONF[key];
+function iconFrame(k,tier,side,tn){tn=tn||'none';const id=sheetOf(k,tier||1);if(!id||!SHEET[id])return null;const key=id+'|'+side+'|'+tn;if(ICONF[key])return ICONF[key];
   const S=SPR_SHEET[id],F=S.F,src=document.createElement('canvas');src.width=F;src.height=F;const x=src.getContext('2d',{willReadFrequently:true});
   x.drawImage(SHEET[id],0,0,F,F,0,0,F,F);const d=x.getImageData(0,0,F,F).data;let x0=F,y0=F,x1=-1,y1=-1;
   for(let y=0;y<F;y++)for(let i=0;i<F;i++)if(d[(y*F+i)*4+3]>16){if(i<x0)x0=i;if(i>x1)x1=i;if(y<y0)y0=y;if(y>y1)y1=y}
   if(x1<0)return null;const w=x1-x0+1,h=y1-y0+1,c=document.createElement('canvas');c.width=w;c.height=h;const cx=c.getContext('2d');
   if(side){cx.translate(w,0);cx.scale(-1,1)}cx.drawImage(src,x0,y0,w,h,0,0,w,h);   // the enemy's units face left
-  return ICONF[key]=c}
+  if(tn!=='none')tintPx(c,tn);return ICONF[key]=c}
 // draw a unit's icon into a canvas: centred, scaled to the box height (or narrower if a wide unit would overflow), crisp
-function iconTo(canvas,k,side,tier){const c=canvas.getContext('2d'),w=canvas.width,h=canvas.height,fr=iconFrame(k,tier,side);
+function iconTo(canvas,k,side,tier,tn){const c=canvas.getContext('2d'),w=canvas.width,h=canvas.height,fr=iconFrame(k,tier,side,tn==null?(side===0?activeTint():'none'):tn);
   if(!fr){if(!canvas._iw){canvas._iw=1;setTimeout(()=>{canvas._iw=0;iconTo(canvas,k,side,tier)},150)}return}   // sheet still decoding: retry shortly
   c.clearRect(0,0,w,h);const sc=Math.min(h*0.96/fr.height,w*0.98/fr.width),dw=Math.round(fr.width*sc),dh=Math.round(fr.height*sc);
   c.imageSmoothingEnabled=false;c.drawImage(fr,Math.round((w-dw)/2),Math.round((h-dh)/2),dw,dh)}
@@ -948,12 +1042,12 @@ function newGame(diff,spec,camp,daily){setTimeout(()=>{try{onOrient()}catch(e){}
   const others=Object.keys(FAC).filter(f=>f!==pickFac),ef=camp?camp.st.e:daily?daily.e:pickEnemy||(optEnemy!=='random'?optEnemy:others[Math.floor(Math.random()*others.length)]);
   G={diff,map,fac:[pickFac,ef],time:0,wave:0,waveT:FIRST,gold:camp?[200,200+(camp.st.boss?300:0)]:daily?daily.gold.slice():[optGold,optGold],daily:daily||null,camp:camp||null,egm:camp&&camp.st.egm||1,income:[40,40],incLvl:[0,0],roster:[{},{}],tier:[{},{}],ck:[0,0],
      anchor:[ANCHOR,ANCHOR],bshake:[0,0],tst:[0,0],shk:0,units:[],corpses:[],decals:[],sfx:[],sdec:[],shells:[],souls:[],flowers:[],wfx:[],proj:[],fx:[],parts:[],shields:[],zones:[],
-     wishWaves:2,aw:[0,0],awT:[0,0],tcd:[0,0],queue:[[],[]],sup:[0,0],relT:[0,0],armed:null,over:false,paused:false,lastEnemy:{},lastOwn:{},drops:[],bursts:[],kills:[0,0],spec:!!spec,speed:1};
+     wishWaves:2,aw:[0,0],awT:[0,0],tcd:[0,0],queue:[[],[]],sup:[0,0],relT:[0,0],armed:null,over:false,paused:false,lastEnemy:{},lastOwn:{},drops:[],bursts:[],kills:[0,0],st:{gold:[0,0],bdmg:[0,0]},dmgBy:[{},{}],dnums:[],coins:[],zf:1,spec:!!spec,speed:1};
   G.um=[[1,1],[1,1]];if(daily){G.um=[daily.um.slice(),daily.um.slice()]}
   if(!spec&&!G.sim){const u=upOf(pickFac);G.um[0][0]*=1+0.04*u.hp;G.um[0][1]*=1+0.04*u.dmg;G.gold[0]+=25*u.gold}
   if(camp&&camp.st.boss){const ck=FAC[ef].keys.find(k=>TYPES[k].champ);G.roster[1][ck]=1}
   warmQ=[];for(const s of [0,1])for(const k of keysOf(s))warm(k,1,s);
-  buildCards();setWishIcon(pickFac);aiShop(1);if(spec)aiShop(0);setSpeed(1);cam.x=0;cam.idle=0;
+  buildCards();setWishIcon(pickFac);aiShop(1);if(spec)aiShop(0);setSpeed(spec?1:SET.speed);cam.x=0;cam.idle=0;
   ['start','end','pause'].forEach(i=>$(i).classList.add('hide'));closeSheet();refreshUI();
 }
 const keysOf=s=>FAC[G.fac[s]].keys;
@@ -997,8 +1091,9 @@ function spawn(side){
 function nextWave(){
   G.wave++;spawn(0);spawn(1);if(G.wave===1)tutEvent('wave1');G.lastEnemy={...G.roster[1]};G.lastOwn={...G.roster[0]};
   const im=1+Math.min(1,0.1*G.wave);   // income grows 10% a wave (up to double) so later waves are bigger
-  G.gold[0]+=Math.round(G.income[0]*im);G.gold[1]+=Math.round(G.income[1]*im*(G.spec?1:DIFF[G.diff].gold)*G.egm);
+  const g0=[G.gold[0],G.gold[1]];G.gold[0]+=Math.round(G.income[0]*im);G.gold[1]+=Math.round(G.income[1]*im*(G.spec?1:DIFF[G.diff].gold)*G.egm);
   for(const s of [0,1]){const gap=G.anchor[1-s]-G.anchor[s];if(gap>0)G.gold[s]+=Math.round(Math.min(1,gap/ANCHOR*2)*60)}
+  if(G.st)for(const s of [0,1])G.st.gold[s]+=G.gold[s]-g0[s];
   G.wishWaves++;G.aw[0]++;G.aw[1]++;aiShop(1);if(G.sim||G.spec)aiShop(0);G.waveT=WAVE;snd('wave');
 }
 
@@ -1065,6 +1160,29 @@ function dissolve(u){const y=bodyY(u);gore(u);deathFx(u);
   for(let i=0;i<4;i++)G.parts.push({x:u.x,y,vx:rnd(-20,20),vy:-rnd(20,50),g:0,life:0.5,max:0.5,c:PAL[u.side].glow,s:1.8,a:1,spark:1})}
 function acidSplash(x,y,n){for(let i=0;i<n&&roomP();i++)G.parts.push({x:x+rnd(-4,4),y:y+rnd(-4,4),vx:rnd(-32,32),vy:-rnd(15,55),g:240,life:rnd(0.3,0.6),max:0.6,c:i%3?ACID:'#7fbf2a',s:rnd(1.5,3),a:0.9})}
 function shake(a){G.shk=Math.max(G.shk,a)}
+// ---- juice: hit-stop, floating damage numbers, coin pops, slow motion + zoom on the final base kill ----
+const HITSTOP=0.06,HS_GAP=0.45,DNUM_MIN=40,DNUM_MAX=28,COIN_MAX=24,SLOWMO=0.3,SLOWMO_T=1.5,ZOOM=1.6;
+// the battle holds for 60 ms (real time); at most once per HS_GAP so busy fights don't stutter
+function hitStop(){if(!G||G.sim||G.finale)return;const n=performance.now()/1000;if(n<(G.hsNext||0))return;G.hs=HITSTOP;G.hsNext=n+HITSTOP+HS_GAP}
+function dmgNum(x,y,v,side,big){if(G.sim||!SET.dnum)return;const L=G.dnums;if(L.length>=DNUM_MAX)L.shift();L.push({x:x+rnd(-4,4),y,v:Math.round(v),side,big,t:0})}
+function coinPop(x,y,n){if(G.spec)return;const L=G.coins;if(L.length>=COIN_MAX)L.shift();L.push({x,y,vx:rnd(-12,12),vy:-rnd(60,80),n:Math.max(1,Math.round(n)),t:0})}
+function updJuice(dt){if(!G.dnums)return;for(const d of G.dnums)d.t+=dt;if(G.dnums.length)G.dnums=G.dnums.filter(d=>d.t<0.9);
+  for(const c of G.coins){c.t+=dt;c.vy+=170*dt;c.x+=c.vx*dt;c.y+=c.vy*dt}if(G.coins.length)G.coins=G.coins.filter(c=>c.t<0.85)}
+function drawJuice(){if(!G.dnums||!G.dnums.length&&!G.coins.length)return;ctx.save();ctx.textAlign='center';ctx.lineJoin='round';ctx.strokeStyle='#140b05';
+  for(const d of G.dnums){const a=d.t<0.6?1:1-(d.t-0.6)/0.3,fs=(d.big?13:10)*(d.t<0.1?0.6+d.t*4:1),y=d.y-d.t*22;
+    ctx.globalAlpha=Math.max(0,a);ctx.font=`900 ${fs.toFixed(1)}px system-ui`;ctx.lineWidth=2.4;ctx.fillStyle=d.side?'#ff8a5a':d.big?'#ffe27a':'#ffffff';ctx.strokeText(d.v,d.x,y);ctx.fillText(d.v,d.x,y)}
+  const im=KIMG.icon_gold,ok=im&&im.complete&&im.naturalWidth;ctx.textAlign='left';ctx.font='900 8px system-ui';ctx.lineWidth=2;
+  for(const c of G.coins){ctx.globalAlpha=Math.max(0,c.t<0.55?1:1-(c.t-0.55)/0.3);
+    if(ok){ctx.imageSmoothingEnabled=false;ctx.drawImage(im,c.x-10,c.y-4.5,9,9.3);ctx.imageSmoothingEnabled=true}
+    ctx.fillStyle='#ffd77a';ctx.strokeText('+'+c.n,c.x+1,c.y+3);ctx.fillText('+'+c.n,c.x+1,c.y+3)}
+  ctx.restore()}
+// a base falls: 1.5 s of 0.3x slow motion while the camera zooms in on it, then the end screen
+function startFinale(b){G.finale={t:SLOWMO_T,b};G.zx=BX[b];G.zy=BASEY()-55;G.hs=0;shake(6);snd('explosion_big',BX[b]);
+  for(let i=0;i<4;i++)sfx('debris',BX[b]+rnd(-26,26),BASEY()-rnd(20,90),rnd(50,70),Math.random()<0.5,i*0.1);
+  G.fx.push({t:'screen',c:'#fff',life:0.25,max:0.25,a:0.45})}
+// render-time zoom: scale the view around the falling base and ease it toward the middle of the screen
+function zoomIn(){if(!G||!(G.zf>1.001))return null;const keep=[V,cam.x],Z=G.zf,s0=V.s,fx=G.zx,fy=G.zy,sx0=(fx-cam.x)*s0,sy0=fy*s0+V.oy,k=Math.min(1,(Z-1)/(ZOOM-1)),
+  tx=sx0+(V.w*(fx<WORLD/2?0.32:0.68)-sx0)*k,ty=sy0+(V.h*0.52-sy0)*k,s1=s0*Z;V={...V,s:s1,visW:V.w/s1,oy:ty-fy*s1};cam.x=fx-tx/s1;return keep}
 
 // ======================= combat =======================
 const dist=(a,b)=>Math.hypot(a.x-b.x,(a.y-b.y)*0.6);
@@ -1088,7 +1206,10 @@ function hurt(side,k,dmg,e,src){
   if(e.T.fac==='knight'){if(!e.moving)m*=0.85;m*=1-0.05*Math.min(3,e.form)}
   if(e.T.fac==='dragon'&&T.proj&&k!=='zone')m*=0.85;
   let dd=dmg*m;if(e.shMax>0){if(e.sh>0){const ab=Math.min(e.sh,dd);e.sh-=ab;dd-=ab;e.shHit=0.15;if(!G.sim)snd('shield',e.x)}e.shT=3}
-  e.hp-=dd;
+  const hp0=e.hp;e.hp-=dd;
+  if(!G.sim&&dd>0){const ak=src?src.k:k;if(TYPES[ak]&&TYPES[ak].fac!=='none'){const D=G.dmgBy[side];D[ak]=(D[ak]||0)+Math.min(dd,Math.max(0,hp0))}
+    if(dd>DNUM_MIN)dmgNum(e.x,e.y-htOf(e)-4,dd,side,!!(src&&src.T.champ));
+    if(src&&src.T.champ&&k!=='burn'&&k!=='acid')hitStop()}
   if(src&&src.T.leech&&!src.dead)src.hp=Math.min(src.max,src.hp+dd*src.T.leech);
   if(T.fire&&k!=='burn'&&!e.dead){e.burnT=2;e.burnSrc=side}
   if(k!=='acid'&&k!=='zone'&&k!=='burn'){e.flash=0.1;if(Math.random()<0.6)sparks(e.x,bodyY(e),3,T.acid?ACID:PAL[side].glow);
@@ -1097,7 +1218,7 @@ function hurt(side,k,dmg,e,src){
   if(e.hp<=0&&!e.dead&&e.T.undying&&!e.revived){e.revived=1;e.hp=e.max*0.4;e.burnT=0;e.acidS=0;G.fx.push({t:'ring',x:e.x,y:bodyY(e),r:22,life:0.6,max:0.6,c:GHOST});for(let i=0;i<10&&roomP();i++)G.parts.push({x:e.x+rnd(-8,8),y:bodyY(e)+rnd(-8,8),vx:rnd(-10,10),vy:-rnd(20,50),g:-10,life:0.8,max:0.8,c:GHOST,s:2,a:0.8});snd('shield',e.x);return}
   if(e.hp<=0&&!e.dead&&G.fac[side]==='undead'&&!e.T.champ&&k!=='zone'&&G.units.length<220&&(G.units.some(n=>n.side===side&&!n.dead&&n.T.raise&&Math.abs(n.x-e.x)<=110)||Math.random()<0.25)){
     const sk=mkUnit(side,'skl');sk.x=e.x;sk.y=Math.max(GY[0],Math.min(GY[1],e.y));sk.cd=0.6;G.units.push(sk);G.fx.push({t:'ring',x:e.x,y:sk.y,r:12,life:0.5,max:0.5,c:GHOST})}
-  if(e.hp<=0&&!e.dead){e.dead=true;G.kills[side]++;G.gold[side]+=Math.max(1,Math.round(e.T.cost/e.T.spawn*0.1))*(T.fac==='goblin'?1.5:1);dissolve(e);snd(e.T.champ?'explosion_big':matOf(e)==='machine'?'explosion':'die',e.x);
+  if(e.hp<=0&&!e.dead){e.dead=true;G.kills[side]++;{const gb=Math.max(1,Math.round(e.T.cost/e.T.spawn*0.1))*(T.fac==='goblin'?1.5:1);G.gold[side]+=gb;if(!G.sim){G.st.gold[side]+=gb;if(side===0)coinPop(e.x,bodyY(e),gb)}}dissolve(e);snd(e.T.champ?'explosion_big':matOf(e)==='machine'?'explosion':'die',e.x);
     if(e.mom)e.mom.kids=Math.max(0,e.mom.kids-1);
     if(src&&src.T.champ&&!src.dead)champKill(side,src);
     if(src&&src.T.evo&&!src.dead&&src.ev<3){src.ev++;const inc=src.base*0.12;src.max+=inc;src.hp=Math.min(src.max,src.hp+inc);src.dmg*=1.12;
@@ -1108,7 +1229,9 @@ function hurt(side,k,dmg,e,src){
 }
 const LATE=240,LATE_K=[2,3],BREACH=60,EARLY=150,EARLY_K=0.6,SD_PRESS=1.5;   // EARLY: fortified bases (half damage) until the armies exist   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
 function hitAnchor(side,k,dmg){const T=TYPES[k];let m=(T&&T.anchorMult)||1;if(T&&T.champ)m*=1.5;const b=1-side;if(shielded(b,BX[b]))m*=0.3;
-  if(G.time>=OVERTIME)m*=LATE_K[1];else if(G.time>=LATE)m*=LATE_K[0];else if(G.time<EARLY)m*=EARLY_K;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
+  if(G.time>=OVERTIME)m*=LATE_K[1];else if(G.time>=LATE)m*=LATE_K[0];else if(G.time<EARLY)m*=EARLY_K;if(G.finale)return;const dd=dmg*m,hp0=G.anchor[b];G.anchor[b]=Math.max(0,hp0-dd);G.bshake[b]=0.18;
+  if(!G.sim){const real=hp0-G.anchor[b];G.st.bdmg[side]+=real;if(TYPES[k]&&TYPES[k].fac!=='none'){const D=G.dmgBy[side];D[k]=(D[k]||0)+real}if(dd>DNUM_MIN)dmgNum(BX[b]+rnd(-14,14),BASEY()-70,dd,side,1);if(dd>=25)hitStop()}
+  sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
 function dealHit(side,k,dmg,tgt,isA,x,y,src){
   const T=TYPES[k];if(isA)hitAnchor(side,k,dmg);
   if((T.fire||k==='met'&&!wfxOn('meteor_shower'))&&!G.sim)emberBurst(x,y-6,T.lob||k==='met'?10:5,50);
@@ -1311,9 +1434,9 @@ function update(dt){zArm();
     cam.x+=(focus-V.visW/2-cam.x)*Math.min(1,dt*1.5)}
   clampCam();
   if(G.time>=OVERTIME){const mid=WORLD/2,n=[0,0];for(const u of G.units)if(!u.dead&&!u.T.air){if(u.side===1&&u.x<mid)n[0]++;else if(u.side===0&&u.x>mid)n[1]++}
-    for(const b of [0,1])if(n[b])G.anchor[b]=Math.max(0,G.anchor[b]-n[b]*SD_PRESS*dt*(shielded(b,BX[b])?0.3:1))}   // sudden death: ground held in a base's half wears it down
+    if(!G.finale)for(const b of [0,1])if(n[b])G.anchor[b]=Math.max(0,G.anchor[b]-n[b]*SD_PRESS*dt*(shielded(b,BX[b])?0.3:1))}   // sudden death: ground held in a base's half wears it down
   if(G.time>=OVERTIME&&!G.ot){G.ot=1;if(!G.sim){toast('☠ SUDDEN DEATH: base damage ×3 · enemies in your half wear your base down',1);G.fx.push({t:'screen',c:'#ff5a2a',life:0.6,max:0.6,a:0.25});snd('wave')}}
-  if(G.anchor[0]<=0||G.anchor[1]<=0||G.time>=MATCH)endGame();
+  if(!G.finale){if(G.anchor[0]<=0||G.anchor[1]<=0){if(G.sim)endGame();else startFinale(G.anchor[0]<=0?0:1)}else if(G.time>=MATCH)endGame()}
 }
 function clampCam(){cam.x=V.visW>=WORLD?(WORLD-V.visW)/2:Math.max(0,Math.min(WORLD-V.visW,cam.x))}
 // who won: base HP first; if the bases are level, the side that pushed its front line further, then kills
@@ -1329,21 +1452,28 @@ function endGame(){
   G.over=true;G.res=result();if(G.sim)return;closeSheet();const a=G.anchor,R=G.res;musSting(!G.spec&&R.win===0||G.spec&&R.win>=0);let t=R.win<0?'Draw':R.win===0?'Victory!':'Defeat';
   if(G.spec){t=R.win<0?'Draw':`Winner: ${FAC[G.fac[R.win]].name}`;snd('win')}else snd(t==='Victory!'?'win':'lose');
   $('endT').textContent=t;$('endT').style.color=G.spec?'#ffd77a':t==='Victory!'?'#7ef0c8':t==='Defeat'?'#ff8a6a':'#ffd77a';
-  $('endS').innerHTML=`${FAC[G.fac[0]].name} vs ${FAC[G.fac[1]].name} · ${G.spec?'AI vs AI':G.diff}<br>Waves: ${G.wave} · ${G.spec?FAC[G.fac[0]].name:'Your'} Anchor ${Math.ceil(a[0])} · ${G.spec?FAC[G.fac[1]].name:'Enemy'} Anchor ${Math.ceil(a[1])}<br>${G.spec?FAC[G.fac[0]].name+' kills':'Destroyed'} ${G.kills[0]} · ${G.spec?FAC[G.fac[1]].name+' kills':'Lost'} ${G.kills[1]}`+(R.why==='ground'?'<br>Bases level: won on ground taken':R.why==='kills'?'<br>Bases level and front lines even: won on kills':'');
+  $('endS').innerHTML=`${FAC[G.fac[0]].name} vs ${FAC[G.fac[1]].name} · ${G.spec?'AI vs AI':G.diff} · ${G.wave} waves · ${Math.floor(G.time/60)}:${String(Math.floor(G.time%60)).padStart(2,'0')}`+(R.why==='ground'?'<br>Bases level: won on ground taken':R.why==='kills'?'<br>Bases level and front lines even: won on kills':'');
+  endStats(R);
   if(G.daily)$('endS').innerHTML=`📅 Daily: ${G.daily.mod.n}<br>`+$('endS').innerHTML;
   drawEndTowers();
-  $('endStars').classList.add('hide');$('endNext').classList.add('hide');$('endCamp').classList.toggle('hide',!G.camp);
+  $('endStars').classList.add('hide');$('endNext').classList.add('hide');
   if(G.camp){const c=G.camp,P=progOf(c.fac),win=t==='Victory!';
     $('endS').innerHTML=`Stage ${c.i+1}: ${c.st.name} · vs ${FAC[c.st.e].name}<br>`+$('endS').innerHTML;
     if(win){const r=a[0]/ANCHOR,st=R.why==='ground'||R.why==='kills'?1:r>=0.75?3:r>=0.4?2:1;c.newStars=Math.max(0,st-(P.stars[c.i]||0));P.stars[c.i]=Math.max(P.stars[c.i]||0,st);P.cleared=Math.max(P.cleared,c.i+1);saveProg();updCampBtn();
       $('endStars').innerHTML=starsHTML(st);$('endStars').classList.remove('hide');if(c.i<5)$('endNext').classList.remove('hide')}}
-  $('endGems').classList.add('hide');$('again').classList.toggle('teal',$('endNext').classList.contains('hide'));
+  $('endGems').classList.add('hide');$('rematch').classList.toggle('teal',$('endNext').classList.contains('hide'));
   if(!G.spec&&!TUT){const win=t==='Victory!';let g=win?10:3,why=[];
     if(G.camp&&win){const ns=Math.max(0,(G.camp.newStars||0));if(ns){g+=5*ns;why.push('new ★')}}
     if(G.daily&&win&&META.daily!==G.daily.id){META.daily=G.daily.id;g+=30*(G.daily.gm||1);why.push('daily')}
     META.gems+=g;saveMeta();$('endGems').textContent=`+${g} 💎${why.length?' ('+why.join(', ')+')':''} · total ${META.gems}`;$('endGems').classList.remove('hide')}
   $('end').classList.remove('hide');
 }
+
+// end-screen stats: kills, units lost, gold earned, damage to base, and the MVP (the unit type that dealt the most damage)
+function endStats(R){const me=G.spec?(R.win>=0?R.win:0):0,fo=1-me,nm=G.spec?FAC[G.fac[me]].name+' ':'',row=(l,v)=>`<div><span>${l}</span><b>${v}</b></div>`;
+  $('endStats').innerHTML=row(nm+'Kills',G.kills[me])+row(G.spec?nm+'lost':'Units lost',G.kills[fo])+row('Gold earned',Math.round(G.st.gold[me]).toLocaleString())+row('Damage to base',Math.round(G.st.bdmg[me]).toLocaleString());
+  const D=G.dmgBy[me];let bk=null,bv=0;for(const k in D)if(D[k]>bv){bv=D[k];bk=k}
+  $('mvp').classList.toggle('hide',!bk);if(bk){iconTo($('mvpC'),bk,me,tierOf(me,bk));$('mvpN').textContent=(TYPES[bk].champ?'👑 ':'')+TYPES[bk].name;$('mvpD').textContent=`${Math.round(bv).toLocaleString()} damage`}}
 
 // ======================= render =======================
 const STREAKS=[];for(let i=0;i<34;i++)STREAKS.push({x:Math.random(),y:Math.random(),v:rnd(0.15,0.45),l:rnd(10,30)});
@@ -1357,7 +1487,8 @@ function resize(){
   V={s,oy,w:r.width,h:r.height,dpr,visW:r.width/s,mini:V.mini};clampCam();
   const mb=$('bFull');if(mb){const b=mb.getBoundingClientRect();if(b.width)HUD_BTNS=Math.round(b.right-r.left+8)}
 }
-function draw(now){
+function draw(now){const zk=zoomIn();try{drawFrame(now)}finally{if(zk){V=zk[0];cam.x=zk[1]}}}
+function drawFrame(now){
   const {s,w,h,dpr}=V,t=now/1000-T0;bakeBudget=2;
   if(LAB){drawLab(t);return}
   warmStep();
@@ -1415,7 +1546,7 @@ function drawBattle(t,w,h,dpr){
     else if(p.k==='vin'){ctx.rotate(Math.atan2(p.ty-p.y,p.tx-p.x));ctx.fillStyle=MOSS;ctx.beginPath();ctx.moveTo(5,0);ctx.lineTo(-4,-2);ctx.lineTo(-4,2);ctx.closePath();ctx.fill()}
     else{ctx.fillStyle=p.c;ctx.shadowColor=p.c;ctx.shadowBlur=8;ctx.beginPath();ctx.arc(0,0,p.lob?4.5:(p.k==='sap'?3.4:2.8),0,7);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,0,p.lob?1.8:1.1,0,7);ctx.fill()}
     ctx.restore()}
-  drawWeather(G.map,t);
+  drawJuice();drawWeather(G.map,t);
   for(const f of G.fx)if(f.t==='screen'&&!(f.dl>0)){ctx.save();ctx.setTransform(dpr,0,0,dpr,0,0);ctx.globalAlpha=(f.fade?Math.min(1,f.life/f.fade):f.life/f.max)*f.a;ctx.fillStyle=f.c;ctx.fillRect(0,0,w,h);ctx.restore()}
   if(G.armed){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='rgba(0,0,0,0.1)';ctx.fillRect(0,0,w,h);
     const wx=AIM.x!=null?cam.x+AIM.x/V.s:cam.x+V.visW/2,R=G.armed==='bolt'?(WISH_R[G.fac[0]]||90):80,cxs=(wx-cam.x)*V.s,cys=((GY[0]+GY[1])/2)*V.s+V.oy,rx=R*V.s,ry=rx*0.32,c=G.armed==='bolt'?'#ffe9a8':'#8ff3ea';
@@ -2083,7 +2214,7 @@ function drawLab(t){const {w,h,dpr}=V;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fill
     if(st==='die'){const sd=sheetOf(k,tier)?1.4:T.air?0.7:0.55;drawCorpse({u,t:Math.min(sd,(LAB.s?t%(sd+0.6):ts-6.2)),d:sd},t)}else drawUnit(u,t);
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle='#cdbfae';ctx.font='10px system-ui';ctx.textAlign='center';ctx.fillText(k+' · '+st,((i%cols)+0.5)*cw,(Math.floor(i/cols)+0.96)*ch)})}
 const hudIcons={};
-function hudIcon(k,s){const t=G&&G.tier?tierOf(s,k):1,id=k+s+t;if(!hudIcons[id]){const c=document.createElement('canvas');c.width=c.height=56;iconTo(c,k,s,t);hudIcons[id]=c}return hudIcons[id]}
+function hudIcon(k,s){const t=G&&G.tier?tierOf(s,k):1,id=k+s+t+(s?'':activeTint());if(!hudIcons[id]){const c=document.createElement('canvas');c.width=c.height=56;iconTo(c,k,s,t);hudIcons[id]=c}return hudIcons[id]}
 let HUD_BTNS=126;   // x where the left HP column starts: just right of the pause/sound/music buttons (measured on resize)
 function drawHUD(t){
   const {w,h,dpr}=V;ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -2191,8 +2322,8 @@ function fillSheet(){const k=sheetK,T=TYPES[k],t=tierOf(0,k);
   const b=$('shUp');if(T.champ){$('shM').textContent=`${T.cost} gold · one per army · respawns next wave if it falls · ascends at 8 &amp; 20 kills · ${G.roster[0][k]?'in your army':'not recruited'}`;b.textContent='No upgrades';b.disabled=true}else if(t>=3){b.textContent='Max tier';b.disabled=true}else{b.textContent=`⬆ Upgrade · ${upCost(0,k)}g`;b.disabled=G.gold[0]<upCost(0,k)}}
 function closeSheet(){const was=sheetK;sheetK=null;for(const c in cards)cards[c].classList.remove('sel');$('sheet').classList.add('hide');if(was)tutEvent('sheetclose')}
 $('shX').onclick=closeSheet;
-$('shUp').onclick=()=>{if(upgrade(0,sheetK)){toast(`${TYPES[sheetK].name} → Tier ${tierOf(0,sheetK)} (+30%)`);snd('upgrade');fillSheet();refreshUI()}else snd('nope')};
-$('bInc').onclick=()=>{if(!G||G.over)return;if(buyIncome(0)){toast('+10 gold every wave');snd('buy')}else snd('nope');refreshUI()};
+$('shUp').onclick=()=>{if(upgrade(0,sheetK)){toast(`${TYPES[sheetK].name} → Tier ${tierOf(0,sheetK)} (+30%)`);snd('upgrade');fillSheet();refreshUI();tutEvent('upgrade')}else snd('nope')};
+$('bInc').onclick=()=>{if(!G||G.over)return;if(buyIncome(0)){toast('+10 gold every wave');snd('buy');tutEvent('inc')}else snd('nope');refreshUI()};
 function arm(kind){if(!G||G.over)return;if(G.armed===kind)G.armed=null;else if(G.wishWaves>=WISH_WAVES){G.armed=kind;const W=WISHES[G.fac[0]];G.tips=G.tips||{};if(!G.tips[kind]&&(G.tips[kind]=1))toast(kind==='bolt'?`${W.icon} ${W.name}: ${W.desc}`:'🛡 Shield Dome: allies inside take 70% less damage for 6s')}refreshUI()}
 $('bBolt').onclick=()=>arm('bolt');$('bShield').onclick=()=>arm('shield');
 // ---- fullscreen + landscape lock (unsupported on iOS Safari: just carry on) ----
@@ -2203,13 +2334,25 @@ function exitFull(){try{const ex=document.exitFullscreen||document.webkitExitFul
 let fullTried=false;   // the first tap on any start-menu button goes fullscreen
 document.getElementById('start').addEventListener('click',e=>{if(!fullTried&&e.target.closest('button')){fullTried=true;goFull()}},true);
 $('bFull').onclick=()=>{document.fullscreenElement?exitFull():goFull()};
-// settings window (start menu): the same toggles as the in-battle icons
-function setsSync(){$('sSnd').classList.toggle('off',!!AU.muted);$('sSnd').querySelector('span').textContent='Sound '+(AU.muted?'off':'on');
-  $('sMus').classList.toggle('off',!MUS.on);$('sMus').querySelector('span').textContent='Music '+(MUS.on?'on':'off');
-  $('sFull').classList.toggle('off',!document.fullscreenElement);$('sFull').querySelector('span').textContent='Fullscreen '+(document.fullscreenElement?'on':'off')}
-$('bSet').onclick=()=>{$('start').classList.add('hide');$('settings').classList.remove('hide');setsSync()};
-$('setBack').onclick=()=>{$('settings').classList.add('hide');$('start').classList.remove('hide')};
-$('sSnd').onclick=()=>$('bMute').click();$('sMus').onclick=()=>{$('bMusic').click();setsSync()};$('sFull').onclick=async()=>{document.fullscreenElement?exitFull():await goFull();setTimeout(setsSync,250)};
+// settings window (start menu or pause): volume sliders, game speed, damage numbers, fullscreen, tutorial, reset
+let setFrom='start';
+function sldSync(id,v){const el=$(id);el.querySelector('input').value=Math.round(v*100);el.querySelector('.fl').style.width=`calc((100% - 22px) * ${v})`;el.querySelector('.kn').style.left=`calc(11px + (100% - 22px) * ${v})`}
+function setsSync(){sldSync('slMus',SET.mus);sldSync('slSfx',SET.sfx);$('vMus').textContent=Math.round(SET.mus*100)+'%';$('vSfx').textContent=Math.round(SET.sfx*100)+'%';
+  document.querySelectorAll('#cSpeed button').forEach(b=>b.classList.toggle('on',+b.dataset.s===SET.speed));
+  document.querySelectorAll('#cDnum button').forEach(b=>b.classList.toggle('on',+b.dataset.v===(SET.dnum?1:0)));
+  $('sFull').querySelector('span').textContent='⛶ Fullscreen '+(document.fullscreenElement?'on':'off');
+  const inB=setFrom==='pause';$('sTut').classList.toggle('hide',inB);$('sReset').classList.toggle('hide',inB)}
+function openSettings(from){setFrom=from;$(from).classList.add('hide');$('settings').classList.remove('hide');$('setNote').textContent='';setsSync()}
+$('bSet').onclick=()=>openSettings('start');$('pSet').onclick=()=>openSettings('pause');
+$('setBack').onclick=()=>{$('settings').classList.add('hide');$(setFrom).classList.remove('hide')};
+$('slMus').querySelector('input').oninput=e=>{SET.mus=e.target.value/100;MUS.VOL=SET.mus;MUS.SVOL=Math.min(1,SET.mus*1.4);if(MUS.el&&!MUS.fade&&MUS.cur)MUS.el.volume=MUS.VOL;if(MUS.sting)MUS.sting.volume=MUS.SVOL;saveSet();setsSync()};
+$('slSfx').querySelector('input').oninput=e=>{SET.sfx=e.target.value/100;if(AU.out)AU.out.gain.value=SET.sfx;saveSet();setsSync()};
+$('slSfx').querySelector('input').onchange=()=>snd('buy');
+document.querySelectorAll('#cSpeed button').forEach(b=>b.onclick=()=>{SET.speed=+b.dataset.s;saveSet();if(G&&!G.spec)G.speed=SET.speed;setsSync()});
+document.querySelectorAll('#cDnum button').forEach(b=>b.onclick=()=>{SET.dnum=+b.dataset.v;saveSet();setsSync()});
+$('sFull').onclick=async()=>{document.fullscreenElement?exitFull():await goFull();setTimeout(setsSync,250)};
+$('sTut').onclick=()=>{$('settings').classList.add('hide');startTutorial()};
+$('sReset').onclick=()=>ask('Reset progress?','Campaign stars, crowns, unlocked factions and tints, gems and Forge upgrades will all be lost. Settings are kept.','Reset',resetProgress);
 document.addEventListener('fullscreenchange',()=>{$('bFull').classList.toggle('on',!!document.fullscreenElement);setTimeout(resize,50);setsSync()});
 // portrait: pause behind the rotate prompt; resume when turned back (unless the player had paused)
 const PORT=window.matchMedia('(orientation:portrait)');
@@ -2232,7 +2375,7 @@ document.querySelectorAll('#cGold button').forEach(b=>b.onclick=()=>{optGold=+b.
 let selDiff='normal';try{const d=localStorage.getItem('skyjinn-diff');if(d==='easy'||d==='normal'||d==='hard')selDiff=d}catch(e){}
 document.querySelectorAll('#start [data-d]').forEach(b=>{b.classList.toggle('on',b.dataset.d===selDiff);
   b.onclick=()=>{selDiff=b.dataset.d;try{localStorage.setItem('skyjinn-diff',selDiff)}catch(e){}document.querySelectorAll('#start [data-d]').forEach(x=>x.classList.toggle('on',x===b))}});
-$('bPlay').onclick=()=>newGame(selDiff);
+$('bPlay').onclick=()=>{if(!tutSeen()){startTutorial();return}newGame(selDiff)};
 $('bWatch').onclick=()=>newGame('hard',true);
 function setSpeed(n){if(G)G.speed=n;document.querySelectorAll('#spec [data-sp]').forEach(b=>b.classList.toggle('on',+b.dataset.sp===n))}
 document.querySelectorAll('#spec [data-sp]').forEach(b=>b.onclick=()=>setSpeed(+b.dataset.sp));
@@ -2240,8 +2383,8 @@ $('bEnd').onclick=()=>{G=null;$('app').classList.remove('spectate');$('start').c
 const FICON={djinn:'war',verdant:'irb',mutant:'blt',knight:'pal',goblin:'jtk',undead:'gkn',auto:'sen',dragon:'dgd'};
 const FDESC={djinn:'Djinn — fast spirit warriors that dodge attacks',verdant:'Verdant — slow nature-tech that grows stronger',mutant:'Mutants — high attack, acid, evolve, spawn minions',knight:'Magic Knights — high defense, team buffs, holy rage',goblin:'Goblins — modern firepower, suppression, scrap salvage',undead:'Undead — raise the fallen, rise again, drain life',auto:'Automatons — energy shields, overclock, stun',dragon:'Dragons — fire that burns, scaled hide, flying champion'};
 const setDesc=()=>{$('facDesc').textContent=FDESC[pickFac]};setTimeout(setDesc,0);
-document.querySelectorAll('.fac button').forEach(b=>{emblemTo(b.querySelector('canvas'),b.dataset.f);
-  b.onclick=()=>{pickFac=b.dataset.f;setDesc();document.querySelectorAll('.fac button').forEach(x=>x.classList.toggle('on',x===b))}});
+document.querySelectorAll('#start .fac button').forEach(b=>{emblemTo(b.querySelector('canvas'),b.dataset.f);
+  b.onclick=()=>{const f=b.dataset.f;if(!facOpen(f)){offerUnlock(f);return}pickFac=f;setDesc();document.querySelectorAll('#start .fac button').forEach(x=>x.classList.toggle('on',x===b))}});
 // ---- campaign ----
 const STAGE_NAMES=['First Contact','Border Skirmish','Rising Threat','The Counterattack','Siege of the Sky',"Champion's Gauntlet"];
 function stagesOf(f){const o=Object.keys(FAC).filter(x=>x!==f);
@@ -2258,7 +2401,7 @@ async function initStore(){
     STORE=ref;if(snap&&snap.exists){const d=JSON.parse(JSON.stringify(snap.data()||{}));for(const f in d){const a=progOf(f),b=d[f];a.cleared=Math.max(a.cleared,b.cleared||0);a.stars=a.stars.map((v,i)=>Math.max(v,(b.stars||[])[i]||0))}}
   }catch(e){}finally{updCampBtn()}
 }
-let META={gems:0,up:{},daily:''},MSTORE=null;
+let META={gems:0,up:{},daily:'',cs:0,fac:[],tints:['none'],tint:'none'},MSTORE=null;
 const upOf=f=>META.up[f]||(META.up[f]={hp:0,dmg:0,gold:0});
 async function initMeta(){
   try{const ls=localStorage.getItem('skyjinn-meta');if(ls)Object.assign(META,JSON.parse(ls)||{})}catch(e){}
@@ -2273,7 +2416,40 @@ async function initMeta(){
 let msaving=Promise.resolve();
 function saveMeta(){try{localStorage.setItem('skyjinn-meta',JSON.stringify(META))}catch(e){}
   if(MSTORE){const body=JSON.parse(JSON.stringify(META));msaving=msaving.then(()=>MSTORE.set(body)).catch(()=>{})}updMetaTags()}
-function updMetaTags(){$('gemTag').textContent=`💎 ${META.gems}`;$('dailyTag').textContent=META.daily===todayId()?'✓':'NEW'}
+function updMetaTags(){$('gemTag').textContent=`💎 ${META.gems}`;$('dailyTag').textContent=META.daily===todayId()?'✓':'NEW';refreshFacLocks()}
+// ---- progression: crowns come from campaign stars; they unlock factions (4 open from the start) and unit tints ----
+const START_FAC=['djinn','verdant','mutant','knight'],FAC_PRICE=12,CONQ_BONUS=5;
+function crownsEarned(){let n=totalStars();for(const f in PROG)if((PROG[f].cleared||0)>=6)n+=CONQ_BONUS;return n}
+const crowns=()=>Math.max(0,crownsEarned()-(META.cs||0));
+const facOpen=f=>START_FAC.includes(f)||(META.fac||[]).includes(f)||!!(PROG[f]&&PROG[f].cleared>0);   // factions with campaign progress stay open
+const crownHTML=n=>`${KI('crown','cri')} ${n}`;
+function spend(n){if(crowns()<n)return false;META.cs=(META.cs||0)+n;return true}
+function ask(title,body,yes,fn){$('cfT').textContent=title;$('cfB').innerHTML=body;$('cfYes').textContent=yes;$('confirm').classList.remove('hide');$('cfYes').onclick=()=>{$('confirm').classList.add('hide');fn()}}
+$('cfNo').onclick=()=>$('confirm').classList.add('hide');
+function menuNote(m){const vis=id=>!$(id).classList.contains('hide');if(vis('shop'))$('shopNote').textContent=m;else if(vis('camp'))$('campNote').textContent=m;
+  else{$('facDesc').textContent=m;clearTimeout(menuNote.t);menuNote.t=setTimeout(setDesc,4000)}snd('nope')}
+function offerUnlock(f,after){const c=crowns();if(c<FAC_PRICE){menuNote(`🔒 ${FAC[f].name}: ${FAC_PRICE} 👑 to unlock (you have ${c}). Earn crowns from campaign stars.`);return}
+  ask(`Unlock ${FAC[f].name}?`,`Spend ${crownHTML(FAC_PRICE)} of your ${crownHTML(c)} to play the ${FAC[f].name} and their campaign.`,'Unlock',()=>{if(!spend(FAC_PRICE))return;(META.fac=META.fac||[]).push(f);saveMeta();snd('upgrade');after&&after()})}
+function refreshFacLocks(){document.querySelectorAll('#start .fac button').forEach(b=>{const o=facOpen(b.dataset.f);b.classList.toggle('lockd',!o);let p=b.querySelector('.fp');
+    if(!o){if(!p){p=document.createElement('span');p.className='fp';b.appendChild(p)}p.innerHTML=crownHTML(FAC_PRICE)}else if(p)p.remove()});
+  if(!facOpen(pickFac)){pickFac='djinn';document.querySelectorAll('#start .fac button').forEach(x=>x.classList.toggle('on',x.dataset.f==='djinn'));setDesc()}
+  document.querySelectorAll('#cCamp button').forEach(b=>b.classList.toggle('lk',!facOpen(b.dataset.c)));
+  $('crownTag').innerHTML=crownHTML(crowns())}
+function resetProgress(){PROG={};saveProg();META={gems:0,up:{},daily:'',cs:0,fac:[],tints:['none'],tint:'none'};saveMeta();updCampBtn();$('setNote').textContent='Progress reset.'}
+// unlocks window: factions and unit tints
+function openShop(){['start','end'].forEach(i=>$(i).classList.add('hide'));$('shop').classList.remove('hide');$('shopNote').textContent=`Earn crowns: 1 per campaign ★, +${CONQ_BONUS} for conquering a faction's campaign.`;renderShop()}
+function renderShop(){$('shopCr').innerHTML=crownHTML(crowns());
+  const fw=$('shopFac');if(!fw.children.length)for(const f of Object.keys(FAC)){const b=document.createElement('button');b.dataset.f=f;b.innerHTML=`<canvas width="120" height="112"></canvas>${FAC[f].name.replace('Magic ','')}<span class="fp"></span>`;
+    emblemTo(b.querySelector('canvas'),f);b.onclick=()=>{if(facOpen(f)){$('shopNote').textContent=`The ${FAC[f].name} are ready to fight.`;return}offerUnlock(f,renderShop)};fw.appendChild(b)}
+  fw.querySelectorAll('button').forEach(b=>{const o=facOpen(b.dataset.f);b.classList.toggle('lockd',!o);b.querySelector('.fp').innerHTML=o?'✓ Open':crownHTML(FAC_PRICE)});
+  const tw=$('shopTint'),own=META.tints||['none'],uk=FICON[pickFac]||'war';tw.innerHTML='';
+  for(const T of TINTS){const has=T.id==='none'||own.includes(T.id),on=(META.tint||'none')===T.id,b=document.createElement('button');if(on)b.classList.add('on');
+    b.innerHTML=`<canvas width="80" height="76"></canvas>${T.n}<small>${on?'Equipped':has?'Equip':crownHTML(T.p)}</small>`;iconTo(b.querySelector('canvas'),uk,0,1,T.id);
+    b.onclick=()=>{if(!has){const c=crowns();if(c<T.p){$('shopNote').textContent=`${T.n} costs ${T.p} 👑: you have ${c}. Earn more from campaign stars.`;snd('nope');return}spend(T.p);(META.tints=META.tints||['none']).push(T.id);snd('upgrade')}
+      META.tint=T.id;saveMeta();renderShop()};tw.appendChild(b)}
+  if(!sheetOf(uk,1))setTimeout(()=>{if(!$('shop').classList.contains('hide'))renderShop()},600)}   // sprites still decoding
+$('shopBack').onclick=()=>{$('shop').classList.add('hide');$('start').classList.remove('hide')};
+$('bShop').onclick=openShop;
 // ---- forge ----
 const UPS=[{k:'hp',i:'🛡',n:'Vitality',d:l=>`+${4*l}% unit health`},{k:'dmg',i:'⚔',n:'Might',d:l=>`+${4*l}% unit damage`},{k:'gold',i:'💰',n:'War Chest',d:l=>`+${25*l} starting gold`}];
 const upPrice=l=>20*(l+1);let forgeFac='djinn';
@@ -2315,44 +2491,75 @@ try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&!/clau
 let saving=Promise.resolve();
 function saveProg(){try{localStorage.setItem('skyjinn-progress',JSON.stringify(PROG))}catch(e){}
   if(STORE){const body=JSON.parse(JSON.stringify(PROG));saving=saving.then(()=>STORE.set(body)).catch(()=>{})}}
-function updCampBtn(){const t=totalStars();$('campStars').textContent=t?`★ ${t}/${Object.keys(FAC).length*18}`:''}
-function openCamp(){$('start').classList.add('hide');$('end').classList.add('hide');$('camp').classList.remove('hide');renderCamp()}
+function updCampBtn(){const t=totalStars();$('campStars').textContent=t?`★ ${t}/${Object.keys(FAC).length*18}`:'';refreshFacLocks()}
+function openCamp(){['start','end','brief'].forEach(i=>$(i).classList.add('hide'));if(!facOpen(campFac))campFac='djinn';$('camp').classList.remove('hide');renderCamp()}
+// world map: one winding path of 6 stage nodes per faction (node positions seeded by the faction name)
+function nodePos(f){let h=7;for(const c of f)h=Math.imul(h^c.charCodeAt(0),16777619);const r=()=>{h=Math.imul(h^(h>>>15),2246822507);h^=h>>>13;return (h>>>0)/4294967296};
+  return [0,1,2,3,4,5].map(i=>[10+i*16+(r()-0.5)*5,(i%2?36:68)+(r()-0.5)*12])}
+// Catmull-Rom through the nodes as cubic segments, so the travelled part (gold) lies exactly on the full path
+function pathSegs(P){const o=[];for(let i=1;i<P.length;i++){const a=P[i-2]||P[i-1],b=P[i-1],c=P[i],e=P[i+1]||c;
+  o.push(` C${(b[0]+(c[0]-a[0])/6).toFixed(2)} ${(b[1]+(c[1]-a[1])/6).toFixed(2)} ${(c[0]-(e[0]-b[0])/6).toFixed(2)} ${(c[1]-(e[1]-b[1])/6).toFixed(2)} ${c[0].toFixed(2)} ${c[1].toFixed(2)}`)}return o}
+const MAPN={dunes:'Desert Ruins',bridge:'Sky Bridge',volcano:'Volcanic Wastes'};
+const STORY={"djinn": [["The winds over the Desert Ruins carry a strange scent of moss.", "{E} scouts are planting roots on our sacred dunes. Blow them away."], ["Brass bells ring along the Sky Bridge: something is crawling across.", "The {E} want our lamps for their vats. Hold the span."], ["Smoke rises from the Volcanic Wastes, and steel glints within it.", "The {E} march to claim the fire wells. Turn them back."], ["The forest has not forgotten its defeat. The {E} return, richer and angrier.", "Their coffers are deep. Strike before their army grows."], ["The {E} have taken the Sky Bridge and dug in at the far anchor.", "Break the siege and the winds are ours again."], ["The {E} have crowned a champion who has never lost a duel.", "Face the Gauntlet in the fire and end this war in one storm."]], "verdant": [["The roots of the Desert Ruins tremble: something walks on our seedlings.", "{E} raiders are scorching the young groves. Grow, and push them out."], ["Vines have reached the Sky Bridge, and the {E} want them cut.", "Hold the planks long enough for the forest to take root."], ["The Volcanic Wastes are ash, but life can grow even there.", "The {E} guard the last warm soil. Reclaim it."], ["The {E} have returned with full war chests and fresh troops.", "Patience, then strength. Outgrow their gold."], ["Our grove-anchor on the Sky Bridge is under siege by the {E}.", "Break their line before the bark splits."], ["A {E} champion leads the final assault through the lava fields.", "Let the whole forest answer. This is the last season of war."]], "mutant": [["The vats are empty. The Desert Ruins smell of fresh samples.", "The {E} guard the dunes. Take them apart and take notes."], ["The {E} have rooted themselves on the Sky Bridge.", "Their bark is tough. Our acid is tougher."], ["Heat makes the best mutations. The Volcanic Wastes call to us.", "The {E} stand in the way. Evolve through them."], ["The {E} are back with stronger blood and bigger purses.", "Good. Stronger prey makes stronger hunters."], ["The {E} hold the bridge anchor and think it is safe.", "Spill over it like a broken vat."], ["Their champion is the finest specimen we have ever seen.", "Defeat the {E} champion and the strain will be perfect."]], "knight": [["The Order rides to the Desert Ruins to keep the old peace.", "{E} spirits stir up storms against the pilgrims. Stand firm."], ["The Sky Bridge is the road to the capital, and the {E} have grown over it.", "Clear the span, shield to shield."], ["From the Volcanic Wastes come screams and the hiss of acid.", "The {E} must not reach the villages. Hold the line."], ["The {E} have bought fresh blades and want revenge.", "Faith outlasts gold. Meet them with discipline."], ["The {E} lay siege to our bridge chapel.", "Raise the banners and break the siege."], ["The {E} champion waits in the fire, daring the Order to come.", "Face the Gauntlet, and let the light judge."]], "goblin": [["Scrap in the Desert Ruins! Shiny scrap! Mostly guarded by {E}.", "Boss says shoot first, salvage later."], ["The Sky Bridge toll is ours now. The {E} disagree.", "Load the guns. Tolls are non-negotiable."], ["The Volcanic Wastes are full of metal. And {E}.", "Melt the metal, scare off the rest."], ["The {E} came back with money. Lots of money.", "Take their money. That's the whole plan."], ["The {E} have dug in on the far side of the bridge.", "Time to see how much boom the bridge can take."], ["A {E} champion stands between us and the biggest scrap pile ever.", "The Warboss wants that pile. Don't let the Warboss down."]], "undead": [["The Desert Ruins hold old tombs, and old tombs hold soldiers.", "The {E} disturb our rest. Wake the dead and answer them."], ["Mist gathers over the Sky Bridge. The {E} cross it at their peril.", "Every one that falls will march for us."], ["The Volcanic Wastes burn, but bones do not mind the heat.", "Let the {E} learn that the grave is patient."], ["The {E} return with fresh troops. Fresh is good.", "More bodies, more soldiers. Raise them all."], ["The {E} hold the bridge anchor against the tide of bones.", "Drown them in the endless march."], ["The {E} champion claims death cannot touch it.", "Prove it wrong in the fire, and the Lich King will reign."]], "auto": [["DIRECTIVE 1: secure the Desert Ruins power relay.", "{E} interference detected. Remove it."], ["DIRECTIVE 2: hold the Sky Bridge transit node.", "{E} units obstruct the path. Recalculate. Advance."], ["DIRECTIVE 3: harvest heat from the Volcanic Wastes.", "{E} resistance expected. Overclock and proceed."], ["ALERT: {E} forces reinforced. Resource estimate: high.", "Efficiency over numbers. Execute."], ["ALERT: bridge anchor besieged by the {E}.", "Shields up. Break the siege."], ["FINAL DIRECTIVE: neutralise the {E} champion.", "Probability of victory rises with every shot. Engage."]], "dragon": [["The hoard sleeps beneath the Desert Ruins, and {E} thieves circle it.", "Wake, burn, and remind them whose sand this is."], ["The Sky Bridge was built from our old bones. The {E} walk on it.", "Take back the sky road with fire."], ["The Volcanic Wastes are our cradle. The {E} have dared to enter.", "Burn them back into the ash."], ["The {E} have bought more soldiers to guard our stolen gold.", "More gold for the hoard when they fall."], ["The {E} are besieging our perch on the Sky Bridge.", "Scales and flame: break them."], ["The {E} champion stands at the mouth of our home volcano.", "Only one can rule the sky. Make it us."]]};
 function renderCamp(){
   document.querySelectorAll('#cCamp button').forEach(b=>b.classList.toggle('on',b.dataset.c===campFac));
-  const P=progOf(campFac),wrap=$('stages');wrap.innerHTML='';
-  for(const st of stagesOf(campFac)){const lock=st.i>P.cleared,b=document.createElement('button');b.className='stg'+(lock?' lock':'')+(st.i===P.cleared?' next':'');
-    const sv=P.stars[st.i]||0;b.innerHTML=`<canvas width="80" height="76"></canvas><span class="sn">${st.i+1}. ${st.name}</span><span class="sd">vs ${FAC[st.e].name} · ${st.d}${st.map==='bridge'?' · 🌉':({volcano:' · 🌋',volcano:' · 🌋',bridge:' · 🌉'}[st.map]||'')}${st.boss?' · 👑 boss':''}${st.egm?' · rich foe':''}</span><span class="ss">${starsHTML(sv)}</span>`;
+  $('campCr').innerHTML=crownHTML(crowns());
+  const P=progOf(campFac),pos=nodePos(campFac),wrap=$('wnodes'),seg=pathSegs(pos),m0=`M${pos[0][0].toFixed(2)} ${pos[0][1].toFixed(2)}`,full=m0+seg.join(''),done=Math.min(5,P.cleared);wrap.innerHTML='';
+  $('wmap').style.backgroundImage=`linear-gradient(rgba(12,8,4,.5),rgba(12,8,4,.72)),url(${UI_ART.bg})`;
+  const ln=(d,c,w,da)=>`<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" ${da?`stroke-dasharray="${da}"`:''} vector-effect="non-scaling-stroke" stroke-linecap="round"/>`;
+  $('wpath').innerHTML=ln(full,'#140b05',7)+ln(full,'#c9b393',3,'2 7')+(done?ln(m0+seg.slice(0,done).join(''),'#ffd77a',3.5):'');
+  $('wtag').innerHTML=`<canvas width="44" height="42"></canvas>${FAC[campFac].name.toUpperCase()} CAMPAIGN`;emblemTo($('wtag').querySelector('canvas'),campFac);
+  for(const st of stagesOf(campFac)){const lock=st.i>P.cleared,b=document.createElement('button'),[x,y]=pos[st.i];
+    b.className='stg node'+(lock?' lock':'')+(st.i===P.cleared?' next':'')+(st.boss?' boss':'');b.style.left=x+'%';b.style.top=y+'%';
+    b.innerHTML=`<canvas width="64" height="60"></canvas><span class="sn">${st.i+1}</span><span class="ss">${starsHTML(P.stars[st.i]||0)}</span>`;
     emblemTo(b.querySelector('canvas'),st.e);
-    b.onclick=()=>{if(lock){toast('Clear the previous stage first',1);return}startStage(campFac,st.i)};wrap.appendChild(b)}
-  const done=P.cleared>=6;$('campNote').textContent=done?`👑 ${FAC[campFac].name} campaign conquered! Go for 3 stars on every stage.`:'Win to unlock the next stage. ★ = win, ★★ = win with 40%+ base HP, ★★★ = 75%+. Campaign uses 200 starting gold.';
+    b.onclick=()=>{if(lock){$('campNote').textContent='🔒 Clear the previous stage to unlock this one.';snd('nope');return}openBrief(campFac,st.i)};wrap.appendChild(b)}
+  $('campNote').textContent=P.cleared>=6?`👑 ${FAC[campFac].name} campaign conquered! Go for 3 stars on every stage.`:'Tap a stage. ★ win · ★★ 40%+ base HP · ★★★ 75%+ · every new ★ earns a 👑.';
 }
-function startStage(f,i){const st=stagesOf(f)[i];pickFac=f;$('camp').classList.add('hide');
-  newGame(st.d,false,{fac:f,i,st})}
-document.querySelectorAll('#cCamp button').forEach(b=>b.onclick=()=>{campFac=b.dataset.c;renderCamp()});
+// stage briefing: the 2-line story intro, the opponent and the stars so far
+let BRIEF=null;
+function openBrief(f,i){const st=stagesOf(f)[i];if(!st)return openCamp();const P=progOf(f),E=FAC[st.e].name,L=((STORY[f]||[])[i]||['','']).map(l=>l.replace(/\{E\}/g,E));BRIEF={f,i};
+  ['camp','end'].forEach(x=>$(x).classList.add('hide'));$('brief').classList.remove('hide');
+  $('brT').textContent=`${i+1}. ${st.name}`;
+  $('brBody').innerHTML=`<canvas width="144" height="136"></canvas><div class="bt"><p class="story">${L[0]}</p><p class="story">${L[1]}</p><p class="bm">vs ${E} · ${st.d} · ${MAPN[st.map||'dunes']}${st.boss?' · boss champion':''}${st.egm?' · rich foe':''}</p><p class="ss">${starsHTML(P.stars[i]||0)}</p></div>`;
+  emblemTo($('brBody').querySelector('canvas'),st.e)}
+$('brGo').onclick=()=>{if(!BRIEF)return;$('brief').classList.add('hide');startStage(BRIEF.f,BRIEF.i)};
+$('brBack').onclick=()=>{$('brief').classList.add('hide');campFac=BRIEF?BRIEF.f:campFac;openCamp()};
+function startStage(f,i){const st=stagesOf(f)[i];pickFac=f;['camp','brief'].forEach(x=>$(x).classList.add('hide'));newGame(st.d,false,{fac:f,i,st})}
+document.querySelectorAll('#cCamp button').forEach(b=>b.onclick=()=>{const f=b.dataset.c;if(!facOpen(f)){offerUnlock(f,()=>{campFac=f;renderCamp()});return}campFac=f;renderCamp()});
 $('bCamp').onclick=()=>{campFac=pickFac;openCamp()};$('campBack').onclick=()=>{$('camp').classList.add('hide');$('start').classList.remove('hide')};
-$('endCamp').onclick=()=>{G=null;openCamp()};
-$('endNext').onclick=()=>{const c=G&&G.camp;if(!c)return;G=null;$('end').classList.add('hide');startStage(c.fac,c.i+1)};
-// ---- tutorial ----
+$('endCamp').onclick=()=>{const c=G&&G.camp;G=null;$('app').classList.remove('spectate');if(c)campFac=c.fac;openCamp()};
+$('endNext').onclick=()=>{const c=G&&G.camp;if(!c)return;G=null;$('end').classList.add('hide');openBrief(c.fac,c.i+1)};
+$('rematch').onclick=()=>{const g=G;if(!g)return;G=null;$('end').classList.add('hide');$('app').classList.remove('spectate');
+  if(g.camp){startStage(g.camp.fac,g.camp.i);return}
+  pickFac=g.fac[0];pickEnemy=g.fac[1];const om=optMap;optMap=g.map;newGame(g.diff,g.spec,null,g.daily);optMap=om;pickEnemy=null};
+// ---- tutorial: a short guided first match (first PLAY only), skippable, replayable from Settings ----
 let TUT=null;
+const tutSeen=()=>{try{return localStorage.getItem('skyjinn-tut')==='1'}catch(e){return true}};
 const TSTEPS=[
- {txt:'Welcome, commander! You lead the <b>Djinn</b>. Your base is on the left, the enemy on the right.',btn:'Next'},
- {txt:'<b>Tap the Cogling card</b> to add Coglings to <b>every</b> wave.',wait:'buy:cog',hl:()=>cards.cog},
- {txt:'Nice! Now add a tank — <b>tap the Brass Warden</b>.',wait:'buy:war',hl:()=>cards.war},
- {txt:'<b>Hold</b> a card (press and keep your finger down) to see its info and <b>upgrade</b> it. Try holding the Warden.',wait:'sheet',hl:()=>cards.war},
- {txt:'Upgrades make every future spawn stronger. Close this when you are ready.',wait:'sheetclose'},
- {txt:'Waves launch automatically. Watch your army march out!',wait:'wave1',run:1},
- {txt:'Top right shows the <b>enemy\'s last wave</b>. Counter it: <b>Sparkcasters</b> beat armored units, <b>Coglings</b> beat ranged.',btn:'Got it',hl:()=>cards.spk},
- {txt:'Your <b>Wish</b> is charged! Tap <b>🌪 Storm</b>, then tap the battlefield.',wait:'wish',hl:()=>$('bBolt'),pre:()=>{G.wishWaves=WISH_WAVES}},
- {txt:'<b>+income</b> costs gold now but pays more every wave. Spend wisely!',btn:'Next',hl:()=>$('bInc')},
- {txt:'Destroy the enemy Sky Anchor, or have more HP when the timer ends. Near your base you fight better (dashed zone). Good luck!',btn:'Play'},
+ {txt:'Welcome, commander! You lead the <b>Djinn</b>. Your Sky Anchor is on the left: destroy the enemy\'s on the right.',btn:'Next'},
+ {txt:'<b>Tap the Cogling card</b> to buy it: a Cogling now joins <b>every</b> wave.',wait:'buy:cog',hl:()=>cards.cog},
+ {txt:'<b>Hold</b> the Cogling card (keep your finger down) to open its card.',wait:'sheet',hl:()=>cards.cog},
+ {txt:'Tap <b>Upgrade</b>: every Cogling from now on spawns stronger.',wait:'upgrade',hl:()=>$('shUp')},
+ {txt:'Nice! <b>Close</b> the card.',wait:'sheetclose',hl:()=>$('shX')},
+ {txt:'Tap <b>+income</b>: it costs gold now, but every wave pays you more.',wait:'inc',hl:()=>$('bInc')},
+ {txt:'Waves launch on their own. Watch your army march out!',wait:'wave1',run:1},
+ {txt:'Your <b>Wish</b> is charged! Tap <b>Storm</b>, then tap the battlefield to cast it.',wait:'wish',hl:()=>$('bBolt'),pre:()=>{G.wishWaves=WISH_WAVES}},
+ {txt:'That\'s the basics: buy, upgrade, grow income, wish. Now win the match!',btn:'Play'},
 ];
-function startTutorial(){pickFac='djinn';const pe=optEnemy,pg=optGold;optEnemy='verdant';optGold=300;newGame('easy');optEnemy=pe;optGold=pg;TUT={i:-1};G.tut=1;tutNext()}
+function startTutorial(){try{localStorage.setItem('skyjinn-tut','1')}catch(e){}
+  const pf=pickFac,pe=optEnemy,pg=optGold,pm=optMap;pickFac='djinn';optEnemy='verdant';optGold=300;optMap='dunes';newGame('easy');pickFac=pf;optEnemy=pe;optGold=pg;optMap=pm;
+  TUT={i:-1};G.tut=1;tutNext()}
+function tutEnd(){document.querySelectorAll('.pulse').forEach(e=>e.classList.remove('pulse'));TUT=null;if(G)G.tut=0;$('coach').classList.add('hide')}
 function tutNext(){if(!TUT)return;document.querySelectorAll('.pulse').forEach(e=>e.classList.remove('pulse'));TUT.i++;
-  const st=TSTEPS[TUT.i];if(!st){TUT=null;G.tut=0;$('coach').classList.add('hide');return}
-  if(st.pre)st.pre();G.tut=st.run?0:1;$('coachT').innerHTML=st.txt;$('coachB').classList.toggle('hide',!st.btn);$('coachB').textContent=st.btn||'';$('coach').classList.remove('hide');
+  const st=TSTEPS[TUT.i];if(!st){tutEnd();return}
+  if(st.pre)st.pre();G.tut=st.run?0:1;$('coachT').innerHTML=st.txt;$('coachB').classList.toggle('hide',!st.btn);$('coachB').textContent=st.btn||'';
+  $('coachS').classList.toggle('hide',TUT.i===TSTEPS.length-1);$('coach').classList.remove('hide');
   const h=st.hl&&st.hl();if(h)h.classList.add('pulse');refreshUI()}
-function tutEvent(ev){if(!TUT||!G)return;const st=TSTEPS[TUT.i];if(st&&st.wait===ev)setTimeout(tutNext,ev==='sheet'?300:150)}
-$('coachB').onclick=tutNext;$('bTut').onclick=startTutorial;
+function tutEvent(ev){if(!TUT||!G)return;const st=TSTEPS[TUT.i];if(!st)return;
+  if(st.wait==='upgrade'&&ev==='sheetclose'){TUT.i-=2;setTimeout(tutNext,150);return}   // closed the card without upgrading: back to "hold"
+  if(st.wait===ev)setTimeout(tutNext,ev==='sheet'?300:150)}
+$('coachB').onclick=tutNext;$('coachS').onclick=tutEnd;
 function refreshUI(){
   if(!G)return;
   $('gold').innerHTML=`${Math.floor(G.gold[0])} <small>+${G.income[0]}</small>`;
@@ -2371,7 +2578,14 @@ function refreshUI(){
 let last=performance.now(),uiT=0;
 function loop(now){
   const dt=Math.min(0.05,(now-last)/1000);last=now;
-  if(G&&!G.over&&!G.paused){if(!G.tut)for(let i=0;i<(G.speed||1)&&!G.over;i++)update(dt);uiT-=dt;if(uiT<=0){uiT=0.2;refreshUI()}}
+  if(G&&!G.over&&!G.paused){
+    if(G.hs>0)G.hs-=dt;   // hit-stop
+    else if(!G.tut){let d=dt,sp=G.speed||1;
+      if(G.finale){d*=SLOWMO;sp=1;G.finale.t-=dt}   // final base kill: slow motion for SLOWMO_T real seconds
+      const n=Math.ceil(sp-1e-6),sd=d*sp/n;for(let i=0;i<n&&!G.over;i++)update(sd);   // 1.5x = two 0.75 steps
+      if(G.finale&&G.finale.t<=0&&!G.over)endGame()}
+    if(G.finale)G.zf+=(ZOOM-G.zf)*Math.min(1,dt*3.5);
+    updJuice(dt);uiT-=dt;if(uiT<=0){uiT=0.2;refreshUI()}}
   draw(now);requestAnimationFrame(loop);
 }
 new ResizeObserver(resize).observe(cv);window.addEventListener('resize',resize);

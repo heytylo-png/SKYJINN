@@ -109,7 +109,7 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
   - `badge_teal` shows owned-unit counts. `badge_red` marks warnings: can't afford, and army full.
   - `star_*` icons show stars on campaign stages and the end screen.
   - The icons replace the old top-left buttons and also mark gold, income, settings and Play.
-- **Start menu changes:** the difficulty is now picked first (and remembered), then ⚔ PLAY starts the match. A ⚙ settings window toggles sound, music and fullscreen.
+- **Start menu changes:** the difficulty is now picked first (and remembered), then ⚔ PLAY starts the match. The ⚙ settings window is described under **Polish pass** below.
 
 **Music.** Real MP3 tracks in `audio/` replace the old procedural loop:
 - `music_menu` loops on the start menu and campaign screen.
@@ -151,6 +151,44 @@ One `<audio>` element plays the music (loop, volume 0.5) and crossfades over 1 s
 - `heal`: every heal tick.
 
 Only the synth `gun`, plus the death and lob-launch thumps, are still synthesized.
+
+
+## Polish pass
+All new screens use the pixel UI kit (`panel_large` windows, `panel_medium` sections, `bar_top` titles, brass/teal buttons, card frames).
+
+**Tutorial.** The first ⚔ PLAY starts a short guided match as the Djinn on Easy. It covers: buy a unit, hold its card and upgrade it, buy income, then cast a wish.
+- **Skip** on the coach panel ends the guide; the match carries on as a normal game.
+- It is shown once (`skyjinn-tut` in localStorage) and can be replayed from Settings.
+- Closing the unit card before upgrading steps back to "hold the card".
+
+**Juice** (`HITSTOP`, `DNUM_MIN`, `SLOWMO`, `ZOOM` in `index.html`):
+- **Hit-stop:** a 60 ms freeze on champion hits and base hits of 25+ damage, at most once every 0.45 s so big fights don't stutter.
+- **Damage numbers:** every hit over 40 floats a number: white for yours (gold for champions), orange for the enemy's. They can be turned off in Settings.
+- **Coin pops:** a coin icon and `+N` jump from each enemy your units kill.
+- **Final base kill:** 1.5 s of 0.3× slow motion while the camera zooms 1.6× onto the falling base, then the end screen.
+
+**End screen.** Shows kills, units lost, gold earned (waves and kill bounties, not starting gold) and damage to the enemy base. It also shows the **MVP**: the unit type that dealt the most damage, with its sprite. Buttons:
+- **Rematch:** the same factions, map, difficulty, stage or daily.
+- **Campaign**
+- **Menu**
+- **Next stage ▶:** after a campaign win, opens the next stage's briefing.
+
+**Campaign world map.** Each faction has one winding path of 6 stage nodes over the world art. The travelled part of the path is gold, the next stage pulses, and the boss stage wears a crown. Tapping a stage opens its briefing: a 2-line story intro (`STORY`), the opponent, the map and the stars so far, with **Fight ▶**.
+
+**Settings** (`skyjinn-settings` in localStorage):
+- music and SFX volume sliders
+- game speed: 1×, 1.5× or 2× (1.5× runs two 0.75-length steps per frame)
+- damage numbers on or off
+- fullscreen
+- replay tutorial
+- reset progress, behind a confirm dialog. It clears campaign stars, crowns, unlocks, tints, gems and Forge upgrades, and keeps settings.
+
+The pause menu also opens Settings, without the tutorial and reset buttons.
+
+**Progression** (saved in `skyjinn-meta` in localStorage):
+- **Crowns:** 1 crown per campaign ★, plus 5 for conquering a faction's campaign.
+- **Factions:** Djinn, Verdant, Mutants and Knights start unlocked. The other four cost 12 crowns each. A faction that already has campaign progress stays unlocked. Locked factions show the `card_locked` frame on the start menu, the campaign tabs and the Unlocks window.
+- **Unit tints:** Frost, Ember, Venom, Royal, Gilded and Shadow, 4–10 crowns each, bought and equipped in **Unlocks**. A tint is a colour matrix (`TINTS`) baked into the player's sheets and icons when they are built, so it costs nothing per frame. Glow halos keep their colour, and AI vs AI ignores the tint.
 
 ## Factions (8)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
