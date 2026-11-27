@@ -1,5 +1,5 @@
 // SKYJINN offline cache. Bump VERSION whenever index.html changes.
-const VERSION='skyjinn-v35';
+const VERSION='skyjinn-v36';
 const FILES=['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png',
   './audio/music_menu.mp3','./audio/music_desert.mp3','./audio/music_bridge.mp3','./audio/music_volcano.mp3','./audio/sting_victory.mp3','./audio/sting_defeat.mp3'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(FILES)));self.skipWaiting()});

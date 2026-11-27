@@ -21,6 +21,16 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 - The separation radius is 40% larger.
 - At most 3 ground units can share a 14×8 spot; extras slide toward the emptier lane edge.
 
+**Ranks and contact.** Ground units march in 5 rows across the lane depth; each new unit takes the next row.
+- Melee units stop at attack range measured from the drawn bodies, so fighters meet edge to edge instead of walking into each other.
+- A unit whose row is blocked by an ally just ahead holds position right behind it.
+- Allies separate at 1.4× their drawn width. Depth counts 3.5× in that test, so neighbouring rows don't shove each other sideways.
+- Enemies are only kept from overlapping, so melee can still connect.
+
+**Particles.** Every particle lives at most 1.5 s and fades out. There are at most 250 at once (oldest removed first). Verdant ground flowers also last at most 1.5 s, capped at 60.
+
+**Aiming a wish.** A 10% dark tint covers the battlefield, plus a dashed, slowly turning ellipse on the ground under the finger or cursor showing the wish's area. The Shield Dome uses an 80 px radius.
+
 **Toasts.** Toasts show in a small strip just above the unit bar for 1.8 s. A wish description appears only the first time that wish is armed in each match.
 
 **Wish effects.** The `wish_fx` sheets play at 10 fps, and each frame crossfades into the next by its fractional time.
