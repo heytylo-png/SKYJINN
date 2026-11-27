@@ -39,6 +39,10 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
   - teal wisps for Plague of Bones
   - teal sparkles on the Shield Dome, which stays a single centred copy
 
+**Airstrike and Meteor Shower** no longer loop their sheets over the area. The bomb and the meteor are cut out of their sheets and fall for real. Each impact plays the sheet's ground explosion once, on landing, which is also when the damage happens.
+- **Airstrike:** a Gyrocopter bomber flies in from off-screen just under the HUD. It drops a bomb every 26 world px while over the target, leading for the forward carry. Each bomb arcs down to a random lane depth, then blasts within 30 px.
+- **Meteor Shower:** meteors start high above the view, 150 px back, and fly in at 250 px/s. A pulsing orange glow marks each landing spot until the meteor hits.
+
 **Readability.**
 - Every unit sprite has a 1px dark outline: a cached silhouette of its sheet, drawn 1 screen px out in four directions.
 - The mid and ground map layers are dimmed: Volcanic Wastes ×0.75, Desert Ruins and Sky Bridge ×0.85. The sky is unchanged.

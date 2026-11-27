@@ -948,7 +948,7 @@ function newGame(diff,spec,camp,daily){setTimeout(()=>{try{onOrient()}catch(e){}
   const others=Object.keys(FAC).filter(f=>f!==pickFac),ef=camp?camp.st.e:daily?daily.e:pickEnemy||(optEnemy!=='random'?optEnemy:others[Math.floor(Math.random()*others.length)]);
   G={diff,map,fac:[pickFac,ef],time:0,wave:0,waveT:FIRST,gold:camp?[200,200+(camp.st.boss?300:0)]:daily?daily.gold.slice():[optGold,optGold],daily:daily||null,camp:camp||null,egm:camp&&camp.st.egm||1,income:[40,40],incLvl:[0,0],roster:[{},{}],tier:[{},{}],ck:[0,0],
      anchor:[ANCHOR,ANCHOR],bshake:[0,0],tst:[0,0],shk:0,units:[],corpses:[],decals:[],sfx:[],sdec:[],shells:[],souls:[],flowers:[],wfx:[],proj:[],fx:[],parts:[],shields:[],zones:[],
-     wishWaves:2,aw:[0,0],awT:[0,0],tcd:[0,0],queue:[[],[]],sup:[0,0],relT:[0,0],armed:null,over:false,paused:false,lastEnemy:{},lastOwn:{},kills:[0,0],spec:!!spec,speed:1};
+     wishWaves:2,aw:[0,0],awT:[0,0],tcd:[0,0],queue:[[],[]],sup:[0,0],relT:[0,0],armed:null,over:false,paused:false,lastEnemy:{},lastOwn:{},drops:[],bursts:[],kills:[0,0],spec:!!spec,speed:1};
   G.um=[[1,1],[1,1]];if(daily){G.um=[daily.um.slice(),daily.um.slice()]}
   if(!spec&&!G.sim){const u=upOf(pickFac);G.um[0][0]*=1+0.04*u.hp;G.um[0][1]*=1+0.04*u.dmg;G.gold[0]+=25*u.gold}
   if(camp&&camp.st.boss){const ck=FAC[ef].keys.find(k=>TYPES[k].champ);G.roster[1][ck]=1}
@@ -1099,7 +1099,7 @@ function dealHit(side,k,dmg,tgt,isA,x,y,src){
   const wood=T.fac==='verdant';
   if(T.splash){for(const e of G.units)if(e.side!==side&&!e.dead&&canHit(T,e)&&Math.hypot(e.x-x,(e.y-y)*0.6)<=T.splash+e.T.r)hurt(side,k,dmg,e,src);
     G.fx.push({t:'ring',x,y,r:T.splash,life:0.35,max:0.35,c:T.lob?PAL[side].glow:'#f6e3b8'});
-    if(k==='met'){if(!wfxOn('meteor_shower')){blastFx(x,y,40,'#ff8a2a',5);puff(x,y,10,'#6a4a3a',70)}else if(!G.sim){emberBurst(x,y-4,8,60);puff(x,y,4,'#5a4038',40)}snd('explosion_big',x);shake(4)}
+    if(k==='met'){if(!wfxOn('meteor_shower')){blastFx(x,y,40,'#ff8a2a',5);puff(x,y,10,'#6a4a3a',70)}else if(!G.sim){emberBurst(x,y-4,8,60);puff(x,y,4,'#5a4038',40);burst('meteor_shower',x,y,110)}snd('explosion_big',x);shake(4)}
     if(T.lob){boomFx(x,y,T.splash*0.75,T.fire?'fire':'explosion');if(wood)leaves(x,y,10,70);if(T.acid)acidSplash(x,y,8);puff(x,y,7,'#d8b483',38);shake(3);snd(T.acid?'splat':'explosion',x)}else if(!isA)hitSnd(T,tgt,src,x)}
   else if(!isA&&tgt&&!tgt.dead){sfxHit(k,side,tgt);hurt(side,k,dmg,tgt,src);if(T.acid)snd('splat',x);else hitSnd(T,tgt,src,x)}
 }
@@ -1147,7 +1147,7 @@ function champAbility(u,dir){
   if(!G.sim)champFx(u,dir);
 }
 const WISH_VIS={djinn:[120,5],verdant:[150,6],mutant:[170,5],auto:[180,0.8],goblin:[170,1.8],knight:[130,0.9],dragon:[170,1.7],undead:[130,1.05]};   // [area, loop seconds]
-function castWish(side,x){const f=G.fac[side],V2=WISH_VIS[f],e=V2&&!G.sim?wfx(WFX_FAC[f],x,V2[0],V2[1],{flip:side===1}):null;
+function castWish(side,x){const f=G.fac[side],V2=WISH_VIS[f],e=V2&&!G.sim&&!DROP_FAC[f]?wfx(WFX_FAC[f],x,V2[0],V2[1],{flip:side===1}):null;
   (G.pend||(G.pend=[])).push({t:G.time+WFX_IN,fn:()=>wishHit(side,x,e)});tutEvent('wish')}
 function wishHit(side,x,e){
   if(G.over)return;const f=G.fac[side],dir=side?-1:1;
@@ -1160,7 +1160,8 @@ function wishHit(side,x,e){
   else if(f==='auto'){for(const e of G.units)if(e.side!==side&&!e.dead&&Math.abs(e.x-x)<=110){hurt(side,'zone',30,e);e.stunT=Math.max(e.stunT||0,3)}
     G.zones.push({t:'emp',side,x,r:110,life:0.8,max:0.8});for(let i=0;i<24;i++)sparks(x+rnd(-100,100),GY[1]-rnd(0,100),1,'#9fe8ff');snd('emp');shake(5)}
   else if(f==='dragon'){G.zones.push({t:'meteor',side,x,r:95,life:1.7,max:1.7,drop:0.2});snd('rocket')}
-  else if(f==='goblin'){G.zones.push({t:'air',side,x,r:95,life:1.8,max:1.8,dir,drop:0.35,bx:x-dir*95});snd('rocket')}
+  else if(f==='goblin'){const vx0=cam.x-60,vx1=cam.x+V.visW+60,px=dir>0?Math.min(x-300,vx0):Math.max(x+300,vx1);
+    G.zones.push({t:'air',side,x,r:95,life:8,max:8,dir,px,nd:x-dir*(95+AIR_DRIFT),end:dir>0?Math.max(x+400,vx1):Math.min(x-400,vx0)});snd('rocket')}
   else if(f==='knight'){for(const e of G.units)if(e.side!==side&&!e.dead&&Math.abs(e.x-x)<=60)hurt(side,'zone',180,e);
     for(const a of G.units)if(a.side===side&&!a.dead&&Math.abs(a.x-x)<=130){a.buffT=Math.max(a.buffT,6);a.acidS=0;a.acidT=0}
     G.zones.push({t:'light',side,x,r:60,life:0.9,max:0.9});for(let i=0;i<24;i++)sparks(x+rnd(-50,50),GY[1]-rnd(0,90),1,GOLD);snd('bolt');shake(7)}
@@ -1175,10 +1176,12 @@ function updZones(dt){
       if(Math.random()<dt*30)puff(z.x+rnd(-20,20),GY[1]-rnd(0,60),1,'#e2c391',60)}
     else if(z.t==='grow'){for(const e of G.units)if(!e.dead&&Math.abs(e.x-z.x)<=z.r){if(e.side!==z.side){if(!e.T.air){e.rootT=0.15;hurt(z.side,'zone',18*dt,e)}}else e.hp=Math.min(e.max,e.hp+12*dt)}}
     else if(z.t==='meteor'){z.drop-=dt;if(z.drop<=0&&z.life>0.2){z.drop=0.22;const bx=z.x+rnd(-z.r,z.r),by=rnd(GY[0],GY[1]);
-        G.proj.push({side:z.side,k:'met',dmg:45,x:bx-60,y:-20,tgt:null,anchor:false,tx:bx,ty:by,sp:520,d0:1,lob:0,c:FIRE,f:0,trail:[]})}}
-    else if(z.t==='air'){z.drop-=dt;if(z.drop<=0&&z.life>0.25){z.drop=0.13;const bx=z.bx;z.bx+=z.dir*19;
-        for(const e of G.units)if(e.side!==z.side&&!e.dead&&Math.abs(e.x-bx)<=30)hurt(z.side,'zone',e.T.air?25:55,e);
-        if(!wfxOn('airstrike')){G.fx.push({t:'ring',x:bx,y:GY[1]-15,r:30,life:0.35,max:0.35,c:'#ffb050'});G.fx.push({t:'flash',x:bx,y:GY[1]-20,c:'#ffd27a',life:0.2,max:0.2});blastFx(bx,GY[1]-12,34,'#ffb050',4);puff(bx,GY[1]-10,6,'#6a5a48',50)}else if(!G.sim){puff(bx,GY[1]-rnd(4,14),7,'#5a5048',50);puff(bx,GY[1]-20,3,'#8a7e70',30)}snd('explosion_big',bx);shake(3)}}
+        const sx=bx-150,sy=VIEW.top-50,tt=Math.hypot(bx-sx,by-sy)/MET_SP;
+        G.proj.push({side:z.side,k:'met',dmg:45,x:sx,y:sy,tgt:null,anchor:false,tx:bx,ty:by,sp:MET_SP,d0:1,lob:0,c:FIRE,f:0,trail:[]});
+        if(!G.sim)G.fx.push({t:'warn',x:bx,y:by,life:tt,max:tt,z:by-0.5})}}
+    else if(z.t==='air'){z.px+=z.dir*AIR_SPD*dt;   // the bomber crosses; a bomb every AIR_GAP world px while it is over the target
+      while((z.px-z.nd)*z.dir>=0&&(z.nd-(z.x+z.dir*(95-AIR_DRIFT)))*z.dir<=0){G.drops.push({k:'bomb',side:z.side,x:z.nd,y:airY()+6,vx:z.dir*AIR_VX,vy:10,ty:rnd(GY[0],GY[1]),rot:0});z.nd+=z.dir*AIR_GAP}
+      if((z.px-z.end)*z.dir>0)z.life=0}
     else if(z.t==='bones'){const age=z.max-z.life;   // one skeleton every max/6 s while the loop plays
       while(z.n<6&&age>=z.n*(z.max/6)){const sk=mkUnit(z.side,'skl');sk.x=Math.max(30,Math.min(WORLD-30,z.x+rnd(-40,40)));sk.y=rnd(GY[0],GY[1]);sk.cd=0.5;G.units.push(sk);z.n++;
         if(!G.sim)puff(sk.x,sk.y,4,'#8a7a6a',30)}}
@@ -1274,7 +1277,7 @@ function update(dt){zArm();
   for(let i=G.parts.length-1;i>=0;i--){const p=G.parts[i];p.life-=dt;if(p.life<=0){G.parts.splice(i,1);continue}p.vy+=p.g*dt;if(p.mote){p.vx+=rnd(-70,70)*dt;p.vy+=rnd(-70,70)*dt;p.vx*=1-2.2*dt;p.vy*=1-2.2*dt}p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.leaf){p.rot+=p.vr*dt;p.vx*=0.98}
     if(p.fl!=null&&p.y>=p.fl&&p.vy>0){p.y=p.fl;if(p.drop){if(p.dc&&G.decals.length<90)G.decals.push({x:p.x,y:p.fl,r:p.s*rnd(1.1,1.8),c:p.dc,t:0,d:rnd(7,10),sq:rnd(0.3,0.45)});G.parts.splice(i,1);continue}
       p.vy*=-0.32;p.vx*=0.55;p.vr=(p.vr||0)*0.5;if(Math.abs(p.vy)<14){p.vy=0;p.g=0;p.vx*=0.8}}}
-  updSfx(dt);updShells(dt);updSouls(dt);updFlowers(dt);updWfx(dt);zArm();
+  updSfx(dt);updShells(dt);updSouls(dt);updFlowers(dt);updWfx(dt);updDrops(dt);zArm();
   for(const d of G.decals)d.t+=dt;if(G.decals.length&&G.decals[0].t>G.decals[0].d)G.decals=G.decals.filter(d=>d.t<d.d);
   updZones(dt);
   for(let i=G.shields.length-1;i>=0;i--){G.shields[i].life-=dt;if(G.shields[i].life<=0)G.shields.splice(i,1)}
@@ -1356,12 +1359,12 @@ function drawBattle(t,w,h,dpr){
   const L=[];for(const c of G.corpses)if(!c.u.T.air)L.push([c.u.y,c,0]);for(const u of ground)L.push([u.y,u,1]);L.sort((a,b)=>a[0]-b[0]);
   const E=zItems();let ei=0;
   for(const it of L){ei=drawZ(E,ei,it[0],t);if(it[2])drawUnit(it[1],t);else drawCorpse(it[1],t)}
-  ei=drawZ(E,ei,AIRZ,t);drawWfxSet(true);   // sandstorm, airstrike, meteors, judgment: over ground units, under fliers
+  ei=drawZ(E,ei,AIRZ,t);drawWfxSet(true);drawBursts();drawDrops(t);   // sandstorm, airstrike, meteors, judgment: over ground units, under fliers
   for(const c of G.corpses)if(c.u.T.air)drawCorpse(c,t);
   for(const u of air)drawUnit(u,t);
   ei=drawZ(zItems(),0,Infinity,t,AIRZ);   // effects on fliers and effects with no unit (projectile trails, powers): on top
   drawShells(1);drawSouls(t);
-  for(const p of G.proj){if(p.k==='met'&&wfxOn('meteor_shower'))continue;   // meteor shower sheet draws the meteors
+  for(const p of G.proj){if(p.k==='met'&&drawMeteor(p))continue;   // meteors: the sprite cut from the meteor sheet
     const lift=p.lob?Math.sin(Math.PI*p.f)*60:0,wood=TYPES[p.k].fac==='verdant',PS=projSpr(p);
     if(PS){const bo=bendOf(p);ctx.save();ctx.translate(p.x+(p.bn?p.bn[0]*bo:0),p.y-lift+(p.bn?p.bn[1]*bo:0));drawProjSprite(p,PS,t);ctx.restore();
       if(!G.sim&&!G.paused){if((TYPES[p.k].fire)&&Math.random()<0.35)emberBurst(p.x,p.y-lift,1,14);if(p.k==='rkt'||p.k==='gyr'){if(Math.random()<0.4&&roomP())G.parts.push({x:p.x,y:p.y-lift,vx:rnd(-5,5),vy:-rnd(2,8),g:-4,life:0.45,max:0.45,c:'#9a9488',s:1.8,a:0.4})}}
@@ -1865,7 +1868,9 @@ function drawZ(E,i,hi,t,lo){if(lo!=null)while(i<E.length&&E[i][0]<lo)i++;if(i>=E
   return i}
 function drawFxList(FX,t){
   for(const f of FX){const a=f.life/f.max;ctx.globalAlpha=a;if(drawFx2(f,a,t)||drawFx3(f,a,t)){ctx.globalAlpha=1;continue}
-    if(f.t==='ring'){ctx.globalAlpha=0.6*a;ctx.strokeStyle=f.c;ctx.lineWidth=1.5;const rr=f.r*(1.2-a*0.55);ctx.beginPath();ctx.ellipse(f.x,f.y,rr,rr*0.4,0,0,7);ctx.stroke()}
+    if(f.t==='warn'){const k=1-a,p=0.5+0.5*Math.sin(G.time*18);ctx.globalAlpha=0.18+0.4*k*(0.6+0.4*p);ctx.fillStyle='#ff5a20';ctx.beginPath();ctx.ellipse(f.x,f.y,10+16*k,(10+16*k)*0.32,0,0,7);ctx.fill();
+      ctx.globalAlpha=0.5*k;ctx.strokeStyle='#ffd27a';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(f.x,f.y,8+10*k,(8+10*k)*0.32,0,0,7);ctx.stroke()}
+    else if(f.t==='ring'){ctx.globalAlpha=0.6*a;ctx.strokeStyle=f.c;ctx.lineWidth=1.5;const rr=f.r*(1.2-a*0.55);ctx.beginPath();ctx.ellipse(f.x,f.y,rr,rr*0.4,0,0,7);ctx.stroke()}
     else if(f.t==='flash'){ctx.save();ctx.fillStyle=f.c;ctx.shadowColor=f.c;ctx.shadowBlur=14;ctx.beginPath();ctx.arc(f.x,f.y,3+(1-a)*6,0,7);ctx.fill();ctx.restore()}
     else if(f.t==='heal'){ctx.strokeStyle=HEAL;ctx.lineWidth=2;ctx.shadowColor=HEAL;ctx.shadowBlur=6;ctx.beginPath();ctx.moveTo(f.x,f.y);ctx.quadraticCurveTo((f.x+f.x2)/2,Math.min(f.y,f.y2)-12,f.x2,f.y2);ctx.stroke();ctx.shadowBlur=0}
     else if(f.t==='bolt'){ctx.save();ctx.strokeStyle=f.c;ctx.lineWidth=4;ctx.shadowColor=f.c;ctx.shadowBlur=16;
@@ -1900,6 +1905,41 @@ function drawProjSprite(p,r,t){const img=PRJ[r[0]],a=projHeading(p),f=Math.floor
 // while the power is active (at least one full loop), 13-16 fade out (once, after the power ends). Drawn bottom-centre at
 // the target on the ground, scaled so the drawn width (measured by the tool) matches the power's area.
 const WFX_FAC={djinn:'sandstorm',verdant:'overgrowth',mutant:'acid_rain',auto:'emp',goblin:'airstrike',knight:'divine_judgment',dragon:'meteor_shower',undead:'plague_of_bones'};
+// ---- Airstrike / Meteor Shower: the bomb and the meteor are cut out of their sheets and fall for real; each impact plays
+// the sheet's ground explosion once (BURST), at the moment the damage lands ----
+const DROP_FAC={goblin:1,dragon:1},AIR_SPD=340,AIR_GAP=26,AIR_VX=90,AIR_G=380,MET_SP=250;
+const airY=()=>VIEW.top+VIEW.span*0.2;   // bomber altitude: just under the HUD
+const AIR_DRIFT=(()=>{const h=95,t=Math.sqrt(2*h/AIR_G);return AIR_VX*t})();   // how far a bomb carries forward while falling (release lead)
+const DROP_ART={};
+function dropArt(){if(DROP_ART.ok)return true;const A=WFXI.airstrike,M=WFXI.meteor_shower;if(!A||!M)return false;
+  const cut=(im,x,y,w,h,er)=>{const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.drawImage(im,x,y,w,h,0,0,w,h);if(er)g.clearRect(er[0],er[1],er[2],er[3]);return c};
+  DROP_ART.bomb=cut(A,48,50,30,52);DROP_ART.meteor=cut(M,812,27,159,153,[0,110,62,43]);   // the big meteor (the small one beside it erased)
+  return DROP_ART.ok=true}
+// ground explosion part of a sheet: rows y0..256 of these frames, full cell width, played once at 12 fps with crossfade
+const BURST={airstrike:{y0:148,fr:[1,2,3,4,8,12,13,14]},meteor_shower:{y0:176,fr:[4,5,6,8,12,13,14,15]}};
+function burst(n,x,y,w){if(G.sim||!wfxOn(n))return;G.bursts.push({n,x,y,w,t0:G.time})}
+function drawBursts(){if(!G.bursts.length)return;ctx.save();ctx.imageSmoothingEnabled=false;
+  G.bursts=G.bursts.filter(b=>{const B=BURST[b.n],D=WFX_DATA[b.n],im=WFXI[b.n],q=(G.time-b.t0)*12;if(q>=B.fr.length)return false;
+    const i=Math.floor(q),fr=q-i,s=b.w/256,f0=B.fr[i],f1=B.fr[Math.min(B.fr.length-1,i+1)],a=Math.min(1,(B.fr.length-q)/1.5);
+    const one=(f,al)=>{if(al<=0.01)return;ctx.globalAlpha=al;ctx.drawImage(im,(f%4)*256,Math.floor(f/4)*256+B.y0,256,256-B.y0,b.x-128*s,b.y-(D.by-B.y0)*s,256*s,(256-B.y0)*s)};
+    one(f0,a);one(f1,a*fr);return true});
+  ctx.restore()}
+function updDrops(dt){for(let i=G.drops.length-1;i>=0;i--){const d=G.drops[i];d.vy+=AIR_G*dt;d.x+=d.vx*dt;d.y+=d.vy*dt;d.rot=Math.atan2(d.vy,d.vx);
+    if(!G.sim&&Math.random()<dt*20&&roomP())G.parts.push({x:d.x-d.vx*0.02,y:d.y-6,vx:rnd(-4,4),vy:-rnd(2,8),g:-4,life:0.4,max:0.4,c:'#9a9488',s:1.4,a:0.35});
+    if(d.y<d.ty)continue;G.drops.splice(i,1);const bx=d.x;   // landed: the damage and the blast happen now
+    for(const e of G.units)if(e.side!==d.side&&!e.dead&&Math.abs(e.x-bx)<=30)hurt(d.side,'zone',e.T.air?25:55,e);
+    if(!G.sim){burst('airstrike',bx,d.ty,80);puff(bx,d.ty-rnd(4,12),6,'#5a5048',50);emberBurst(bx,d.ty-6,4,40)}snd('explosion_big',bx);shake(3)}}
+let PLANE=null;
+function drawDrops(t){if(!G.drops.length&&!G.zones.some(z=>z.t==='air'))return;
+  for(const z of G.zones)if(z.t==='air'&&TYPES.gyr){   // the bomber: the Gyrocopter sprite, larger, high over the lane
+    if(!PLANE)PLANE={k:'gyr',T:TYPES.gyr,tier:1,side:0,x:0,y:0,hp:1,max:1,ph:0,g:0,ev:0,age:9,sa:9,flash:0,atk:0,cd:1,eng:0,moving:true,buffT:0,mir:0,shMax:0,stunT:0,acidS:0,burnT:0};
+    PLANE.side=z.side;ctx.save();ctx.translate(z.px,airY());ctx.scale(1.5,1.5);drawUnit(PLANE,t);ctx.restore()}
+  if(!dropArt())return;const B=DROP_ART.bomb;ctx.save();ctx.imageSmoothingEnabled=false;
+  for(const d of G.drops){ctx.save();ctx.translate(d.x,d.y);ctx.rotate(d.rot-Math.PI/2);const s=0.42;ctx.drawImage(B,-B.width/2*s,-B.height*0.6*s,B.width*s,B.height*s);ctx.restore()}
+  ctx.restore()}
+function drawMeteor(p){if(!dropArt())return false;const M=DROP_ART.meteor,s=0.36,a=Math.atan2(p.ty-p.y,p.tx-p.x)-Math.atan2(130,132);
+  ctx.save();ctx.imageSmoothingEnabled=false;ctx.translate(p.x,p.y);ctx.rotate(a);ctx.drawImage(M,-134*s,-128*s,M.width*s,M.height*s);ctx.restore();
+  if(!G.sim&&!G.paused&&Math.random()<0.6)emberBurst(p.x,p.y,1,20);return true}
 // ---- wish effect sheets (art/wish_fx): 10 fps, frames crossfaded. Frames 1-4 build once, 5-12 loop ping-pong for the
 // power's duration, 13-16 end once. Each faction power is 3 copies across its area (left / centre / right, 70-100% scale,
 // 0-0.3 s apart, some mirrored) so one sheet's edges are covered by the next. Drawn in world space, feet on GY[1].
