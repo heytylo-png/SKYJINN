@@ -1,0 +1,9 @@
+# never commit signing keys
+*.keystore
+*.jks
+android/local.properties
+android/.gradle/
+android/build/
+android/app/build/
+*.aab
+*.apk

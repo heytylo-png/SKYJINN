@@ -9,6 +9,28 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 
 **Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
 
+**Android (Google Play, Trusted Web Activity).** `android/` is the Bubblewrap TWA project.
+- **App:** package `com.skyjinn.game`, version 1 (1.0.0).
+- **SDK levels:** minSdk 24, targetSdk and compileSdk 36.
+- **Display:** landscape, immersive fullscreen.
+- **Splash:** the title background with the logo, centre-cropped.
+- **Content:** it opens https://skyjinn.netlify.app/.
+
+Building and signing:
+- Build with `cd android && ./gradlew bundleRelease`. This needs an Android SDK; set `sdk.dir` in `android/local.properties`.
+- Sign the bundle with the upload key using `jarsigner` (alias `skyjinn`).
+- The upload keystore is **not** in the repo (`.gitignore`), so keep your backup.
+
+Removing the browser bar:
+- `/.well-known/assetlinks.json` lists the upload key's SHA-256. That proves the app owns the site, so the app opens without a browser bar.
+- After the first Play upload, add Google Play's app-signing key fingerprint with `python3 tools/add_play_fingerprint.py AB:CD:…`.
+- `tools/assetlinks.template.json` shows the final shape.
+
+Store pages and installability:
+- Store pages: `/privacy/` (privacy policy) and `/support/` (contact). Replace `SUPPORT_EMAIL` in `support/index.html`.
+- `manifest.json` has 192 and 512 icons, plus 192 and 512 maskable icons (`icon-maskable-*.png`: the logo inside the safe zone, on the title art).
+- The service worker caches every game file, the store pages and the icons, so the app works offline.
+
 **Hosting.** `.github/workflows/pages.yml` publishes the game to GitHub Pages on every push to main, at https://heytylo-png.github.io/SKYJINN/. It publishes only `index.html`, `sw.js`, the manifest, the icons and `audio/`.
 - One-time setup: in the repo, go to **Settings → Pages → Source** and choose **GitHub Actions**.
 - Netlify can stay on for PR previews.
