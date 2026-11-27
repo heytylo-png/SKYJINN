@@ -58,10 +58,11 @@ Store pages and installability:
 - **Ranks:**
   - Melee units pass through ranged allies.
   - A unit blocked for 0.6 s sidesteps into the freer neighbouring row.
-- **Faction stats:** `FACMOD` multipliers were re-tuned per faction.
+- **Faction stats:** `FACMOD` multipliers were re-tuned per faction. With the Everwinter Court added (hp ×1.3, dmg ×1.25), Magic Knights damage went to ×0.93 and Verdant to hp ×1.01, dmg ×0.965. Over 1,296 simulated matches (3 reps, every ordered pair, 3 maps, Normal and Hard), every faction wins 46.5–53.1%.
 - **Simulator:**
   - `window.__sky.sim(faction, diff, true, enemy, map)` runs one AI-vs-AI match headless.
   - `node tools/simrun.js <reps> out.json` runs every ordered faction pair on all 3 maps at Normal and Hard, 4 browsers in parallel.
+  - `FOCUS=<faction> node tools/simrun.js <reps> out.json` runs only the pairs one faction plays in. Use it to tune a new faction quickly; one rep of all nine factions (432 matches) takes about 4–5 min.
   - `python3 tools/simstat.py out.json` prints the summary.
   - Target search, rank blocking and separation scan x-sorted lists, which keeps big late-game armies fast.
 
