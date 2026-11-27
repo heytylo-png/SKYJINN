@@ -174,10 +174,25 @@ One `<audio>` element plays the music (loop, volume 0.5) and crossfades over 1 s
 
 Only the synth `gun`, plus the death and lob-launch thumps, are still synthesized.
 
-## Factions (8)
+## Factions (11)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
 
 Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins, Undead, Automatons. All eight factions are painted.
+
+### New factions (placeholder art)
+| Faction | Units | Champion (every 6s) | Traits | Wish |
+|---|---|---|---|---|
+| **Infernal Demons** (`demon`) | Imp Horde ×3, Pit Brute, Hellcaster (hits air, burns), Hellhound, Winged Fiend, Brimstone Spitter, Hellfire Engine (burning splash), Blood Priestess (allies near her heal 25% of damage dealt) | Archfiend: ring of hellfire | +25% damage, lose 1% max HP/s while fighting; explode on death for 20% max HP nearby | **Hellfire Rift**: burning crack for 5s |
+| **Frost Elves** (`frost`) | Frost Sprite ×3, Glacier Warden, Frost Archer (hits air), Snow Panther Rider, Frost Owl Rider, Shard Thrower, Ice Golem (lobbed boulder), Aurora Priestess (heal + small shield) | Frost Queen: freezes nearby enemies 1.5s | Frostbite: hits slow 15% for 2s; 3 stacks freeze 1s (champions immune) | **Blizzard**: 50% slow + damage for 5s |
+| **Void Beasts** (`void`) | Voidling ×3, Abyss Hulk, Eye Stalker (beam, hits air), Rift Stalker (blinks to the backline every 8s), Void Ray, Tentacle Maw, Gravity Well (splash that drags enemies together), Void Shepherd (shields, even at full HP) | The Devourer: pulls nearby enemies in and bites | Once per unit at 50% HP: blink 40px back, untargetable 1s; kills heal the killer 15% | **Black Hole**: pulls enemies in for 3s, then bursts |
+
+Their art is a placeholder until the sprite sheets arrive.
+- `ART_ALIAS` maps each new unit to an existing unit's sheets.
+- `FAC_ALIAS` borrows a tower and emblem for each new faction.
+- Everything borrowed is recoloured with that faction's `TINT` (grey → sepia → hue shift) when it loads.
+- To swap in real art, embed the new sheets under the new unit keys (e.g. `imp1`) and remove that key from `ART_ALIAS`.
+
+Balance (`FACMOD` re-tuned with `tools/simrun.js`): 1,980 AI-vs-AI matches; every faction wins 45.8–55.6%; average match length 4.69 min; 82% end by base destruction.
 
 ## Layout
 - `index.html` — the full game
