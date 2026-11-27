@@ -9,6 +9,30 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 
 **Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
 
+**Camera.** Each map shows a vertical slice of the 300-unit world (`VIEW`, set in `setView()`), cropped from the top so the sky and mid layers lose their upper part instead of shrinking.
+
+- **Slice size:** the slice ends just below the lane. It is only as tall as needed for the lane to sit in the bottom 40% and for the towers to clear the top HUD. That works out to about 199 units on Desert Ruins, 206 on Sky Bridge and 231 on Volcanic Wastes.
+- **Unit size:** a normal unit is about 16% of battlefield height (14% on Volcanic Wastes).
+- **Fliers:** they cruise at 30–47% of the visible slice.
+
+**Unit spacing.**
+- Every ground unit spawns at a random depth across the full lane (`GY`) and drifts back to that depth while marching.
+- Units close only 35% of the vertical gap to a target, so groups move in loose ranks.
+- The separation radius is 40% larger.
+- At most 3 ground units can share a 14×8 spot; extras slide toward the emptier lane edge.
+
+**Ranks and contact.** Ground units march in 5 rows across the lane depth; each new unit takes the next row.
+- Melee units stop at attack range measured from the drawn bodies, so fighters meet edge to edge instead of walking into each other.
+- A unit whose row is blocked by an ally just ahead holds position right behind it.
+- Allies separate at 1.4× their drawn width. Depth counts 3.5× in that test, so neighbouring rows don't shove each other sideways.
+- Enemies are only kept from overlapping, so melee can still connect.
+
+**Particles.** Every particle lives at most 1.5 s and fades out. There are at most 250 at once (oldest removed first). Verdant ground flowers also last at most 1.5 s, capped at 60.
+
+**Aiming a wish.** A 10% dark tint covers the battlefield, plus a dashed, slowly turning ellipse on the ground under the finger or cursor showing the wish's area. The Shield Dome uses an 80 px radius.
+
+**Toasts.** Toasts show in a small strip just above the unit bar for 1.8 s. A wish description appears only the first time that wish is armed in each match.
+
 **Wish effects.** The `wish_fx` sheets play at 10 fps, and each frame crossfades into the next by its fractional time.
 - **Timing:** frames 1–4 build up once, frames 5–12 ping-pong for the whole power's duration, and frames 13–16 close it out. The effect fades in over 0.25 s and out over 0.4 s.
 - **Layout:** each faction power is 3 copies across its area (left, centre, right). Each copy is 70–100% scale with a 0–0.3 s start offset, and some are mirrored, so one sheet's edges are covered by the next. Every copy draws the full 256×256 cell, bottom-centre on the lane's feet line at the tapped world x, and scrolls with the camera.
@@ -24,6 +48,10 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
   - rising gold sparkles for Divine Judgment, plus a white 0.1 s flash at the peak
   - teal wisps for Plague of Bones
   - teal sparkles on the Shield Dome, which stays a single centred copy
+
+**Airstrike and Meteor Shower** no longer loop their sheets over the area. The bomb and the meteor are cut out of their sheets and fall for real. Each impact plays the sheet's ground explosion once, on landing, which is also when the damage happens.
+- **Airstrike:** a Gyrocopter bomber flies in from off-screen just under the HUD. It drops a bomb every 26 world px while over the target, leading for the forward carry. Each bomb arcs down to a random lane depth, then blasts within 30 px.
+- **Meteor Shower:** meteors start high above the view, 150 px back, and fly in at 250 px/s. A pulsing orange glow marks each landing spot until the meteor hits.
 
 **Readability.**
 - Every unit sprite has a 1px dark outline: a cached silhouette of its sheet, drawn 1 screen px out in four directions.
