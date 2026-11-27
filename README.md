@@ -168,8 +168,10 @@ Drawn projectiles come from `art/projectiles/proj_<sheet>.png`: four 256×256 sh
 | `airstrike` | Goblin Airstrike | the sheet draws the bombs and blasts; damage is unchanged |
 | `divine_judgment` | Knight Divine Judgment | |
 | `shield_dome` | Shield Dome (all factions) | a 20% teal ellipse on the ground behind units |
+| `meteor_shower` | Dragon Meteor Shower | the sheet draws the meteors and impacts; the meteors still hit as before |
+| `plague_of_bones` | Undead Plague of Bones | the 6 skeletons rise one by one during the loop frames |
 
-Those powers keep their short screen flash; their old vector drawings, runes and rings are no longer drawn. Undead and Dragon wishes keep their drawn visuals until their sheets arrive.
+Every faction power keeps its short screen flash; the old vector drawings, runes and rings are no longer drawn.
 
 ## Faction towers
 Each side's Sky Anchor is drawn from `art/towers/src/tower_<faction>.png` (512×512, a 2×2 grid of 256×256 states, base bottom-centre). `python3 tools/towers.py` measures each state's base line and the top of the structure (ignoring the painted smoke), then embeds them in `index.html` as `TOWER_DATA`.
