@@ -213,10 +213,42 @@ The pause menu also opens Settings, without the tutorial and reset buttons.
 - **Factions:** Djinn, Verdant, Mutants and Knights start unlocked. The other four cost 12 crowns each. A faction that already has campaign progress stays unlocked. Locked factions show the `card_locked` frame on the start menu, the campaign tabs and the Unlocks window.
 - **Unit tints:** Frost, Ember, Venom, Royal, Gilded and Shadow, 4–10 crowns each, bought and equipped in **Unlocks**. A tint is a colour matrix (`TINTS`) baked into the player's sheets and icons when they are built, so it costs nothing per frame. Glow halos keep their colour, and AI vs AI ignores the tint.
 
-## Factions (8)
-Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
+## Factions (9)
+Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons · Everwinter Court
 
-Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins, Undead, Automatons. All eight factions are painted.
+Drawn sprite sheets (idle, walk, attack, death) done for all nine factions, and all nine are painted.
+
+## Everwinter Court
+The ninth faction (id `frost`). It is locked at first and costs 12 crowns, like the other locked factions.
+
+| Unit | Key | Role | Notes |
+|---|---|---|---|
+| Rime Wolves | `rwf` | swarm | 3 per buy |
+| Frost Troll | `trl` | tank | regenerates 5 HP/s (`regen`) |
+| Rimewitch | `rwt` | ranged | armor-piercing ice shards, hits air |
+| Skate Assassin | `ska` | diver | fastest diver |
+| Aurora Serpent | `aur` | air | |
+| Winter Matriarch | `mat` | anti-air | frost orbs |
+| War Mammoth | `mam` | siege | splash; tougher and slower than other siege |
+| Cryo Embalmer | `cry` | support | heals the most hurt ally |
+| Glacial Hydra | `hyd` | champion | frost beams (`beam:1`), ability `frostbeam` |
+
+- **Trait, Chill:** every Everwinter hit chills the target for 1.5 s, slowing its movement and attacks to 80% (`CHILL`, `CHILL_T`). Chilled units shed small frost sparkles.
+- **Frozen:** frozen units (from the Hydra's ability or Absolute Zero) are stunned, stop animating, and sit inside a translucent ice block (`iceBlock`).
+- **Art:** unit sheets are `art/sheets/src/frost_<unit>_t<tier>.png`. They are cleaned 128 px sheets, kept as-is, and the Troll has 5 frames per row. Single sprites `art/units/<key><tier>.png` are frame 1 of each idle row.
+- **Tower:** `art/towers/src/frames/tower_frost_4x4.png` is the delivered 4×4 animation. `art/towers/src/tower_frost.png` packs frames 1 (intact), 13 (cracked), 14 (breaking) and 16 (rubble) into the standard 2×2 states.
+- **Emblem and wish icon:** `art/ui/emblem_frost.png` and `art/ui/wish_frost.png`.
+
+**Glacial Hydra.** The body is an ordinary unit sheet (`frost_hydra_t1.png`). `drawHydra` assembles three necks and heads on it at the socket ring on its back, and `tools/hydra.py` embeds those parts (`art/hydra/src/`) as `HYDRA_DATA`.
+- **Socket:** its position per body frame is `HY_SOCK`. On the attack frames the necks lift with the rearing body (`HY_LIFT`), and on the death row they droop and fade.
+- **Necks:** neck 1 runs flat, neck 2 rises and neck 3 rises steeply, at base angles `HY_NECK` −5°/22°/48°. Each sways on its own, and a head sits on each neck's far ring.
+- **Heads:** a head opens while it fires and is half open just before an attack. Otherwise it is closed.
+- **Basic attack:** the heads take turns firing a frost beam: an instant hit, drawn from the open mouth to the target. The beam is the `frost_beam_mouth` burst, a tiled `frost_beam_mid` and a `frost_beam_impact` at the target, all at 12 fps.
+- **Ability (every 6 s):** all three heads fire at enemies up to 150 px ahead, for 32 damage plus a 1.2 s freeze.
+
+**Absolute Zero (wish).** `wish_fx_absolute_zero.png` uses the standard faction-power format. It is tiled as 3 evenly spaced, overlapping copies across the area (`WFX_TILE`), so the art covers the whole area without visible edges, and all three play in step.
+- **Freeze:** while the loop frames play (1.6 s), every enemy within 105 px is frozen solid, fliers included, along with anything that walks in.
+- **Shatter:** on the shatter frames (13–16), everything still in the area takes 100 damage (`SHATTER_DMG`) and thaws.
 
 ## Layout
 - `index.html` — the full game
@@ -374,6 +406,7 @@ Drawn projectiles come from `art/projectiles/proj_<sheet>.png`: four 256×256 sh
 | `shield_dome` | Shield Dome (all factions) | a 20% teal ellipse on the ground behind units |
 | `meteor_shower` | Dragon Meteor Shower | the sheet draws the meteors and impacts; the meteors still hit as before |
 | `plague_of_bones` | Undead Plague of Bones | the 6 skeletons rise one by one during the loop frames |
+| `absolute_zero` | Everwinter Absolute Zero | 3 tiled copies; freeze during the loop, Shatter damage on frames 13–16 |
 
 Every faction power keeps its short screen flash; the old vector drawings, runes and rings are no longer drawn.
 

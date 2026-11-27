@@ -119,6 +119,57 @@
   ],
   "src": "auto_arc_gunner_t3.png"
  },
+ "aur1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 112.0,
+  "hit": 2,
+  "ih": 106,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_aurora_serpent_t1.png"
+ },
+ "aur2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 112.5,
+  "hit": 1,
+  "ih": 108,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_aurora_serpent_t2.png"
+ },
+ "aur3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 120.0,
+  "hit": 2,
+  "ih": 121,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_aurora_serpent_t3.png"
+ },
  "bal1": {
   "F": 128,
   "air": false,
@@ -865,6 +916,60 @@
    4
   ],
   "src": "auto_colossus_prime_t3.png"
+ },
+ "cry1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 108,
+  "mz": [
+   121.2,
+   91.2
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_cryo_embalmer_t1.png"
+ },
+ "cry2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_cryo_embalmer_t2.png"
+ },
+ "cry3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_cryo_embalmer_t3.png"
  },
  "dgd1": {
   "F": 128,
@@ -1688,6 +1793,23 @@
   ],
   "src": "dragon_harpoon_crew_t3.png"
  },
+ "hyd1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 93,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_hydra_t1.png"
+ },
  "irb1": {
   "F": 128,
   "air": false,
@@ -2241,6 +2363,108 @@
    4
   ],
   "src": "dragon_magma_golem_t3.png"
+ },
+ "mam1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 105,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_war_mammoth_t1.png"
+ },
+ "mam2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 111,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_war_mammoth_t2.png"
+ },
+ "mam3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 112,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_war_mammoth_t3.png"
+ },
+ "mat1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_winter_matriarch_t1.png"
+ },
+ "mat2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_winter_matriarch_t2.png"
+ },
+ "mat3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 120,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_winter_matriarch_t3.png"
  },
  "mec1": {
   "F": 128,
@@ -3013,6 +3237,114 @@
   ],
   "src": "auto_repair_bot_t3.png"
  },
+ "rwf1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 94,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rime_wolves_t1.png"
+ },
+ "rwf2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 106,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rime_wolves_t2.png"
+ },
+ "rwf3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 112,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rime_wolves_t3.png"
+ },
+ "rwt1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": [
+   123.9,
+   43.9
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rimewitch_t1.png"
+ },
+ "rwt2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 123,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rimewitch_t2.png"
+ },
+ "rwt3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 123,
+  "mz": [
+   121.8,
+   40.1
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rimewitch_t3.png"
+ },
  "sap1": {
   "F": 128,
   "air": false,
@@ -3192,6 +3524,57 @@
    4
   ],
   "src": "dragon_ember_shaman_t3.png"
+ },
+ "ska1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_skate_assassin_t1.png"
+ },
+ "ska2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 113,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_skate_assassin_t2.png"
+ },
+ "ska3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 122,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_skate_assassin_t3.png"
  },
  "skl1": {
   "F": 128,
@@ -3831,6 +4214,57 @@
    4
   ],
   "src": "knight_sun_trebuchet_t3.png"
+ },
+ "trl1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 115,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "frost_frost_troll_t1.png"
+ },
+ "trl2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "frost_frost_troll_t2.png"
+ },
+ "trl3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "frost_frost_troll_t3.png"
  },
  "vec1": {
   "F": 128,
