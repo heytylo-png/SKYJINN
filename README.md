@@ -9,6 +9,30 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 
 **Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
 
+**Wish effects.** The `wish_fx` sheets play at 10 fps, and each frame crossfades into the next by its fractional time.
+- **Timing:** frames 1–4 build up once, frames 5–12 ping-pong for the whole power's duration, and frames 13–16 close it out. The effect fades in over 0.25 s and out over 0.4 s.
+- **Layout:** each faction power is 3 copies across its area (left, centre, right). Each copy is 70–100% scale with a 0–0.3 s start offset, and some are mirrored, so one sheet's edges are covered by the next. Every copy draws the full 256×256 cell, bottom-centre on the lane's feet line at the tapped world x, and scrolls with the camera.
+- **Draw order:** Sandstorm, Airstrike, Meteor Shower and Divine Judgment draw in front of units. The other powers draw behind them.
+- **Damage timing:** a power's damage, zone and summons land when the loop starts (0.4 s after the cast), in sync with the art.
+- **Particles:** each power adds particles on top:
+  - dust streaks for Sandstorm
+  - falling leaves for Overgrowth
+  - crimson drops and splashes for Acid Rain
+  - spark bursts for EMP
+  - embers for Meteor Shower, with a shake of 4 on each impact
+  - smoke and shake for Airstrike
+  - rising gold sparkles for Divine Judgment, plus a white 0.1 s flash at the peak
+  - teal wisps for Plague of Bones
+  - teal sparkles on the Shield Dome, which stays a single centred copy
+
+**Readability.**
+- Every unit sprite has a 1px dark outline: a cached silhouette of its sheet, drawn 1 screen px out in four directions.
+- The mid and ground map layers are dimmed: Volcanic Wastes ×0.75, Desert Ruins and Sky Bridge ×0.85. The sky is unchanged.
+- Buffed units shed 3 small gold sparkles every 0.4 s.
+- A unit in Holy Rage gets a pulsing gold team ring; there is no glow shape over the sprite.
+- Heal and ability rings are 1.5px wide, start at 60% opacity, expand once and are gone within 0.4 s.
+- Team rings under units are 1.0× unit width at 55% opacity.
+
 **Pixel UI kit.** The menus and HUD use the art in `art/ui_kit/`, which `tools/uikit.py` embeds as `UI_KIT`. At startup each piece becomes a `--k-<name>` CSS variable. Frames are drawn with `border-image` 9-slicing at the slice insets from `ui_kit.json`, with corners scaled uniformly to phone size and `image-rendering: pixelated`.
 
 - **Windows:** every overlay sits in a `panel_large` window. Sub-sections use `panel_medium`, and titles sit on `bar_top`.
