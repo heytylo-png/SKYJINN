@@ -661,9 +661,9 @@ function getSprite(k,tier){for(let t=tier||1;t>=1;t--)if(SPR[k+t])return SPR[k+t
 // team marker: a thin flat ring in the team colour under the feet, a soft dark shadow inside it; champions get a thicker
 // ring and a gold diamond at the front. (x,y) is relative to the current transform; a = opacity; k = size factor
 const TEAM_C=['#3fe0d0','#ff7a3a'];
-function teamRing(c,u,x,y,a,k){const T=u.T,w=Math.max(T.r*uScale(u.k)*1.7,htOf(u)*0.55)*k,rx=w*0.6,ry=rx*0.3,dir=u.side?-1:1;
+function teamRing(c,u,x,y,a,k){const T=u.T,w=Math.max(T.r*uScale(u.k)*1.7,htOf(u)*0.55)*k,rx=w*0.5,ry=rx*0.3,dir=u.side?-1:1,rg=rage(u)&&G,pu=rg?0.5+0.5*Math.sin(G.time*9):0;
   c.save();c.globalAlpha=0.25*(a/0.7);c.fillStyle='#000';c.beginPath();c.ellipse(x,y,rx*0.82,ry*0.82,0,0,7);c.fill();
-  c.globalAlpha=a;c.strokeStyle=TEAM_C[u.side];c.lineWidth=T.champ?3:2;c.beginPath();c.ellipse(x,y,rx,ry,0,0,7);c.stroke();
+  c.globalAlpha=rg?Math.min(1,a+0.25+0.2*pu):a;c.strokeStyle=rg?GOLD:TEAM_C[u.side];c.lineWidth=(T.champ?3:2)+(rg?pu*0.8:0);c.beginPath();c.ellipse(x,y,rx,ry,0,0,7);c.stroke();
   if(T.champ){const dx=x+dir*rx,s=3.2;c.fillStyle=GOLD;c.strokeStyle='#5a3a12';c.lineWidth=0.8;c.beginPath();c.moveTo(dx-s,y);c.lineTo(dx,y-s);c.lineTo(dx+s,y);c.lineTo(dx,y+s);c.closePath();c.fill();c.stroke()}
   c.restore()}
 // sprites are drawn plain: the team is shown by the ring under each unit (teamRing), not by an outline
@@ -830,7 +830,14 @@ function sheetPick(sh,u,tt,dk){const n=sh.S.n,row=(r)=>n[r]?r:0,HIT=sh.S.hit!=nu
   return [0,Math.floor(tt*SHEET_FPS.idle)%n[0]]}
 function sheetFlash(sh,row,f){const cf=sh.cf;if(FLC.width!==cf||FLC.height!==cf){FLC.width=cf;FLC.height=cf}const c=FLC.getContext('2d');c.globalCompositeOperation='source-over';c.clearRect(0,0,cf,cf);
   c.drawImage(sh.cv,f*cf,row*cf,cf,cf,0,0,cf,cf);c.globalCompositeOperation='source-atop';c.fillStyle='rgba(255,255,255,0.45)';c.fillRect(0,0,cf,cf);return FLC}
+// unit outline: a dark silhouette of the same cell drawn 1 screen px out in 4 directions, behind the sprite
+const SILC=new WeakMap();
+function silOf(src){let o=SILC.get(src);if(o)return o;o=document.createElement('canvas');o.width=src.width;o.height=src.height;const c=o.getContext('2d');
+  c.drawImage(src,0,0);c.globalCompositeOperation='source-in';c.fillStyle='rgba(10,6,12,0.85)';c.fillRect(0,0,o.width,o.height);SILC.set(src,o);return o}
+function olDraw(c,src,sx,sy,sw,sh,dx,dy,dw,dh){if(src&&src.width){const m=c.getTransform(),k=Math.hypot(m.a,m.b)||1,o=V.dpr/k*(sw/dw),sil=silOf(src),ga=c.globalAlpha;
+  c.globalAlpha=ga*0.85;for(const [ox,oy] of [[1,0],[-1,0],[0,1],[0,-1]])c.drawImage(sil,sx,sy,sw,sh,dx+ox*o*dw/sw,dy+oy*o*dh/sh,dw,dh);c.globalAlpha=ga}}
 function drawSheet(c,sh,u,tt,dk,M){const [row,f]=sheetPick(sh,u,tt,dk),cf=sh.cf,S=sh.S,s=M.h/S.ih*sh.ts,fl=u.flash>0&&dk==null;
+  olDraw(c,sh.cv,f*cf,row*cf,cf,cf,-(S.ax+sh.r)*s,-(S.fy+sh.r)*s,cf*s,cf*s);
   c.drawImage(fl?sheetFlash(sh,row,f):sh.cv,fl?0:f*cf,fl?0:row*cf,cf,cf,-(S.ax+sh.r)*s,-(S.fy+sh.r)*s,cf*s,cf*s);
   if(sh.fire)fireFx(sh,u,row,f,s,c,tt,dk)}
 // a sheet whose attack frame draws its own projectile or slash: launch point in game units (facing right), or null
@@ -862,10 +869,10 @@ function drawBody(c,u,P,tt,an,dk){
     c.save();c.translate(dx,dy);c.rotate(rot);c.scale(sx,sy);
     c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
     if(sh)drawSheet(c,sh,u,tt,dk,M);
-    else if(po){const fi=posePick(po,u,tt,dk),g=poseCanvas(po,fi,u.side,u.flash>0&&dk==null),s2=M.h/po.h;c.drawImage(g.cv,-(g.f.ax+g.r)*s2,-(g.f.fy+g.r)*s2,g.cv.width*s2,g.cv.height*s2)}
+    else if(po){const fi=posePick(po,u,tt,dk),g=poseCanvas(po,fi,u.side,u.flash>0&&dk==null),s2=M.h/po.h;{const g0=poseCanvas(po,fi,u.side,false);olDraw(c,g0.cv,0,0,g0.cv.width,g0.cv.height,-(g0.f.ax+g0.r)*s2,-(g0.f.fy+g0.r)*s2,g0.cv.width*s2,g0.cv.height*s2)}c.drawImage(g.cv,-(g.f.ax+g.r)*s2,-(g.f.fy+g.r)*s2,g.cv.width*s2,g.cv.height*s2)}
     else if(fa){const fi=Math.floor((((tt/fa.dur)%1)+1)%1*fa.n)%fa.n,o=fa.pad+fa.r,fl=u.flash>0;
       c.drawImage(fl?flashFrame(fa,fi):fa.cv,fl?0:fi*fa.fw,0,fa.fw,fa.fh,-(M.ax*fa.w+o)*sc,-(fa.h+o)*sc,fa.fw*sc,fa.fh*sc)}
-    else c.drawImage(sp.cv,-(M.ax*sp.w+sp.r)*sc,-(sp.h+sp.r)*sc,sp.cv.width*sc,sp.cv.height*sc);
+    else{olDraw(c,sp.cv,0,0,sp.cv.width,sp.cv.height,-(M.ax*sp.w+sp.r)*sc,-(sp.h+sp.r)*sc,sp.cv.width*sc,sp.cv.height*sc);c.drawImage(sp.cv,-(M.ax*sp.w+sp.r)*sc,-(sp.h+sp.r)*sc,sp.cv.width*sc,sp.cv.height*sc)}
     c.restore()}}   // no sprite decoded yet: draw nothing for that frame
 // a unit's last moment: ground troops topple, machines and spirits collapse, mutants melt, fliers drop out of the sky
 function drawCorpse(c,t){const u=c.u,T=u.T,k=Math.min(1,c.t/c.d),e=k*k,M=SPR_META[u.k],mv=M&&M.mv||'hop',gs=(1+u.g*0.3)*(1+u.ev*0.09);
@@ -1085,7 +1092,7 @@ function dealHit(side,k,dmg,tgt,isA,x,y,src){
   const wood=T.fac==='verdant';
   if(T.splash){for(const e of G.units)if(e.side!==side&&!e.dead&&canHit(T,e)&&Math.hypot(e.x-x,(e.y-y)*0.6)<=T.splash+e.T.r)hurt(side,k,dmg,e,src);
     G.fx.push({t:'ring',x,y,r:T.splash,life:0.35,max:0.35,c:T.lob?PAL[side].glow:'#f6e3b8'});
-    if(k==='met'){if(!wfxOn('meteor_shower')){blastFx(x,y,40,'#ff8a2a',5);puff(x,y,10,'#6a4a3a',70)}snd('explosion_big',x);shake(2)}
+    if(k==='met'){if(!wfxOn('meteor_shower')){blastFx(x,y,40,'#ff8a2a',5);puff(x,y,10,'#6a4a3a',70)}else if(!G.sim){emberBurst(x,y-4,8,60);puff(x,y,4,'#5a4038',40)}snd('explosion_big',x);shake(4)}
     if(T.lob){boomFx(x,y,T.splash*0.75,T.fire?'fire':'explosion');if(wood)leaves(x,y,10,70);if(T.acid)acidSplash(x,y,8);puff(x,y,7,'#d8b483',38);shake(3);snd(T.acid?'splat':'explosion',x)}else if(!isA)hitSnd(T,tgt,src,x)}
   else if(!isA&&tgt&&!tgt.dead){sfxHit(k,side,tgt);hurt(side,k,dmg,tgt,src);if(T.acid)snd('splat',x);else hitSnd(T,tgt,src,x)}
 }
@@ -1132,8 +1139,11 @@ function champAbility(u,dir){
     G.fx.push({t:'ring',x,y,r:110,life:0.7,max:0.7,c:GOLD});G.fx.push({t:'ring',x,y,r:60,life:0.5,max:0.5,c:'#fff2c0'});for(let i=0;i<14;i++)sparks(x+rnd(-60,60),y-rnd(0,60),1,GOLD);snd('heal',x)}
   if(!G.sim)champFx(u,dir);
 }
-function castWish(side,x){
-  const f=G.fac[side],dir=side?-1:1;
+const WISH_VIS={djinn:[120,5],verdant:[150,6],mutant:[170,5],auto:[180,0.8],goblin:[170,1.8],knight:[130,0.9],dragon:[170,1.7],undead:[130,1.05]};   // [area, loop seconds]
+function castWish(side,x){const f=G.fac[side],V2=WISH_VIS[f],e=V2&&!G.sim?wfx(WFX_FAC[f],x,V2[0],V2[1],{flip:side===1}):null;
+  (G.pend||(G.pend=[])).push({t:G.time+WFX_IN,fn:()=>wishHit(side,x,e)});tutEvent('wish')}
+function wishHit(side,x,e){
+  if(G.over)return;const f=G.fac[side],dir=side?-1:1;
   if(f==='djinn'){G.zones.push({t:'storm',side,x,r:48,life:5,max:5,dir});snd('bolt');shake(4)}
   else if(f==='verdant'){G.zones.push({t:'grow',side,x,r:95,life:6,max:6});leaves(x,GY[1]-10,24,90);snd('explosion');shake(3)}
   else if(f==='mutant'){G.zones.push({t:'rain',side,x,r:100,life:5,max:5});snd('splat');shake(2)}
@@ -1147,17 +1157,9 @@ function castWish(side,x){
   else if(f==='knight'){for(const e of G.units)if(e.side!==side&&!e.dead&&Math.abs(e.x-x)<=60)hurt(side,'zone',180,e);
     for(const a of G.units)if(a.side===side&&!a.dead&&Math.abs(a.x-x)<=130){a.buffT=Math.max(a.buffT,6);a.acidS=0;a.acidT=0}
     G.zones.push({t:'light',side,x,r:60,life:0.9,max:0.9});for(let i=0;i<24;i++)sparks(x+rnd(-50,50),GY[1]-rnd(0,90),1,GOLD);snd('bolt');shake(7)}
-  if(!G.sim){const z=G.zones[G.zones.length-1],dir=side?-1:1;
-    if(f==='djinn')wfx('sandstorm',x,z.r*2.2,z.max,{follow:z,flip:dir<0});
-    else if(f==='verdant')wfx('overgrowth',x,z.r*2,z.max,{copies:3});
-    else if(f==='mutant')wfx('acid_rain',x,z.r*2,z.max);
-    else if(f==='auto')wfx('emp',x,220,0.8);
-    else if(f==='goblin')wfx('airstrike',x,z.r*2,z.max,{flip:dir<0});
-    else if(f==='knight')wfx('divine_judgment',x,140,0.9);
-    else if(f==='dragon')wfx('meteor_shower',x,z.r*2,z.max);
-    else if(f==='undead')wfx('plague_of_bones',x,140,z.max);
+  if(!G.sim){const z=G.zones[G.zones.length-1];if(e&&f==='djinn'&&z&&z.t==='storm')e.follow=z;
+    if(f==='knight')G.fx.push({t:'screen',c:'#ffffff',life:0.1,max:0.1,a:0.55});   // white flash at the peak
     wishFx(f,side,x)}
-  tutEvent('wish');
 }
 function updZones(dt){
   for(let i=G.zones.length-1;i>=0;i--){const z=G.zones[i];z.life-=dt;if(z.life<=0){G.zones.splice(i,1);continue}
@@ -1169,9 +1171,9 @@ function updZones(dt){
         G.proj.push({side:z.side,k:'met',dmg:45,x:bx-60,y:-20,tgt:null,anchor:false,tx:bx,ty:by,sp:520,d0:1,lob:0,c:FIRE,f:0,trail:[]})}}
     else if(z.t==='air'){z.drop-=dt;if(z.drop<=0&&z.life>0.25){z.drop=0.13;const bx=z.bx;z.bx+=z.dir*19;
         for(const e of G.units)if(e.side!==z.side&&!e.dead&&Math.abs(e.x-bx)<=30)hurt(z.side,'zone',e.T.air?25:55,e);
-        if(!wfxOn('airstrike')){G.fx.push({t:'ring',x:bx,y:GY[1]-15,r:30,life:0.35,max:0.35,c:'#ffb050'});G.fx.push({t:'flash',x:bx,y:GY[1]-20,c:'#ffd27a',life:0.2,max:0.2});blastFx(bx,GY[1]-12,34,'#ffb050',4);puff(bx,GY[1]-10,6,'#6a5a48',50)}snd('explosion_big',bx);shake(2)}}
-    else if(z.t==='bones'){const age=z.max-z.life;   // loop frames run from 4/12 s to 12/12 s: one skeleton every 8/12/6 s
-      while(z.n<6&&age>=4/WFX_FPS+z.n*(8/WFX_FPS)/6){const sk=mkUnit(z.side,'skl');sk.x=Math.max(30,Math.min(WORLD-30,z.x+rnd(-40,40)));sk.y=rnd(GY[0],GY[1]);sk.cd=0.5;G.units.push(sk);z.n++;
+        if(!wfxOn('airstrike')){G.fx.push({t:'ring',x:bx,y:GY[1]-15,r:30,life:0.35,max:0.35,c:'#ffb050'});G.fx.push({t:'flash',x:bx,y:GY[1]-20,c:'#ffd27a',life:0.2,max:0.2});blastFx(bx,GY[1]-12,34,'#ffb050',4);puff(bx,GY[1]-10,6,'#6a5a48',50)}else if(!G.sim){puff(bx,GY[1]-rnd(4,14),7,'#5a5048',50);puff(bx,GY[1]-20,3,'#8a7e70',30)}snd('explosion_big',bx);shake(3)}}
+    else if(z.t==='bones'){const age=z.max-z.life;   // one skeleton every max/6 s while the loop plays
+      while(z.n<6&&age>=z.n*(z.max/6)){const sk=mkUnit(z.side,'skl');sk.x=Math.max(30,Math.min(WORLD-30,z.x+rnd(-40,40)));sk.y=rnd(GY[0],GY[1]);sk.cd=0.5;G.units.push(sk);z.n++;
         if(!G.sim)puff(sk.x,sk.y,4,'#8a7a6a',30)}}
     else if(z.t==='rain'){for(const e of G.units)if(e.side!==z.side&&!e.dead&&Math.abs(e.x-z.x)<=z.r){e.acidS=3;e.acidT=Math.max(e.acidT,1.2);e.acidSrc=z.side;hurt(z.side,'zone',10*dt,e)}}
   }
@@ -1182,11 +1184,11 @@ function lightning(side,x){
   for(let i=0;i<20;i++)sparks(x+rnd(-40,40),GY[1]-rnd(0,60),1,side===0?'#c9b6ff':'#ffb38a');
   puff(x,GY[1]-20,12,'#e6c995',80);shake(9);snd('bolt');
 }
-function raiseShield(side,x){G.shields.push({side,x,r:80,life:6,max:6});wfx('shield_dome',x,170,6);snd('shield');shake(2);if(!G.sim&&!wfxOn('shield_dome')){G.fx.push({t:'rune',x,y:GY[1]+6,r:80,c:PAL[side].glow,life:1,max:1,sp:side?-1:1});G.fx.push({t:'shock',x,y:GY[1]+6,r:100,w:5,c:PAL[side].glow,life:0.6,max:0.6})}
+function raiseShield(side,x){G.shields.push({side,x,r:80,life:6,max:6});wfx('shield_dome',x,170,6,{single:1});snd('shield');shake(2);if(!G.sim&&!wfxOn('shield_dome')){G.fx.push({t:'rune',x,y:GY[1]+6,r:80,c:PAL[side].glow,life:1,max:1,sp:side?-1:1});G.fx.push({t:'shock',x,y:GY[1]+6,r:100,w:5,c:PAL[side].glow,life:0.6,max:0.6})}
   for(let i=0;i<16;i++)sparks(x+rnd(-70,70),GY[1]-rnd(0,90),1,PAL[side].glow)}
 function updUnit(u,dt){
   const T=u.T,dir=u.side===0?1:-1,eb=BX[1-u.side];
-  u.cd-=dt*(u.supT>0?0.85:1)*(T.fac==='auto'?1+Math.min(0.3,G.time/600):1);if(u.supT>0)u.supT-=dt;u.flash=Math.max(0,u.flash-dt);if(u.mir>0)u.mir-=dt;u.atk=Math.max(0,u.atk-dt);u.buffT=Math.max(0,u.buffT-dt);
+  u.cd-=dt*(u.supT>0?0.85:1)*(T.fac==='auto'?1+Math.min(0.3,G.time/600):1);if(u.supT>0)u.supT-=dt;u.flash=Math.max(0,u.flash-dt);if(u.mir>0)u.mir-=dt;u.atk=Math.max(0,u.atk-dt);u.buffT=Math.max(0,u.buffT-dt);if(u.buffT>0&&!G.sim){u.bsp=(u.bsp||0)-dt;if(u.bsp<=0){u.bsp=0.4;const h=htOf(u);for(let i=0;i<3&&roomP();i++)G.parts.push({x:u.x+rnd(-7,7),y:u.y-rnd(h*0.2,h*0.8),vx:rnd(-4,4),vy:-rnd(14,26),g:-4,life:rnd(0.7,1),max:1,c:i%2?GOLD:'#fff2b0',s:rnd(1.1,1.6),a:0.95})}}
   const wasMoving=u.moving;u.moving=false;u.eng=0;u.sa=(u.sa||0)+dt;if(u.ha!=null)u.ha+=dt;if(u.salvoT>0)u.salvoT-=dt;
   if(u.acidT>0){u.acidT-=dt;hurt(u.acidSrc,'acid',5*u.acidS*dt,u);if(u.dead)return;if(u.acidT<=0)u.acidS=0}
   if(u.burnT>0){u.burnT-=dt;hurt(u.burnSrc,'burn',6*dt,u);if(u.dead)return}
@@ -1254,11 +1256,13 @@ function update(dt){zArm();
     else{p.x+=dx/d*st;p.y+=dy/d*st;p.f=Math.min(1,1-d/p.d0);const lift=p.lob?Math.sin(Math.PI*p.f)*60:0,bo=bendOf(p);p.trail.push([p.x+(p.bn?p.bn[0]*bo:0),p.y-lift+(p.bn?p.bn[1]*bo:0)]);if(p.trail.length>(p.lob?10:5))p.trail.shift()}}
   G.units=G.units.filter(u=>!u.dead);
   for(const c of G.corpses)c.t+=dt;G.corpses=G.corpses.filter(c=>c.t<c.d);
-  for(let i=G.fx.length-1;i>=0;i--){const f=G.fx[i];if(f.dl>0){f.dl-=dt;continue}f.life-=dt;if(f.life<=0)G.fx.splice(i,1)}
+  if(G.pend&&G.pend.length)for(let i=G.pend.length-1;i>=0;i--)if(G.time>=G.pend[i].t)G.pend.splice(i,1)[0].fn();
+  for(let i=G.fx.length-1;i>=0;i--){const f=G.fx[i];if(f.t==='ring'&&f.max!==0.4){f.max=0.4;f.life=Math.min(f.life,0.4)}   // rings never outlive 0.4 s
+    if(f.dl>0){f.dl-=dt;continue}f.life-=dt;if(f.life<=0)G.fx.splice(i,1)}
   for(let i=G.parts.length-1;i>=0;i--){const p=G.parts[i];p.life-=dt;if(p.life<=0){G.parts.splice(i,1);continue}p.vy+=p.g*dt;if(p.mote){p.vx+=rnd(-70,70)*dt;p.vy+=rnd(-70,70)*dt;p.vx*=1-2.2*dt;p.vy*=1-2.2*dt}p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.leaf){p.rot+=p.vr*dt;p.vx*=0.98}
     if(p.fl!=null&&p.y>=p.fl&&p.vy>0){p.y=p.fl;if(p.drop){if(p.dc&&G.decals.length<90)G.decals.push({x:p.x,y:p.fl,r:p.s*rnd(1.1,1.8),c:p.dc,t:0,d:rnd(7,10),sq:rnd(0.3,0.45)});G.parts.splice(i,1);continue}
       p.vy*=-0.32;p.vx*=0.55;p.vr=(p.vr||0)*0.5;if(Math.abs(p.vy)<14){p.vy=0;p.g=0;p.vx*=0.8}}}
-  updSfx(dt);updShells(dt);updSouls(dt);updFlowers(dt);updWfx();zArm();
+  updSfx(dt);updShells(dt);updSouls(dt);updFlowers(dt);updWfx(dt);zArm();
   for(const d of G.decals)d.t+=dt;if(G.decals.length&&G.decals[0].t>G.decals[0].d)G.decals=G.decals.filter(d=>d.t<d.d);
   updZones(dt);
   for(let i=G.shields.length-1;i>=0;i--){G.shields[i].life-=dt;if(G.shields[i].life<=0)G.shields.splice(i,1)}
@@ -1329,10 +1333,10 @@ function drawBattle(t,w,h,dpr){
     ctx.save();ctx.strokeStyle=P.glow;ctx.globalAlpha=0.35;ctx.setLineDash([4,6]);ctx.lineWidth=1.2;const ex=s?WORLD-HOME:HOME;ctx.beginPath();ctx.moveTo(ex,GY[0]-5);ctx.lineTo(ex,GY[1]+8);ctx.stroke();ctx.restore()}
   drawBase(0,t);drawBase(1,t);
   for(const f of G.fx)if(f.t==='portal')drawPortal(f,t);
-  for(const sh of G.shields)drawShield(sh,t);drawWfxGround();
+  for(const sh of G.shields)drawShield(sh,t);drawWfxGround();drawWfxSet(false);   // ground powers: behind units
   for(const z of G.zones)drawZone(z,t);
   const ground=G.units.filter(u=>!u.T.air).sort((a,b)=>a.y-b.y),air=G.units.filter(u=>u.T.air).sort((a,b)=>a.y-b.y);
-  for(const u of air){const gy=GY[0]+(GY[1]-GY[0])*Math.max(0,Math.min(1,(u.y-AYB[0])/Math.max(1,AYB[1]-AYB[0])));teamRing(ctx,u,u.x,gy,0.4,0.7)}   // flyers: their ring on the ground below
+  for(const u of air){const gy=GY[0]+(GY[1]-GY[0])*Math.max(0,Math.min(1,(u.y-AYB[0])/Math.max(1,AYB[1]-AYB[0])));teamRing(ctx,u,u.x,gy,0.35,0.7)}   // flyers: their ring on the ground below
   for(const d of G.decals){const k=d.t<0.15?d.t/0.15:1;ctx.globalAlpha=0.75*Math.min(1,(d.d-d.t)/2);ctx.fillStyle=d.c;ctx.beginPath();ctx.ellipse(d.x,d.y,d.r*k,d.r*d.sq*k,0,0,7);ctx.fill()}ctx.globalAlpha=1;
   drawDecals();drawFlowers(t);drawShells(0);zArm();
   // ground units and corpses back to front, with each effect drawn right after the unit it belongs to, so whoever
@@ -1340,7 +1344,7 @@ function drawBattle(t,w,h,dpr){
   const L=[];for(const c of G.corpses)if(!c.u.T.air)L.push([c.u.y,c,0]);for(const u of ground)L.push([u.y,u,1]);L.sort((a,b)=>a[0]-b[0]);
   const E=zItems();let ei=0;
   for(const it of L){ei=drawZ(E,ei,it[0],t);if(it[2])drawUnit(it[1],t);else drawCorpse(it[1],t)}
-  ei=drawZ(E,ei,AIRZ,t);drawWfx();   // power effects over ground units, under fliers
+  ei=drawZ(E,ei,AIRZ,t);drawWfxSet(true);   // sandstorm, airstrike, meteors, judgment: over ground units, under fliers
   for(const c of G.corpses)if(c.u.T.air)drawCorpse(c,t);
   for(const u of air)drawUnit(u,t);
   ei=drawZ(zItems(),0,Infinity,t,AIRZ);   // effects on fliers and effects with no unit (projectile trails, powers): on top
@@ -1408,7 +1412,10 @@ function towerBreak(side,st){if(G.sim)return;const k=G.fac[side],D=TOWER_DATA[k]
 const BASEI={};for(const k in BASE_SRC){const im=new Image();im.onload=()=>{BASEI[k]=im};im.src=BASE_SRC[k]}
 // ---- layered battle maps (tools/maps.py): sky, mid, ground, each scaled to the canvas height and tiled seamlessly ----
 const MAP_PAR={sky:0.05,mid:0.45,ground:1};      // parallax: how fast each layer scrolls with the camera
-const MLI={};for(const m in MAP_LAYERS){MLI[m]={};for(const L in MAP_LAYERS[m]){const im=new Image();im.onload=()=>{MLI[m][L]=im};im.src=MAP_LAYERS[m][L]}}
+const LAYER_DIM={volcano:0.75,desert:0.85,bridge:0.85};
+function dimLayer(im,b){const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);
+  x.globalCompositeOperation='source-atop';x.fillStyle=`rgba(0,0,0,${1-b})`;x.fillRect(0,0,c.width,c.height);return c}
+const MLI={};for(const m in MAP_LAYERS){MLI[m]={};for(const L in MAP_LAYERS[m]){const im=new Image();im.onload=()=>{MLI[m][L]=L!=='sky'&&LAYER_DIM[m]?dimLayer(im,LAYER_DIM[m]):im};im.src=MAP_LAYERS[m][L]}}
 const mapKey=m=>m==='dunes'?'desert':m;
 // draw one layer across the screen in device pixels: integer tile edges so there are never gaps, nearest-neighbour scaling
 // the layer's full height maps to the 300-unit world (bottom-aligned); with fill, it is also stretched up to the top of the
@@ -1846,7 +1853,7 @@ function drawZ(E,i,hi,t,lo){if(lo!=null)while(i<E.length&&E[i][0]<lo)i++;if(i>=E
   return i}
 function drawFxList(FX,t){
   for(const f of FX){const a=f.life/f.max;ctx.globalAlpha=a;if(drawFx2(f,a,t)||drawFx3(f,a,t)){ctx.globalAlpha=1;continue}
-    if(f.t==='ring'){ctx.strokeStyle=f.c;ctx.lineWidth=2.5;const rr=f.r*(1.25-a*0.45);ctx.beginPath();ctx.ellipse(f.x,f.y,rr,rr*0.4,0,0,7);ctx.stroke()}
+    if(f.t==='ring'){ctx.globalAlpha=0.6*a;ctx.strokeStyle=f.c;ctx.lineWidth=1.5;const rr=f.r*(1.2-a*0.55);ctx.beginPath();ctx.ellipse(f.x,f.y,rr,rr*0.4,0,0,7);ctx.stroke()}
     else if(f.t==='flash'){ctx.save();ctx.fillStyle=f.c;ctx.shadowColor=f.c;ctx.shadowBlur=14;ctx.beginPath();ctx.arc(f.x,f.y,3+(1-a)*6,0,7);ctx.fill();ctx.restore()}
     else if(f.t==='heal'){ctx.strokeStyle=HEAL;ctx.lineWidth=2;ctx.shadowColor=HEAL;ctx.shadowBlur=6;ctx.beginPath();ctx.moveTo(f.x,f.y);ctx.quadraticCurveTo((f.x+f.x2)/2,Math.min(f.y,f.y2)-12,f.x2,f.y2);ctx.stroke();ctx.shadowBlur=0}
     else if(f.t==='bolt'){ctx.save();ctx.strokeStyle=f.c;ctx.lineWidth=4;ctx.shadowColor=f.c;ctx.shadowBlur=16;
@@ -1881,26 +1888,57 @@ function drawProjSprite(p,r,t){const img=PRJ[r[0]],a=projHeading(p),f=Math.floor
 // while the power is active (at least one full loop), 13-16 fade out (once, after the power ends). Drawn bottom-centre at
 // the target on the ground, scaled so the drawn width (measured by the tool) matches the power's area.
 const WFX_FAC={djinn:'sandstorm',verdant:'overgrowth',mutant:'acid_rain',auto:'emp',goblin:'airstrike',knight:'divine_judgment',dragon:'meteor_shower',undead:'plague_of_bones'};
-const WFX_FPS=12, WFX_ADD={emp:1,divine_judgment:1};
+// ---- wish effect sheets (art/wish_fx): 10 fps, frames crossfaded. Frames 1-4 build once, 5-12 loop ping-pong for the
+// power's duration, 13-16 end once. Each faction power is 3 copies across its area (left / centre / right, 70-100% scale,
+// 0-0.3 s apart, some mirrored) so one sheet's edges are covered by the next. Drawn in world space, feet on GY[1].
+const WFX_FPS=10,WFX_IN=4/WFX_FPS,WFX_OUT=4/WFX_FPS,WFX_LAG=0.3;
+const WFX_ADD={emp:1,divine_judgment:1},WFX_FRONT={sandstorm:1,airstrike:1,meteor_shower:1,divine_judgment:1},WFX_DIR={sandstorm:1,airstrike:1};
 const WFX_OF={storm:'sandstorm',grow:'overgrowth',rain:'acid_rain',emp:'emp',air:'airstrike',light:'divine_judgment',meteor:'meteor_shower',bones:'plague_of_bones'};   // zone type -> sheet
 const WFXI={};for(const k in WFX_DATA){const im=new Image();im.onload=()=>{WFXI[k]=im};im.src=WFX_DATA[k].d}
 const wfxOn=n=>!!WFXI[n];
-// start an effect: w = drawn width in world px; dur = how long the power lasts; follow = a zone whose x it tracks; copies = side-by-side tiles
-function wfx(n,x,w,dur,o){if(G.sim||!wfxOn(n))return;G.wfx.push(Object.assign({n,x,w,t0:G.time,act:Math.max(dur,(4+8)/WFX_FPS)},o||{}))}
-function updWfx(){G.wfx=G.wfx.filter(e=>{if(e.follow&&G.zones.includes(e.follow))e.x=e.follow.x;return G.time-e.t0<e.act+4/WFX_FPS})}
-function wfxFrame(e,ph){const age=G.time-e.t0+(ph||0)/WFX_FPS;if(age<4/WFX_FPS)return Math.floor(age*WFX_FPS);
-  if(age<e.act)return 4+Math.floor((age-4/WFX_FPS)*WFX_FPS)%8;return Math.min(15,12+Math.floor((age-e.act)*WFX_FPS))}
-function drawWfxOne(e,x,w,fi,flip){const D=WFX_DATA[e.n],im=WFXI[e.n],s=w/(D.x1-D.x0),cx=(D.x0+D.x1)/2,gy=GY[1]+4;
-  ctx.save();ctx.translate(x,gy);if(flip)ctx.scale(-1,1);
-  ctx.drawImage(im,(fi%4)*256,Math.floor(fi/4)*256,256,256,-cx*s,-D.by*s,256*s,256*s);ctx.restore()}
-function drawWfx(){if(!G.wfx.length)return;ctx.save();ctx.imageSmoothingEnabled=false;
-  for(const e of G.wfx){ctx.globalCompositeOperation=WFX_ADD[e.n]?'lighter':'source-over';
-    const n=e.copies||1;if(n===1){drawWfxOne(e,e.x,e.w,wfxFrame(e),e.flip);continue}
-    const cw=e.w/n*1.25;for(let i=0;i<n;i++)drawWfxOne(e,e.x+(i-(n-1)/2)*e.w/n,cw,wfxFrame(e,i*3),i%2===1)}   // copies offset in time and mirrored, so they don't look stamped
+// start an effect: area = world width the power covers; dur = how long its loop runs; o.single = one centred copy
+// (shield dome); o.flip = face left (directional sheets)
+function wfx(n,x,area,dur,o){if(G.sim||!wfxOn(n))return null;o=o||{};const D=WFX_DATA[n],cw=D.x1-D.x0,cps=[];
+  if(o.single)cps.push({dx:0,s:area/cw,off:0,flip:!!o.flip});
+  else for(let i=0;i<3;i++)cps.push({dx:(i-1)*area/3,s:area/cw*rnd(0.7,1),off:i===1?0:rnd(0,WFX_LAG),flip:WFX_DIR[n]?!!o.flip:Math.random()<0.5});
+  const e={n,x,area,dur,cps,t0:G.time,end:WFX_IN+dur+WFX_OUT+(o.single?0:WFX_LAG),pt:0,flip:!!o.flip,burst:0};G.wfx.push(e);return e}
+// sheet position at copy age a: [frame, next frame, blend 0..1] or null when the copy is not showing
+function wfxPos(a,dur){if(a<0)return null;
+  if(a<WFX_IN){const q=a*WFX_FPS,c=Math.floor(q);return [c,c+1,q-c]}
+  const la=a-WFX_IN;
+  if(la<dur){const q=(la*WFX_FPS)%14,c=Math.floor(q),fr=q-c;return q<7?[4+c,5+c,fr]:[18-c,17-c,fr]}   // 5..12..5
+  const q=12+(la-dur)*WFX_FPS;if(q>=16)return null;const c=Math.floor(q);return [c,Math.min(15,c+1),q-c]}
+function wfxCell(im,fi,D,s,flip,al){if(al<=0.003)return;ctx.save();if(flip)ctx.scale(-1,1);ctx.globalAlpha=al;
+  ctx.drawImage(im,(fi%4)*256,Math.floor(fi/4)*256,256,256,-128*s,-D.by*s,256*s,256*s);ctx.restore()}   // the whole cell, bottom-centre
+const wfxAlpha=e=>{const age=G.time-e.t0;return Math.max(0,Math.min(1,age/0.25,(e.end-age)/0.4))};
+// front = the sheets that pass in front of units; the rest are drawn behind them
+function drawWfxSet(front){if(!G.wfx.length)return;ctx.save();ctx.imageSmoothingEnabled=false;
+  for(const e of G.wfx){if(!!WFX_FRONT[e.n]!==front)continue;const im=WFXI[e.n],D=WFX_DATA[e.n],age=G.time-e.t0,ea=wfxAlpha(e);if(!im||ea<=0)continue;
+    const add=WFX_ADD[e.n];ctx.globalCompositeOperation=add?'lighter':'source-over';
+    for(const c of e.cps){const q=wfxPos(age-c.off,e.dur);if(!q)continue;ctx.save();ctx.translate(e.x+c.dx,GY[1]);
+      if(add){wfxCell(im,q[0],D,c.s,c.flip,ea*(1-q[2]));wfxCell(im,q[1],D,c.s,c.flip,ea*q[2])}   // additive: a true crossfade
+      else{wfxCell(im,q[0],D,c.s,c.flip,ea);wfxCell(im,q[1],D,c.s,c.flip,ea*q[2])}
+      ctx.restore()}}
   ctx.restore()}
-// shield dome: a soft teal footprint drawn behind units
-function drawWfxGround(){for(const e of G.wfx)if(e.n==='shield_dome'){const age=G.time-e.t0,a=Math.min(1,age/0.3)*Math.max(0,Math.min(1,(e.act+4/WFX_FPS-age)/0.35));
-  ctx.save();ctx.globalAlpha=0.2*a;ctx.fillStyle='#3fe0d0';ctx.beginPath();ctx.ellipse(e.x,GY[1]+4,e.w/2,e.w*0.14,0,0,7);ctx.fill();ctx.restore()}}
+function updWfx(dt){G.wfx=G.wfx.filter(e=>{if(e.follow&&G.zones.includes(e.follow))e.x=e.follow.x;if(!G.paused)wfxParts(e,dt);return G.time-e.t0<e.end})}
+// live particles over each running power
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function wfxParts(e,dt){if(G.sim)return;const age=G.time-e.t0,loop=age>=WFX_IN&&age<WFX_IN+e.dur+0.15;if(age<WFX_IN*0.5||age>WFX_IN+e.dur+0.3)return;
+  const x0=e.x,W=e.area*0.75,gy=GY[1],dir=e.flip?-1:1,n=k=>{e.pt+=k*dt;const m=Math.floor(e.pt);e.pt-=m;return m};
+  const lane=()=>rnd(GY[0],GY[1]);
+  if(e.n==='sandstorm')for(let i=n(45);i-->0&&roomP();)G.parts.push({x:x0+rnd(-W,W)-dir*25,y:gy-rnd(4,115),vx:dir*rnd(150,240),vy:rnd(-10,10),g:0,life:rnd(0.35,0.7),max:0.7,c:pick(['#d8b88a','#c9a26a','#e8d2a8']),s:rnd(1,1.8),a:0.85,spark:1});
+  else if(e.n==='overgrowth')for(let i=n(16);i-->0&&roomP();)G.parts.push({x:x0+rnd(-W,W),y:gy-rnd(95,150),vx:rnd(-14,14),vy:rnd(14,30),g:22,life:rnd(1.7,2.4),max:2.4,c:pick(['#6f8c38','#8fb04a','#4d6a26','#b8c860']),s:rnd(2,3.2),a:0.95,leaf:1,rot:rnd(0,6),vr:rnd(-4,4)});
+  else if(e.n==='acid_rain'){for(let i=n(60);i-->0&&roomP();){const fy=lane(),y=fy-rnd(110,170),vy=rnd(250,310);G.parts.push({x:x0+rnd(-W,W),y,vx:-12,vy,g:0,life:(fy-y)/vy,max:(fy-y)/vy,c:pick(['#c0283a','#e0405a','#9a1828']),s:1.3,a:0.9,spark:1})}
+    if(loop)for(let i=n(20);i-->0&&roomP();)G.parts.push({x:x0+rnd(-W,W),y:lane(),vx:rnd(-28,28),vy:-rnd(22,48),g:240,life:0.3,max:0.3,c:pick(['#d0304a','#f06070']),s:1,a:0.9})}
+  else if(e.n==='emp'){if(loop&&!e.burst){e.burst=1;for(let i=0;i<34&&roomP();i++){const a=rnd(0,6.283),v=rnd(120,260);G.parts.push({x:x0,y:gy-30,vx:Math.cos(a)*v,vy:Math.sin(a)*v*0.6,g:60,life:rnd(0.3,0.6),max:0.6,c:pick(['#9fe8ff','#ffffff','#5fc8ff']),s:rnd(1,1.6),a:1,spark:1})}}
+    if(loop)for(let i=n(40);i-->0&&roomP();){const a=rnd(0,6.283),v=rnd(70,170);G.parts.push({x:x0+rnd(-20,20),y:gy-rnd(10,50),vx:Math.cos(a)*v,vy:Math.sin(a)*v*0.6,g:40,life:rnd(0.25,0.5),max:0.5,c:pick(['#9fe8ff','#ffffff']),s:1.1,a:1,spark:1})}}
+  else if(e.n==='meteor_shower'){if(loop)for(let i=n(14);i-->0;)emberBurst(x0+rnd(-W,W),lane()-rnd(0,40),1,30)}
+  else if(e.n==='divine_judgment'){if(loop)for(let i=n(34);i-->0&&roomP();)G.parts.push({x:x0+rnd(-W*0.8,W*0.8),y:gy-rnd(0,40),vx:rnd(-6,6),vy:-rnd(40,95),g:-10,life:rnd(0.8,1.3),max:1.3,c:pick([GOLD,'#fff2b0','#ffffff']),s:rnd(1.1,2),a:0.95})}
+  else if(e.n==='plague_of_bones'){for(let i=n(20);i-->0&&roomP();)G.parts.push({x:x0+rnd(-W,W),y:lane()-rnd(0,10),vx:rnd(-8,8),vy:-rnd(18,42),g:-8,life:rnd(0.9,1.5),max:1.5,c:pick(['#7fe8d8','#a8e0d8','#4fc8b8']),s:rnd(1.5,2.6),a:0.7})}
+  else if(e.n==='shield_dome'){const R=e.area*0.44;for(let i=n(7);i-->0&&roomP();){const th=rnd(0.15,Math.PI-0.15);G.parts.push({x:x0+Math.cos(th)*R,y:gy-Math.sin(th)*R*0.95,vx:rnd(-3,3),vy:-rnd(3,9),g:0,life:rnd(0.9,1.4),max:1.4,c:pick(['#8ff3ea','#3fe0d0','#e8fffc']),s:rnd(1,1.6),a:0.85})}}}
+// shield dome: a soft teal footprint behind units
+function drawWfxGround(){for(const e of G.wfx)if(e.n==='shield_dome'){const a=wfxAlpha(e);
+  ctx.save();ctx.globalAlpha=0.2*a;ctx.fillStyle='#3fe0d0';ctx.beginPath();ctx.ellipse(e.x,GY[1]+4,e.area/2,e.area*0.14,0,0,7);ctx.fill();ctx.restore()}}
 // ---- spent shell casings: gun units throw brass out behind the gun as they fire; it bounces, lies on the ground, then fades ----
 // unit key -> [casings per shot, size 0 small | 1 rifle | 2 cannon]
 const SHELL={grt:[1,0],snp:[1,1],bik:[1,0],gyr:[1,0],flk:[2,1],jtk:[1,2],gbc:[3,0]};
@@ -1931,11 +1969,10 @@ function drawUnit(u,t){
   const ae=1-u.atk/0.22,an=u.atk>0?(ae<0.25?Math.sin(ae/0.25*Math.PI/2):Math.pow(1-(ae-0.25)/0.75,1.6)):0,melee=!T.proj&&!T.heal;
   ctx.save();ctx.translate(u.x,u.y);
   const VS=uScale(u.k),VR=T.r*VS,VH=T.ht*VS;   // drawn radius and height
-  if(!T.air)teamRing(ctx,u,0,1,0.7,1);
+  if(!T.air)teamRing(ctx,u,0,1,0.55,1);
   if(u.side)ctx.scale(-1,1);
   ctx.translate(melee?an*5:-an*2,0);
   const gs=(1+u.g*0.3)*(1+u.ev*0.09);if(gs>1)ctx.scale(gs,gs);
-  if(rage(u)||u.buffT>0){ctx.save();ctx.globalAlpha=rage(u)?0.35+Math.sin(tt*10)*0.15:0.18;ctx.fillStyle=GOLD;ctx.shadowColor=GOLD;ctx.shadowBlur=12;ctx.beginPath();ctx.ellipse(0,-VH*0.5,VR*1.4,VH*0.6,0,0,7);ctx.fill();ctx.restore()}
   if(u.flash>0&&T.fac==='verdant'){ctx.globalAlpha=0.6}
   if(u.mir>0){ctx.save();ctx.globalAlpha=0.35*u.mir/0.25;ctx.translate(-6,0);drawBody(ctx,u,P,tt,an);ctx.restore();ctx.globalAlpha=0.55+0.45*(1-u.mir/0.25)}
   drawBody(ctx,u,P,tt,an);ctx.globalAlpha=1;ctx.restore();
