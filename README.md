@@ -33,7 +33,22 @@ One `<audio>` element plays the music (loop, volume 0.5) and crossfades over 1 s
 - `ui_click`: menu buttons.
 - `ui_nope`: can't afford.
 
-Gun, rocket, zap, bolt, boom, heal, shield, death and acid sounds are still synthesized.
+- Projectile launches, by shooter:
+  - `zap`: Sparkcaster, Storm Coil, Wraith, Lich, Necromancer casts, and tower shots.
+  - `laser`: Drone Swarm, Arc Gunner, Aero Drone.
+  - `bolt`: Rail Cannon, Interceptor.
+  - `rocket`: Rocket Battery, Warboss and Gyrocopter rockets.
+  - Synth `gun`: Goblin rifles, gatlings, flak and the Junk Tank.
+  - Other shooters are silent at launch; their impacts still play a sound.
+- `explosion`: lobbed and siege impacts, machine deaths, and most champion abilities and wishes.
+- `explosion_big`: tower state changes, meteor and airstrike impacts, and champion deaths.
+- `bolt`: Sandstorm, Divine Judgment and lightning.
+- `emp`: EMP Blast and the Colossus shockwave.
+- `shield`: Shield Dome casts and hits on energy shields.
+- `splat`: Mutant bile hits, bile lobs and Acid Rain.
+- `heal`: every heal tick.
+
+Only the synth `gun`, plus the death and lob-launch thumps, are still synthesized.
 
 ## Factions (8)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
