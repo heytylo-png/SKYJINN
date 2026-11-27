@@ -216,7 +216,7 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
 #sheet .sb button.ghost{flex:0 0 84px}
 #coach{top:60px;border:11px solid transparent;border-radius:0;background:none;border-image:var(--k-panel_medium) 73 fill/11px;image-rendering:pixelated;box-shadow:none}
 #coachB{--bw:8px;--py:2px;--px:10px}
-#toast{display:flex;align-items:center;gap:5px}
+#toast{display:flex;align-items:center;gap:5px;bottom:24px!important;padding:2px 10px!important;font-size:11px!important;line-height:15px;border-radius:6px!important;max-width:min(70%,520px)!important;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis;background:rgba(14,9,6,.78)!important;border-color:rgba(255,215,122,.35)!important}
 #toast .ki{width:16px;height:17px}
 #spec button{--bw:8px;--py:2px;--px:12px}
 #app .ov #bSet{position:absolute;top:2px;right:2px;width:30px;height:30px;padding:0!important;border:0!important;border-image:none!important;--sh:0px!important;z-index:1}
@@ -334,7 +334,14 @@ const BX=[55,WORLD-55],BY=200;
 // gy = lane band for unit feet, in world px (300 = canvas height): from the ground layer's walkable line down to 95% of
 // the screen; on the bridge it ends at the bottom edge of the planks (88%), since below that is open sky
 const MAPS={dunes:{name:'Desert Ruins',world:1200,gy:[249,285]},bridge:{name:'Sky Bridge',world:1500,gy:[222,264]},volcano:{name:'Volcanic Wastes',world:1300,gy:[222,285]}};
-function applyMap(m){if(!MAPS[m])m='dunes';const M=MAPS[m];WORLD=M.world;GY[0]=M.gy[0];GY[1]=M.gy[1];BX[1]=WORLD-55}
+// VIEW = the slice of the 300-unit-tall world the battlefield shows: it ends just below the lane and is only as tall as
+// needed for the lane to sit in the bottom 40% and the towers (136 world px of art, base at GY[0]+16) to stay clear of the
+// top HUD (~16% of the height). Taller = more sky, smaller units; the map layers are cropped from the top, not shrunk.
+const VIEW={top:0,span:300};
+function setView(){const vb=Math.min(H,GY[1]+12),towerTop=GY[0]+16-136,span=Math.min(H,Math.max((vb-GY[0])/0.4,(vb-towerTop)/0.84));
+  VIEW.span=span;VIEW.top=vb-span;
+  AYB[0]=VIEW.top+span*0.30;AYB[1]=VIEW.top+span*0.47}   // fliers cruise in the visible sky band
+function applyMap(m){if(!MAPS[m])m='dunes';const M=MAPS[m];WORLD=M.world;GY[0]=M.gy[0];GY[1]=M.gy[1];BX[1]=WORLD-55;setView();if(typeof resize==='function'&&cv)resize()}
 const BASEY=()=>GY[0]+12;
 const BONEW='#e6dcc4',DARKU='#2b2a33',DARKU2='#45434f',GHOST='#a8e0d8',PURP='#3e2f52',CHROME='#a9b6c0',CHROME2='#dbe4ea',DCH='#36414b',COPPER='#b87333',SCALE='#8c3b2a',SCALE2='#b5573a',BELLY='#e0b070',FIRE='#ff8a2a',ROCK='#5a4a40';
 const OLIVE='#4f5e32',OLIVE2='#6e7c45',KHAKI='#b8a46a',GOB='#7fb04a',GOB2='#5d8a34',METAL='#5f656b',RUST='#8a5a32';
@@ -960,7 +967,7 @@ function tierIcons(k){const t=tierOf(0,k);if(cards[k]){const cv=cards[k].querySe
 function buyIncome(s){if(G.incLvl[s]>=5)return false;const c=incCost(s);if(G.gold[s]<c)return false;G.gold[s]-=c;G.incLvl[s]++;G.income[s]+=10;return true}
 function mkUnit(side,k){
   const T=TYPES[k],tier=tierOf(side,k),m=1+0.3*(tier-1),fm=FACMOD[T.fac];
-  const x=side===0?rnd(85,115):WORLD-rnd(85,115),y=T.air?rnd(AYB[0],AYB[1]):rnd(GY[0]+5,GY[1]-5);
+  const x=side===0?rnd(85,115):WORLD-rnd(85,115),y=T.air?rnd(AYB[0],AYB[1]):rnd(GY[0],GY[1]);   // every unit gets its own lane depth (y), kept while marching
   const um=(G.um&&G.um[side])||[1,1],hm=m*fm.hp*um[0];
   return {side,k,T,x,y,hp:T.hp*hm,max:T.hp*hm,base:T.hp*hm,dmg:T.dmg*m*fm.dmg*um[1],heal:(T.heal||0)*m,cd:Math.random()*T.cd,tier,dead:false,flash:0,ph:Math.random()*6,atk:0,age:0,sa:0,g:0,ev:0,acidT:0,acidS:0,acidSrc:0,buffT:0,form:0,formT:0,kids:0,broodT:T.brood||0,mom:null,shMax:T.fac==='auto'?T.hp*hm*0.25:0,sh:T.fac==='auto'?T.hp*hm*0.25:0,shT:0,burnT:0,burnSrc:0,stunT:0,revived:0};
 }
@@ -1223,11 +1230,12 @@ function updUnit(u,dt){
   if(best){
     const d=dist(u,best),reach=T.range+T.r+best.T.r;
     if(d<=reach){u.eng=1;if(u.cd<=0)attack(u,best,false)}
-    else{const dx=best.x-u.x,dy=T.air||best.T.air?0:(best.y-u.y),L=Math.hypot(dx,dy)||1,s=spd*dt;u.x+=dx/L*s;u.y+=dy/L*s*0.6;u.moving=true}
+    else{const dx=best.x-u.x,dy=T.air||best.T.air?0:(best.y-u.y),L=Math.hypot(dx,dy)||1,s=spd*dt;u.x+=dx/L*s;u.y+=dy/L*s*0.35;u.moving=true}
   }else{
     if(Math.abs(u.x-eb)<=T.range+34){u.eng=1;if(u.cd<=0)attack(u,null,true)}
     else{u.x+=dir*spd*dt;u.moving=true}
   }
+  if(!T.air){if(u.lane==null)u.lane=u.y;if(!best&&u.moving)u.y+=(u.lane-u.y)*Math.min(1,dt*1.2)}
   if(u.moving&&!T.air&&/^(roll|crawl)$/.test((SPR_META[u.k]||{}).mv)&&Math.random()<dt*(T.speed/25))G.parts.push({x:u.x-dir*6,y:u.y-1,vx:-dir*rnd(5,20),vy:-rnd(3,10),g:0,life:0.5,max:0.5,c:'#d8b88a',s:rnd(1.5,3),a:0.5});
   if(u.moving&&T.air&&Math.random()<dt*4)G.parts.push({x:u.x-dir*16,y:u.y-4,vx:-dir*rnd(10,25),vy:rnd(-3,3),g:0,life:0.6,max:0.6,c:T.fac==='verdant'?'#b9d27a':'#e6cfa3',s:rnd(1.5,3),a:0.5});
 }
@@ -1235,8 +1243,12 @@ function separate(){
   const us=G.units;
   for(let i=0;i<us.length;i++){const a=us[i];
     for(let j=i+1;j<us.length;j++){const b=us[j];if(!!a.T.air!==!!b.T.air)continue;
-      const dx=b.x-a.x,dy=b.y-a.y,rr=a.T.r+b.T.r,d2=dx*dx+dy*dy;
+      const dx=b.x-a.x,dy=b.y-a.y,rr=(a.T.r+b.T.r)*1.4,d2=dx*dx+dy*dy;
       if(d2<rr*rr){if(d2<0.01){a.y-=0.6;b.y+=0.6;continue}const d=Math.sqrt(d2),p=(rr-d)/2/d*0.7;a.x-=dx*p;a.y-=dy*p;b.x+=dx*p;b.y+=dy*p}}}
+  // density cap: at most 3 ground units share a 14 x 8 cell; extras slide to the emptier lane edge and back a step
+  const cell=new Map(),cy=Math.max(1,(GY[1]-GY[0])/8);
+  for(const u of us){if(u.T.air||u.dead)continue;const key=Math.floor(u.x/14)*64+Math.floor((u.y-GY[0])/8);const n=(cell.get(key)||0)+1;cell.set(key,n);
+    if(n>3){const up=u.y-GY[0]>GY[1]-u.y;u.y+=up?-2.5:2.5;u.x-=(u.side?-1:1)*1.2;if(u.lane!=null)u.lane=Math.max(GY[0],Math.min(GY[1],u.lane+(up?-6:6)))}}
   for(const u of us){u.x=Math.max(30,Math.min(WORLD-30,u.x));const B=u.T.air?AYB:GY;u.y=Math.max(B[0],Math.min(B[1],u.y))}
 }
 function update(dt){zArm();
@@ -1314,7 +1326,7 @@ function resize(){
   cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);
   // landscape: the 300-unit world fills the height. Portrait (tall, narrow): fit at least MIN_VIS_W world units across,
   // anchor the world to the bottom, and let the map layers fill the sky above (V.oy = screen px above the world)
-  const s=Math.min(r.height/H,r.width/MIN_VIS_W),oy=Math.max(0,r.height-H*s);
+  const s=Math.min(r.height/VIEW.span,r.width/MIN_VIS_W),oy=Math.max(0,r.height-VIEW.span*s)-VIEW.top*s;   // oy<0: the top of the world is cropped
   V={s,oy,w:r.width,h:r.height,dpr,visW:r.width/s,mini:V.mini};clampCam();
   const mb=$('bFull');if(mb){const b=mb.getBoundingClientRect();if(b.width)HUD_BTNS=Math.round(b.right-r.left+8)}
 }
@@ -2093,7 +2105,7 @@ function buildCards(){
     wrap.appendChild(b);cards[k]=b}
 }
 let toastT=null;
-function toast(msg,warn){const el=$('toast');el.textContent='';if(warn&&UI_KIT.badge_red)el.insertAdjacentHTML('beforeend',KI('badge_red'));el.append(msg);el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1300)}
+function toast(msg,warn){const el=$('toast');el.textContent='';if(warn&&UI_KIT.badge_red)el.insertAdjacentHTML('beforeend',KI('badge_red'));el.append(msg);el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1800)}
 function onBuy(k){if(!G||G.over||G.paused)return;const T=TYPES[k];
   if(TUT){const st=TSTEPS[TUT.i];if(st&&st.wait&&st.wait.startsWith('buy:')&&st.wait!=='buy:'+k){toast('Follow the highlighted card');return}setTimeout(()=>tutEvent('buy:'+k),0)}
   if(T.champ&&(G.roster[0][k]||0)>0){toast(`${T.name} already leads your army`,1);snd('nope');return}
@@ -2108,7 +2120,7 @@ function closeSheet(){const was=sheetK;sheetK=null;for(const c in cards)cards[c]
 $('shX').onclick=closeSheet;
 $('shUp').onclick=()=>{if(upgrade(0,sheetK)){toast(`${TYPES[sheetK].name} → Tier ${tierOf(0,sheetK)} (+30%)`);snd('upgrade');fillSheet();refreshUI()}else snd('nope')};
 $('bInc').onclick=()=>{if(!G||G.over)return;if(buyIncome(0)){toast('+10 gold every wave');snd('buy')}else snd('nope');refreshUI()};
-function arm(kind){if(!G||G.over)return;if(G.armed===kind)G.armed=null;else if(G.wishWaves>=WISH_WAVES){G.armed=kind;const W=WISHES[G.fac[0]];toast(kind==='bolt'?`${W.icon} ${W.name}: ${W.desc}`:'🛡 Shield Dome: allies inside take 70% less damage for 6s')}refreshUI()}
+function arm(kind){if(!G||G.over)return;if(G.armed===kind)G.armed=null;else if(G.wishWaves>=WISH_WAVES){G.armed=kind;const W=WISHES[G.fac[0]];G.tips=G.tips||{};if(!G.tips[kind]&&(G.tips[kind]=1))toast(kind==='bolt'?`${W.icon} ${W.name}: ${W.desc}`:'🛡 Shield Dome: allies inside take 70% less damage for 6s')}refreshUI()}
 $('bBolt').onclick=()=>arm('bolt');$('bShield').onclick=()=>arm('shield');
 // ---- fullscreen + landscape lock (unsupported on iOS Safari: just carry on) ----
 async function goFull(){const el=document.documentElement;
@@ -2288,7 +2300,7 @@ function loop(now){
   draw(now);requestAnimationFrame(loop);
 }
 new ResizeObserver(resize).observe(cv);window.addEventListener('resize',resize);
-resize();requestAnimationFrame(loop);initStore();loadSprites();uiArtInit();if(LAB)document.querySelectorAll('.ov,#bar,#stage>*:not(canvas)').forEach(o=>o.style.display='none');
+applyMap("dunes");resize();requestAnimationFrame(loop);initStore();loadSprites();uiArtInit();if(LAB)document.querySelectorAll('.ov,#bar,#stage>*:not(canvas)').forEach(o=>o.style.display='none');
 window.__sky={sim(f,diff,spec,ef){pickFac=f;pickEnemy=ef||null;newGame(diff,spec);pickEnemy=null;G.sim=1;if(!spec)aiShop(0);while(!G.over)update(1/30);const r={fac:G.fac.slice(),win:G.res.win,why:G.res.why,a:G.anchor.slice(),w:G.wave,t:Math.round(G.time),k:G.kills.slice(),ch:[0,1].map(i=>keysOf(i).filter(k=>TYPES[k].champ).map(k=>G.roster[i][k]||0)[0])};G=null;return r}};
 })();
 </script>

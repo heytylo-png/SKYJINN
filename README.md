@@ -9,6 +9,20 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 
 **Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
 
+**Camera.** Each map shows a vertical slice of the 300-unit world (`VIEW`, set in `setView()`), cropped from the top so the sky and mid layers lose their upper part instead of shrinking.
+
+- **Slice size:** the slice ends just below the lane. It is only as tall as needed for the lane to sit in the bottom 40% and for the towers to clear the top HUD. That works out to about 199 units on Desert Ruins, 206 on Sky Bridge and 231 on Volcanic Wastes.
+- **Unit size:** a normal unit is about 16% of battlefield height (14% on Volcanic Wastes).
+- **Fliers:** they cruise at 30–47% of the visible slice.
+
+**Unit spacing.**
+- Every ground unit spawns at a random depth across the full lane (`GY`) and drifts back to that depth while marching.
+- Units close only 35% of the vertical gap to a target, so groups move in loose ranks.
+- The separation radius is 40% larger.
+- At most 3 ground units can share a 14×8 spot; extras slide toward the emptier lane edge.
+
+**Toasts.** Toasts show in a small strip just above the unit bar for 1.8 s. A wish description appears only the first time that wish is armed in each match.
+
 **Wish effects.** The `wish_fx` sheets play at 10 fps, and each frame crossfades into the next by its fractional time.
 - **Timing:** frames 1–4 build up once, frames 5–12 ping-pong for the whole power's duration, and frames 13–16 close it out. The effect fades in over 0.25 s and out over 0.4 s.
 - **Layout:** each faction power is 3 copies across its area (left, centre, right). Each copy is 70–100% scale with a 0–0.3 s start offset, and some are mirrored, so one sheet's edges are covered by the next. Every copy draws the full 256×256 cell, bottom-centre on the lane's feet line at the tapped world x, and scrolls with the camera.
