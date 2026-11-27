@@ -543,7 +543,7 @@ const WISHES={
  goblin:{icon:'✈',name:'Airstrike',short:'Bomb',tip:'Tap where to call an Airstrike ✈',desc:'Bombers carpet-bomb a wide stretch of the battlefield.'},
  knight:{icon:'✨',name:'Divine Judgment',short:'Smite',tip:'Tap where to call down Judgment ✨',desc:'A pillar of holy light smites enemies, empowers nearby allies and cleanses their acid.'}};
 const GMAX=0.18,GRATE=0.02;
-const FACMOD={djinn:{hp:1.02,dmg:1.0},verdant:{hp:1.1,dmg:1.06},mutant:{hp:1.03,dmg:1.04},knight:{hp:1.02,dmg:0.98},goblin:{hp:0.86,dmg:0.8},undead:{hp:1.28,dmg:1.2},auto:{hp:0.95,dmg:0.96},dragon:{hp:1.18,dmg:1.14},none:{hp:1,dmg:1}};
+const FACMOD={djinn:{hp:1.061,dmg:1.04},verdant:{hp:1.045,dmg:1.007},mutant:{hp:0.978,dmg:0.988},knight:{hp:0.979,dmg:0.941},goblin:{hp:0.98,dmg:0.912},undead:{hp:1.242,dmg:1.164},auto:{hp:0.95,dmg:0.96},dragon:{hp:1.239,dmg:1.197},none:{hp:1.0,dmg:1.0}};
 const HOME=150,HOME_DMG=0.1,HOME_DEF=0.1,CAP=999,QMAX=80,OVERTIME=300; // last minute: no home-defence bonus, base damage x2
 const homeK=()=>G.time<OVERTIME?1:0;
 const SUP={champion:6,swarm:1,tank:3,ranged:2,diver:2,air:3,aa:2,siege:3,support:2};
@@ -1106,9 +1106,9 @@ function hurt(side,k,dmg,e,src){
       if(od.acid){for(const f of G.units)if(f.side!==e.side&&!f.dead&&!f.T.air&&Math.hypot(f.x-e.x,(f.y-e.y)*0.6)<=34){f.acidS=Math.min(3,f.acidS+2);f.acidT=3;f.acidSrc=e.side}
         G.fx.push({t:'ring',x:e.x,y:e.y,r:34,life:0.5,max:0.5,c:ACID});acidSplash(e.x,bodyY(e),9)}}}
 }
-const LATE=240,BREACH=40,EARLY=150,EARLY_K=0.5;   // EARLY: fortified bases (half damage) until the armies exist   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
+const LATE=210,LATE_K=[2,3],BREACH=60,EARLY=150,EARLY_K=0.5;   // EARLY: fortified bases (half damage) until the armies exist   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
 function hitAnchor(side,k,dmg){const T=TYPES[k];let m=(T&&T.anchorMult)||1;if(T&&T.champ)m*=1.5;const b=1-side;if(shielded(b,BX[b]))m*=0.3;
-  if(G.time>=OVERTIME)m*=2;else if(G.time>=LATE)m*=1.5;else if(G.time<EARLY)m*=EARLY_K;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
+  if(G.time>=OVERTIME)m*=LATE_K[1];else if(G.time>=LATE)m*=LATE_K[0];else if(G.time<EARLY)m*=EARLY_K;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
 function dealHit(side,k,dmg,tgt,isA,x,y,src){
   const T=TYPES[k];if(isA)hitAnchor(side,k,dmg);
   if((T.fire||k==='met'&&!wfxOn('meteor_shower'))&&!G.sim)emberBurst(x,y-6,T.lob||k==='met'?10:5,50);
@@ -1309,7 +1309,7 @@ function update(dt){zArm();
     const focus=Math.min(f0,f1)+(Math.abs(f1-f0)<400?Math.abs(f1-f0)/2:120);
     cam.x+=(focus-V.visW/2-cam.x)*Math.min(1,dt*1.5)}
   clampCam();
-  if(G.time>=OVERTIME&&!G.ot){G.ot=1;if(!G.sim){toast('☠ SUDDEN DEATH: base damage ×2, no home defence bonus',1);G.fx.push({t:'screen',c:'#ff5a2a',life:0.6,max:0.6,a:0.25});snd('wave')}}
+  if(G.time>=OVERTIME&&!G.ot){G.ot=1;if(!G.sim){toast('☠ SUDDEN DEATH: base damage ×3, no home defence bonus',1);G.fx.push({t:'screen',c:'#ff5a2a',life:0.6,max:0.6,a:0.25});snd('wave')}}
   if(G.anchor[0]<=0||G.anchor[1]<=0||G.time>=MATCH)endGame();
 }
 function clampCam(){cam.x=V.visW>=WORLD?(WORLD-V.visW)/2:Math.max(0,Math.min(WORLD-V.visW,cam.x))}
@@ -2096,7 +2096,7 @@ function drawHUD(t){
   else{ctx.fillStyle='rgba(255,255,255,0.2)';rrS(wx-pw/2,py+4,pw,5,2.5);ctx.fill();ctx.fillStyle='#ffd77a';rrS(wx-pw/2,py+4,pw*f,5,2.5);ctx.fill()}
   const rem=Math.max(0,Math.ceil(MATCH-G.time));ctx.font='700 11px system-ui';ctx.fillStyle=G.time>=OVERTIME?(Math.floor(G.time*2)%2?'#ff6a4a':'#ffd0a0'):'#ffffff';otext((G.time>=OVERTIME?'OT ':'')+Math.floor(rem/60)+':'+String(rem%60).padStart(2,'0'),wx,50);
   if(G.time>=OVERTIME){ctx.font='900 12px system-ui';ctx.fillStyle=Math.floor(G.time*2)%2?'#ff4a3a':'#ffd0a0';otext('☠ SUDDEN DEATH',wx,64)}
-  else if(G.time>=LATE){ctx.font='700 9px system-ui';ctx.fillStyle='#ffd0a0';otext('BASE DMG +50%',wx,62)}
+  else if(G.time>=LATE){ctx.font='700 9px system-ui';ctx.fillStyle='#ffd0a0';otext('BASE DMG ×'+LATE_K[0],wx,62)}
   // last-wave units: a small dark strip directly under each HP column (never over the battlefield's towers), icons
   // scaled so the whole row fits the column width
   const strip=(x0,cw,side,counts,right)=>{const ks=keysOf(side).filter(k=>counts[k]);if(!ks.length)return;
