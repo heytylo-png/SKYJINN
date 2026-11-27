@@ -328,7 +328,7 @@ canvas#cv{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
 
 <script>
 (()=>{
-let WORLD=1200;const H=300,WAVE=12,FIRST=6,MATCH=360,ANCHOR=4000,WISH_WAVES=3;
+let WORLD=1200;const H=300,WAVE=12,FIRST=6,MATCH=360,ANCHOR=3000,WISH_WAVES=3;
 const GY=[195,270],AYB=[95,140];
 const BX=[55,WORLD-55],BY=200;
 // gy = lane band for unit feet, in world px (300 = canvas height): from the ground layer's walkable line down to 95% of
@@ -383,7 +383,7 @@ const TYPES={
    desc:'Sand-sail windship. Only anti-air and ranged casters can hit it. Weak vs anti-air.'},
  coil:{fac:'djinn',role:'aa',name:'Storm Coil',cost:45,spawn:1,hp:170,dmg:10,range:150,speed:50,cd:0.8,r:10,hg:1,ha:1,tags:['antiair'],bonus:{air:3.5},proj:620,ht:40,
    desc:'Rune obelisk wrapped in a sandstorm. Shreds air, weak vs ground. Weak vs melee.'},
- mor:{fac:'djinn',role:'siege',name:'Rune Mortar',cost:70,spawn:1,hp:100,dmg:30,range:230,speed:42,cd:2.4,r:12,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:38,lob:1,anchorMult:1.4,proj:280,ht:26,
+ mor:{fac:'djinn',role:'siege',name:'Rune Mortar',cost:70,spawn:1,hp:100,dmg:30,range:230,speed:42,cd:2.4,r:12,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:38,lob:1,anchorMult:2.0,proj:280,ht:26,
    desc:'Rune-forged cannon. Long-range splash. Strong vs swarms and the enemy Anchor. Weak vs divers.'},
  men:{fac:'djinn',role:'support',name:'Mender Lamp',cost:50,spawn:1,hp:110,dmg:0,heal:16,range:100,speed:55,cd:1.1,r:9,hg:0,ha:0,tags:['support'],bonus:{},ht:30,
    desc:'Floating lamp whose spirit heals the most hurt ally nearby. Weak vs divers.'},
@@ -400,7 +400,7 @@ const TYPES={
    desc:'Clockwork moth with leaf wings. Only anti-air and ranged can hit it. Weak vs anti-air.'},
  vin:{fac:'verdant',role:'aa',name:'Vine Lasher',cost:50,spawn:1,hp:210,dmg:11,range:140,speed:36,cd:0.9,r:10,hg:1,ha:1,tags:['antiair'],bonus:{air:3.5},proj:560,ht:40,grow:1,
    desc:'Walking pod whose thorn-vines snatch fliers. Shreds air. Weak vs melee.'},
- cat:{fac:'verdant',role:'siege',name:'Grove Catapult',cost:75,spawn:1,hp:140,dmg:30,range:220,speed:30,cd:2.7,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:40,lob:1,anchorMult:1.4,proj:260,ht:30,grow:1,
+ cat:{fac:'verdant',role:'siege',name:'Grove Catapult',cost:75,spawn:1,hp:140,dmg:30,range:220,speed:30,cd:2.7,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:40,lob:1,anchorMult:2.0,proj:260,ht:30,grow:1,
    desc:'Flings bursting seed pods. Long-range splash. Strong vs swarms and the Anchor. Weak vs divers.'},
  blm:{fac:'verdant',role:'support',name:'Bloom Shrine',cost:55,spawn:1,hp:150,dmg:0,heal:9,aoe:1,range:85,speed:34,cd:1.6,r:10,hg:0,ha:0,tags:['support'],bonus:{},ht:34,grow:1,
    desc:'Walking flower shrine. Pulses healing to ALL hurt allies around it. Weak vs divers.'},
@@ -417,7 +417,7 @@ const TYPES={
    desc:'Flying acid bomber. Only anti-air and ranged can hit it. Weak vs anti-air.'},
  spn:{fac:'mutant',role:'aa',name:'Spine Hurler',cost:45,spawn:1,hp:140,dmg:12,range:145,speed:50,cd:0.75,r:10,hg:1,ha:1,tags:['antiair'],bonus:{air:3.5},evo:1,proj:600,ht:22,
    desc:'Launches bone spines. Shreds air. Weak vs melee.'},
- bil:{fac:'mutant',role:'siege',name:'Bile Cannon',cost:70,spawn:1,hp:90,dmg:34,range:225,speed:42,cd:2.4,r:12,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:36,lob:1,acid:1,anchorMult:1.4,evo:1,proj:280,ht:26,
+ bil:{fac:'mutant',role:'siege',name:'Bile Cannon',cost:70,spawn:1,hp:90,dmg:34,range:225,speed:42,cd:2.4,r:12,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:36,lob:1,acid:1,anchorMult:2.0,evo:1,proj:280,ht:26,
    desc:'Living cannon lobbing acid bile. Splash + acid. Strong vs swarms and the Anchor. Weak vs divers.'},
  brd:{fac:'mutant',role:'support',name:'Brood Mother',cost:55,spawn:1,hp:160,dmg:0,brood:3.5,range:0,speed:40,cd:1,r:12,hg:0,ha:0,tags:['support'],bonus:{},evo:1,onDeath:{k:'lar',n:3},ht:24,
    desc:'Hatches a Larva every few seconds (up to 3 alive) and releases 3 more when it dies. Weak vs divers.'},
@@ -435,7 +435,7 @@ const TYPES={
    desc:'Knight on a gryphon. Only anti-air and ranged can hit it. Weak vs anti-air.'},
  xbw:{fac:'knight',role:'aa',name:'Skyward Arbalest',cost:50,spawn:1,hp:190,dmg:10,range:150,speed:40,cd:0.85,r:10,hg:1,ha:1,tags:['antiair'],bonus:{air:3.5},proj:650,ht:24,
    desc:'Giant crossbow aimed at the sky. Shreds air. Weak vs melee.'},
- tre:{fac:'knight',role:'siege',name:'Sun Trebuchet',cost:75,spawn:1,hp:150,dmg:28,range:230,speed:32,cd:2.6,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:38,lob:1,anchorMult:1.4,proj:260,ht:30,
+ tre:{fac:'knight',role:'siege',name:'Sun Trebuchet',cost:75,spawn:1,hp:150,dmg:28,range:230,speed:32,cd:2.6,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:38,lob:1,anchorMult:2.0,proj:260,ht:30,
    desc:'Hurls blazing sun-stones. Long-range splash. Strong vs swarms and the Anchor. Weak vs divers.'},
  prs:{fac:'knight',role:'support',name:'Banner Priest',cost:55,spawn:1,hp:140,dmg:0,heal:8,aura:1,range:100,speed:40,cd:1.2,r:9,hg:0,ha:0,tags:['support'],bonus:{},ht:44,
    desc:'Holy banner: allies nearby deal +20% damage, and it heals the most hurt ally. Weak vs divers.'},
@@ -472,7 +472,7 @@ Object.assign(TYPES,{
    desc:'Shrieking ghost with a scythe. Only anti-air and ranged can hit it. Weak vs anti-air.'},
  bal:{fac:'undead',role:'aa',name:'Bone Ballista',cost:45,spawn:1,hp:160,dmg:10,range:150,speed:44,cd:0.8,r:11,hg:1,ha:1,tags:['antiair'],bonus:{air:3.5},proj:650,ht:22,
    desc:'Ballista of bone and sinew. Shreds air. Weak vs melee.'},
- cct:{fac:'undead',role:'siege',name:'Corpse Catapult',cost:70,spawn:1,hp:110,dmg:31,range:225,speed:36,cd:2.5,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:36,lob:1,anchorMult:1.4,proj:270,ht:28,
+ cct:{fac:'undead',role:'siege',name:'Corpse Catapult',cost:70,spawn:1,hp:110,dmg:31,range:225,speed:36,cd:2.5,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:36,lob:1,anchorMult:2.0,proj:270,ht:28,
    desc:'Flings plague-ridden skulls. Long-range splash. Strong vs swarms and the Anchor. Weak vs divers.'},
  nec:{fac:'undead',role:'support',name:'Necromancer',cost:55,spawn:1,hp:120,dmg:0,heal:9,raise:1,range:100,speed:44,cd:1.2,r:9,hg:0,ha:0,tags:['support'],bonus:{},ht:34,
    desc:'Every enemy that dies near it rises as your Skeleton; also mends the most hurt ally. Weak vs divers.'},
@@ -489,7 +489,7 @@ Object.assign(TYPES,{
    desc:'Armed quadcopter. Only anti-air and ranged can hit it. Weak vs anti-air.'},
  itc:{fac:'auto',role:'aa',name:'Interceptor',cost:45,spawn:1,hp:165,dmg:10,range:155,speed:42,cd:0.8,r:11,hg:1,ha:1,tags:['antiair'],bonus:{air:3.5},proj:650,ht:30,
    desc:'Walker with a seeker-missile pod. Shreds air. Weak vs melee.'},
- rai:{fac:'auto',role:'siege',name:'Rail Cannon',cost:70,spawn:1,hp:110,dmg:33,range:235,speed:34,cd:2.6,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:32,anchorMult:1.4,proj:900,ht:24,
+ rai:{fac:'auto',role:'siege',name:'Rail Cannon',cost:70,spawn:1,hp:110,dmg:33,range:235,speed:34,cd:2.6,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:32,anchorMult:2.0,proj:900,ht:24,
    desc:'Magnetic rail cannon. Very fast long-range splash shots. Strong vs swarms and the Anchor. Weak vs divers.'},
  rpb:{fac:'auto',role:'support',name:'Repair Bot',cost:50,spawn:1,hp:110,dmg:0,heal:13,range:100,speed:48,cd:1.0,r:9,hg:0,ha:0,tags:['support'],bonus:{},ht:22,
    desc:'Welds the most damaged ally and recharges its shield. Weak vs divers.'},
@@ -506,7 +506,7 @@ Object.assign(TYPES,{
    desc:'Fire-breathing wyvern. Only anti-air and ranged can hit it. Weak vs anti-air.'},
  hrp:{fac:'dragon',role:'aa',name:'Harpoon Crew',cost:45,spawn:1,hp:160,dmg:10,range:150,speed:42,cd:0.8,r:11,hg:1,ha:1,tags:['antiair'],bonus:{air:3.5},proj:650,ht:24,
    desc:'Kobold crew with a giant harpoon launcher — dragon-hunters turned defenders. Shreds air. Weak vs melee.'},
- mag:{fac:'dragon',role:'siege',name:'Magma Golem',cost:70,spawn:1,hp:140,dmg:28,range:220,speed:32,cd:2.6,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:36,lob:1,fire:1,anchorMult:1.4,proj:270,ht:34,
+ mag:{fac:'dragon',role:'siege',name:'Magma Golem',cost:70,spawn:1,hp:140,dmg:28,range:220,speed:32,cd:2.6,r:13,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:36,lob:1,fire:1,anchorMult:2.0,proj:270,ht:34,
    desc:'Living volcano lobbing molten rock. Splash + burn. Strong vs swarms and the Anchor. Weak vs divers.'},
  shm:{fac:'dragon',role:'support',name:'Ember Shaman',cost:55,spawn:1,hp:130,dmg:0,heal:8,aoe:1,range:85,speed:42,cd:1.5,r:9,hg:0,ha:0,tags:['support'],bonus:{},ht:32,
    desc:'Warming embers pulse healing to all hurt allies nearby. Weak vs divers.'},
@@ -522,7 +522,7 @@ Object.assign(TYPES,{
    desc:'Machine-gun chopper. Only anti-air and ranged can hit it. Weak vs anti-air.'},
  flk:{fac:'goblin',role:'aa',name:'Flak Truck',cost:45,spawn:1,hp:160,dmg:9,range:155,speed:48,cd:0.6,r:12,hg:1,ha:1,tags:['antiair'],bonus:{air:3.5},proj:650,ht:26,
    desc:'Truck-mounted twin flak cannons. Shreds air. Weak vs melee.'},
- rkt:{fac:'goblin',role:'siege',name:'Rocket Battery',cost:70,spawn:1,hp:95,dmg:32,range:240,speed:40,cd:2.6,r:12,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:36,lob:1,anchorMult:1.4,proj:320,ht:24,
+ rkt:{fac:'goblin',role:'siege',name:'Rocket Battery',cost:70,spawn:1,hp:95,dmg:32,range:240,speed:40,cd:2.6,r:12,hg:1,ha:0,tags:['siege'],bonus:{swarm:1.6},splash:36,lob:1,anchorMult:2.0,proj:320,ht:24,
    desc:'Rolling rocket launcher. Long-range splash. Strong vs swarms and the Anchor. Weak vs divers.'},
  mec:{fac:'goblin',role:'support',name:'Field Mechanic',cost:50,spawn:1,hp:110,dmg:0,heal:15,range:100,speed:50,cd:1.1,r:9,hg:0,ha:0,tags:['support'],bonus:{},ht:26,
    desc:'Patches up the most damaged ally with a big wrench. Weak vs divers.'},
@@ -543,11 +543,11 @@ const WISHES={
  goblin:{icon:'✈',name:'Airstrike',short:'Bomb',tip:'Tap where to call an Airstrike ✈',desc:'Bombers carpet-bomb a wide stretch of the battlefield.'},
  knight:{icon:'✨',name:'Divine Judgment',short:'Smite',tip:'Tap where to call down Judgment ✨',desc:'A pillar of holy light smites enemies, empowers nearby allies and cleanses their acid.'}};
 const GMAX=0.18,GRATE=0.02;
-const FACMOD={djinn:{hp:1.02,dmg:1.0},verdant:{hp:1.1,dmg:1.06},mutant:{hp:1.03,dmg:1.04},knight:{hp:1.02,dmg:0.98},goblin:{hp:0.86,dmg:0.8},undead:{hp:1.28,dmg:1.2},auto:{hp:0.95,dmg:0.96},dragon:{hp:1.18,dmg:1.14},none:{hp:1,dmg:1}};
-const HOME=150,HOME_DMG=0.2,HOME_DEF=0.2,CAP=999,QMAX=80,OVERTIME=300; // last minute: no home-defence bonus, base damage x2
+const FACMOD={djinn:{hp:1.009,dmg:0.988},verdant:{hp:0.983,dmg:0.947},mutant:{hp:0.997,dmg:1.008},knight:{hp:0.999,dmg:0.96},goblin:{hp:0.985,dmg:0.917},undead:{hp:1.265,dmg:1.185},auto:{hp:0.976,dmg:0.987},dragon:{hp:1.314,dmg:1.27},none:{hp:1.0,dmg:1.0}};
+const HOME=150,HOME_DMG=0.1,HOME_DEF=0.1,CAP=999,QMAX=80,OVERTIME=300; // last minute: no home-defence bonus, base damage x2
 const homeK=()=>G.time<OVERTIME?1:0;
 const SUP={champion:6,swarm:1,tank:3,ranged:2,diver:2,air:3,aa:2,siege:3,support:2};
-const TOWER={range:260,dmg:40,cd:0.75};
+const TOWER={range:200,dmg:30,cd:0.75};
 TYPES.tow={fac:'none',name:'Anchor',bonus:{},hg:1,ha:1,tags:[],proj:600,spawn:1,cost:0,splash:28,pierce:1};
 const WISHT={bonus:{},cost:0,spawn:1,pierce:1};
 const RC={champion:['ranged','swarm'],swarm:['siege','tank'],tank:['ranged'],ranged:['swarm','diver'],diver:['tank'],air:['aa','ranged'],aa:['swarm','diver','tank'],siege:['diver'],support:['diver']};
@@ -971,8 +971,14 @@ function laneRow(side){G.rowN=G.rowN||[0,0];const r=(G.rowN[side]++*3)%ROWS;retu
 // drawn body width in world px (sprites are wider than the collision radius)
 const bodyW=u=>u._bw||(u._bw=Math.max(u.T.r*2,htOf(u)*0.62));
 // a same-side ground unit right in front of u on its row: u waits just behind it instead of walking into it
-function blockedAhead(u,dir){const w=bodyW(u),rh=rowH()*0.6;for(const a of G.units){if(a===u||a.side!==u.side||a.dead||a.T.air)continue;
-  const dx=(a.x-u.x)*dir;if(dx>0&&dx<(w+bodyW(a))*0.5*1.05&&Math.abs(a.y-u.y)<rh)return true}return false}
+function sideStep(u,dt){u.blk=(u.blk||0)+dt;if(u.blk<0.6)return;u.blk=0;const h=rowH(),up=Math.max(GY[0],(u.lane??u.y)-h),dn=Math.min(GY[1],(u.lane??u.y)+h);
+  const busy=y=>{let n=0;for(const a of G._L[u.side])if(Math.abs(a.y-y)<h*0.5&&Math.abs(a.x-u.x)<40)n++;return n};u.lane=busy(up)<=busy(dn)?up:dn}
+function laneLists(){const L=[[],[]],A=[[],[]];let mw=0;for(const u of G.units)if(!u.dead){A[u.side].push(u);if(!u.T.air){L[u.side].push(u);mw=Math.max(mw,bodyW(u))}}for(const X of [L[0],L[1],A[0],A[1]])X.sort((a,b)=>a.x-b.x);G._L=L;G._A=A;G._mw=mw}
+function blockedAhead(u,dir){const A=G._L&&G._L[u.side];if(!A)return false;const w=bodyW(u),rh=rowH()*0.6,lim=(w+G._mw)*0.5*1.05;
+  let lo=0,hi=A.length;while(lo<hi){const m=(lo+hi)>>1;if(A[m].x<u.x)lo=m+1;else hi=m}   // first unit at or right of u
+  if(dir>0){for(let i=lo;i<A.length;i++){const a=A[i],dx=a.x-u.x;if(dx>lim)break;if(a!==u&&dx>0&&!(a.T.proj&&!u.T.proj)&&dx<(w+bodyW(a))*0.5*1.05&&Math.abs(a.y-u.y)<rh)return true}}
+  else{for(let i=Math.min(lo,A.length-1);i>=0;i--){const a=A[i],dx=u.x-a.x;if(dx>lim)break;if(a!==u&&dx>0&&!(a.T.proj&&!u.T.proj)&&dx<(w+bodyW(a))*0.5*1.05&&Math.abs(a.y-u.y)<rh)return true}}
+  return false}
 function mkUnit(side,k){
   const T=TYPES[k],tier=tierOf(side,k),m=1+0.3*(tier-1),fm=FACMOD[T.fac];
   const x=side===0?rnd(85,115):WORLD-rnd(85,115),y=T.air?rnd(AYB[0],AYB[1]):laneRow(side);   // a lane row of its own (5 rows across GY), kept while marching
@@ -990,7 +996,8 @@ function spawn(side){
 }
 function nextWave(){
   G.wave++;spawn(0);spawn(1);if(G.wave===1)tutEvent('wave1');G.lastEnemy={...G.roster[1]};G.lastOwn={...G.roster[0]};
-  G.gold[0]+=G.income[0];G.gold[1]+=Math.round(G.income[1]*(G.spec?1:DIFF[G.diff].gold)*G.egm);
+  const im=1+Math.min(1,0.1*G.wave);   // income grows 10% a wave (up to double) so later waves are bigger
+  G.gold[0]+=Math.round(G.income[0]*im);G.gold[1]+=Math.round(G.income[1]*im*(G.spec?1:DIFF[G.diff].gold)*G.egm);
   for(const s of [0,1]){const gap=G.anchor[1-s]-G.anchor[s];if(gap>0)G.gold[s]+=Math.round(Math.min(1,gap/ANCHOR*2)*60)}
   G.wishWaves++;G.aw[0]++;G.aw[1]++;aiShop(1);if(G.sim||G.spec)aiShop(0);G.waveT=WAVE;snd('wave');
 }
@@ -1099,8 +1106,9 @@ function hurt(side,k,dmg,e,src){
       if(od.acid){for(const f of G.units)if(f.side!==e.side&&!f.dead&&!f.T.air&&Math.hypot(f.x-e.x,(f.y-e.y)*0.6)<=34){f.acidS=Math.min(3,f.acidS+2);f.acidT=3;f.acidSrc=e.side}
         G.fx.push({t:'ring',x:e.x,y:e.y,r:34,life:0.5,max:0.5,c:ACID});acidSplash(e.x,bodyY(e),9)}}}
 }
-function hitAnchor(side,k,dmg){let m=(TYPES[k]&&TYPES[k].anchorMult)||1;const b=1-side;if(shielded(b,BX[b]))m*=0.3;
-  if(G.time>=OVERTIME)m*=2;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
+const LATE=240,LATE_K=[2,3],BREACH=60,EARLY=150,EARLY_K=0.6,SD_PRESS=1.5;   // EARLY: fortified bases (half damage) until the armies exist   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
+function hitAnchor(side,k,dmg){const T=TYPES[k];let m=(T&&T.anchorMult)||1;if(T&&T.champ)m*=1.5;const b=1-side;if(shielded(b,BX[b]))m*=0.3;
+  if(G.time>=OVERTIME)m*=LATE_K[1];else if(G.time>=LATE)m*=LATE_K[0];else if(G.time<EARLY)m*=EARLY_K;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
 function dealHit(side,k,dmg,tgt,isA,x,y,src){
   const T=TYPES[k];if(isA)hitAnchor(side,k,dmg);
   if((T.fire||k==='met'&&!wfxOn('meteor_shower'))&&!G.sim)emberBurst(x,y-6,T.lob||k==='met'?10:5,50);
@@ -1236,24 +1244,29 @@ function updUnit(u,dt){
   }
   const sight=T.prio?260:Math.max(T.range+60,180);
   let best=null,bw=1e9;
-  for(const e of G.units){if(e.side===u.side||e.dead||!canHit(T,e))continue;
+  const EN=G._A[1-u.side];let lo=0,hi=EN.length;const x0=u.x-sight;while(lo<hi){const m=(lo+hi)>>1;if(EN[m].x<x0)lo=m+1;else hi=m}
+  for(let ii=lo;ii<EN.length;ii++){const e=EN[ii];if(e.x>u.x+sight)break;if(e.dead||!canHit(T,e))continue;   // x-sorted foes within sight only
     const d=dist(u,e);if(d>sight)continue;let w=d;if(T.prio&&e.T.tags.some(t=>T.prio.includes(t)))w*=0.4;if(w<bw){bw=w;best=e}}
+  // at the enemy gate the base itself is a target: hit it whenever it is closer than the nearest foe
+  if(best&&Math.abs(u.x-eb)<=T.range+34){const bd=dist(u,best),cr=Math.max(T.range+T.r+best.T.r,(bodyW(u)+bodyW(best))*0.5*0.9+T.range*0.5);
+    if(T.proj||Math.abs(u.x-eb)<bd||bd>cr)best=null}   // ranged / siege fire on the base; melee too unless a foe is in contact
   if(best){
     const d=dist(u,best),reach=Math.max(T.range+T.r+best.T.r,T.air||best.T.air?0:(bodyW(u)+bodyW(best))*0.5*0.9+T.range*0.5);
     if(d<=reach){u.eng=1;if(u.cd<=0)attack(u,best,false)}
-    else if(T.air||!blockedAhead(u,Math.sign(best.x-u.x)||dir)){const dx=best.x-u.x,dy=T.air||best.T.air?0:(best.y-u.y),L=Math.hypot(dx,dy)||1,s=spd*dt;u.x+=dx/L*s;u.y+=dy/L*s*0.35;u.moving=true}
+    else if(T.air||!blockedAhead(u,Math.sign(best.x-u.x)||dir)||(sideStep(u,dt),false)){u.blk=0;const dx=best.x-u.x,dy=T.air||best.T.air?0:(best.y-u.y),L=Math.hypot(dx,dy)||1,s=spd*dt;u.x+=dx/L*s;u.y+=dy/L*s*0.35;u.moving=true}
   }else{
-    if(Math.abs(u.x-eb)<=T.range+34){u.eng=1;if(u.cd<=0)attack(u,null,true)}
-    else if(T.air||!blockedAhead(u,dir)){u.x+=dir*spd*dt;u.moving=true}
+    if(Math.abs(u.x-eb)<=T.range+34){u.eng=1;if(u.cd<=0)attack(u,null,true);u.brT=(u.brT||0)+dt;if(u.brT>=3&&!u.breach){u.breach=1;hitAnchor(u.side,'breach',BREACH)}}   // breach
+    else if(T.air||!blockedAhead(u,dir)){u.blk=0;u.x+=dir*spd*dt;u.moving=true}else sideStep(u,dt)
   }
-  if(!T.air){if(u.lane==null)u.lane=u.y;if(!best&&u.moving)u.y+=(u.lane-u.y)*Math.min(1,dt*1.2)}
+  if(!T.air){if(u.lane==null)u.lane=u.y;if(!best&&u.moving||u.blk>0)u.y+=(u.lane-u.y)*Math.min(1,dt*(u.blk>0?3:1.2))}
   if(u.moving&&!T.air&&/^(roll|crawl)$/.test((SPR_META[u.k]||{}).mv)&&Math.random()<dt*(T.speed/25))G.parts.push({x:u.x-dir*6,y:u.y-1,vx:-dir*rnd(5,20),vy:-rnd(3,10),g:0,life:0.5,max:0.5,c:'#d8b88a',s:rnd(1.5,3),a:0.5});
   if(u.moving&&T.air&&Math.random()<dt*4)G.parts.push({x:u.x-dir*16,y:u.y-4,vx:-dir*rnd(10,25),vy:rnd(-3,3),g:0,life:0.6,max:0.6,c:T.fac==='verdant'?'#b9d27a':'#e6cfa3',s:rnd(1.5,3),a:0.5});
 }
 function separate(){
-  const us=G.units;for(const u of us)u._bw=null;
-  for(let i=0;i<us.length;i++){const a=us[i];
-    for(let j=i+1;j<us.length;j++){const b=us[j];if(!!a.T.air!==!!b.T.air)continue;
+  const us=G.units;let mw=0;for(const u of us){u._bw=null;mw=Math.max(mw,bodyW(u))}
+  const S=us.slice().sort((a,b)=>a.x-b.x),reach=mw*1.4+2;   // sweep: only pairs closer in x than the widest separation radius
+  for(let i=0;i<S.length;i++){const a=S[i];
+    for(let j=i+1;j<S.length;j++){const b=S[j];if(b.x-a.x>reach)break;if(!!a.T.air!==!!b.T.air)continue;
       const dx=b.x-a.x,dy=b.y-a.y,air=!!a.T.air,rr=air?(a.T.r+b.T.r)*1.4:a.side!==b.side?(a.T.r+b.T.r):(bodyW(a)+bodyW(b))*0.5*1.4,ky=air?1:3.5,d2=dx*dx+dy*dy*ky*ky;
       if(d2<rr*rr){if(d2<0.01){a.x-=0.8;b.x+=0.8;continue}const d=Math.sqrt(d2),p=Math.min(1.5,(rr-d)/2/d*0.9);a.x-=dx*p;a.y-=dy*p/ky;b.x+=dx*p;b.y+=dy*p/ky}}}
   // density cap: at most 3 ground units share a 14 x 8 cell; extras slide to the emptier lane edge and back a step
@@ -1265,7 +1278,7 @@ function separate(){
 function update(dt){zArm();
   for(const s of [0,1]){const st=towerState(G.anchor[s]/ANCHOR);if(st!==G.tst[s]){if(st>G.tst[s]&&G.time>0.5)towerBreak(s,st);G.tst[s]=st}}
   G.time+=dt;G.waveT-=dt;if(G.waveT<=0)nextWave();
-  for(const u of G.units)if(!u.dead)updUnit(u,dt);
+  laneLists();for(const u of G.units)if(!u.dead)updUnit(u,dt);
   for(const s of [0,1]){let sp=0;for(const u of G.units)if(u.side===s)sp+=SUP[u.T.role];G.sup[s]=sp;G.relT[s]-=dt;
     while(G.queue[s].length&&G.relT[s]<=0){const k=G.queue[s][0],c=SUP[TYPES[k].role];if(sp+c>CAP)break;G.queue[s].shift();G.units.push(mkUnit(s,k));sp+=c;G.sup[s]=sp;G.relT[s]=0.06}}
   separate();
@@ -1297,7 +1310,9 @@ function update(dt){zArm();
     const focus=Math.min(f0,f1)+(Math.abs(f1-f0)<400?Math.abs(f1-f0)/2:120);
     cam.x+=(focus-V.visW/2-cam.x)*Math.min(1,dt*1.5)}
   clampCam();
-  if(G.time>=OVERTIME&&!G.ot){G.ot=1;if(!G.sim){toast('⏱ OVERTIME: base damage ×2, no home defence bonus');G.fx.push({t:'screen',c:'#ff5a2a',life:0.6,max:0.6,a:0.25});snd('wave')}}
+  if(G.time>=OVERTIME){const mid=WORLD/2,n=[0,0];for(const u of G.units)if(!u.dead&&!u.T.air){if(u.side===1&&u.x<mid)n[0]++;else if(u.side===0&&u.x>mid)n[1]++}
+    for(const b of [0,1])if(n[b])G.anchor[b]=Math.max(0,G.anchor[b]-n[b]*SD_PRESS*dt*(shielded(b,BX[b])?0.3:1))}   // sudden death: ground held in a base's half wears it down
+  if(G.time>=OVERTIME&&!G.ot){G.ot=1;if(!G.sim){toast('☠ SUDDEN DEATH: base damage ×3 · enemies in your half wear your base down',1);G.fx.push({t:'screen',c:'#ff5a2a',life:0.6,max:0.6,a:0.25});snd('wave')}}
   if(G.anchor[0]<=0||G.anchor[1]<=0||G.time>=MATCH)endGame();
 }
 function clampCam(){cam.x=V.visW>=WORLD?(WORLD-V.visW)/2:Math.max(0,Math.min(WORLD-V.visW,cam.x))}
@@ -2083,6 +2098,8 @@ function drawHUD(t){
   if(pk){const il=wx-pw/2+48*pk,iw=pw-(48+48)*pk,it=py+24*pk,ih=41*pk;ctx.fillStyle='#ffd77a';ctx.fillRect(il,it,iw*f,ih);ctx.fillStyle='rgba(255,255,255,0.35)';ctx.fillRect(il,it,iw*f,Math.max(1,ih*0.3))}
   else{ctx.fillStyle='rgba(255,255,255,0.2)';rrS(wx-pw/2,py+4,pw,5,2.5);ctx.fill();ctx.fillStyle='#ffd77a';rrS(wx-pw/2,py+4,pw*f,5,2.5);ctx.fill()}
   const rem=Math.max(0,Math.ceil(MATCH-G.time));ctx.font='700 11px system-ui';ctx.fillStyle=G.time>=OVERTIME?(Math.floor(G.time*2)%2?'#ff6a4a':'#ffd0a0'):'#ffffff';otext((G.time>=OVERTIME?'OT ':'')+Math.floor(rem/60)+':'+String(rem%60).padStart(2,'0'),wx,50);
+  if(G.time>=OVERTIME){ctx.font='900 12px system-ui';ctx.fillStyle=Math.floor(G.time*2)%2?'#ff4a3a':'#ffd0a0';otext('☠ SUDDEN DEATH',wx,64)}
+  else if(G.time>=LATE){ctx.font='700 9px system-ui';ctx.fillStyle='#ffd0a0';otext('BASE DMG ×'+LATE_K[0],wx,62)}
   // last-wave units: a small dark strip directly under each HP column (never over the battlefield's towers), icons
   // scaled so the whole row fits the column width
   const strip=(x0,cw,side,counts,right)=>{const ks=keysOf(side).filter(k=>counts[k]);if(!ks.length)return;
@@ -2357,7 +2374,7 @@ function loop(now){
 }
 new ResizeObserver(resize).observe(cv);window.addEventListener('resize',resize);
 applyMap("dunes");resize();requestAnimationFrame(loop);initStore();loadSprites();uiArtInit();if(LAB)document.querySelectorAll('.ov,#bar,#stage>*:not(canvas)').forEach(o=>o.style.display='none');
-window.__sky={sim(f,diff,spec,ef){pickFac=f;pickEnemy=ef||null;newGame(diff,spec);pickEnemy=null;G.sim=1;if(!spec)aiShop(0);while(!G.over)update(1/30);const r={fac:G.fac.slice(),win:G.res.win,why:G.res.why,a:G.anchor.slice(),w:G.wave,t:Math.round(G.time),k:G.kills.slice(),ch:[0,1].map(i=>keysOf(i).filter(k=>TYPES[k].champ).map(k=>G.roster[i][k]||0)[0])};G=null;return r}};
+window.__sky={sim(f,diff,spec,ef,map){if(map)optMap=map;pickFac=f;pickEnemy=ef||null;newGame(diff,spec);pickEnemy=null;G.sim=1;if(!spec)aiShop(0);while(!G.over)update(1/30);const r={fac:G.fac.slice(),win:G.res.win,why:G.res.why,a:G.anchor.slice(),w:G.wave,t:Math.round(G.time),k:G.kills.slice(),ch:[0,1].map(i=>keysOf(i).filter(k=>TYPES[k].champ).map(k=>G.roster[i][k]||0)[0])};G=null;return r}};
 })();
 </script>
 </body>

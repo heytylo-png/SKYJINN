@@ -9,6 +9,31 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 
 **Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
 
+**Match pacing (balance pass).** Tuned with the headless simulator so that equal AIs usually finish by base destruction.
+
+| Setting | Value |
+|---|---|
+| Base (anchor) HP | 3000 |
+| Siege `anchorMult` | 2.0 |
+| Champions vs bases | ×1.5 |
+| Tower | 30 damage, 200 range |
+| `HOME_DEF` / `HOME_DMG` | 0.10 |
+
+- **Base-damage ramp:** ×0.6 before 2:30 (early fortification), ×1 until 4:00, ×2 from 4:00 (HUD shows "BASE DMG ×2"), ×3 in the final minute (**☠ SUDDEN DEATH**).
+- **Sudden-death pressure:** in the final minute, each base also loses 1.5 HP/s per enemy ground unit in its half of the map.
+- **Breach:** a unit that survives 3 s at the enemy base deals a one-time 60.
+- **Income growth:** wave income grows 10% per wave, capped at ×2.
+- **Gate rule:** at the enemy gate, ranged and siege units fire on the base. Melee units do too, unless a foe is in contact.
+- **Ranks:**
+  - Melee units pass through ranged allies.
+  - A unit blocked for 0.6 s sidesteps into the freer neighbouring row.
+- **Faction stats:** `FACMOD` multipliers were re-tuned per faction.
+- **Simulator:**
+  - `window.__sky.sim(faction, diff, true, enemy, map)` runs one AI-vs-AI match headless.
+  - `node tools/simrun.js <reps> out.json` runs every ordered faction pair on all 3 maps at Normal and Hard, 4 browsers in parallel.
+  - `python3 tools/simstat.py out.json` prints the summary.
+  - Target search, rank blocking and separation scan x-sorted lists, which keeps big late-game armies fast.
+
 **Camera.** Each map shows a vertical slice of the 300-unit world (`VIEW`, set in `setView()`), cropped from the top so the sky and mid layers lose their upper part instead of shrinking.
 
 - **Slice size:** the slice ends just below the lane. It is only as tall as needed for the lane to sit in the bottom 40% and for the towers to clear the top HUD. That works out to about 199 units on Desert Ruins, 206 on Sky Bridge and 231 on Volcanic Wastes.
