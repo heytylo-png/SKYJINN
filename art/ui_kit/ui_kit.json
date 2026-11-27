@@ -1,0 +1,129 @@
+{
+ "panel_large": {
+  "w": 460,
+  "h": 556,
+  "slice": 83
+ },
+ "panel_medium": {
+  "w": 407,
+  "h": 501,
+  "slice": 73
+ },
+ "bar_top": {
+  "w": 952,
+  "h": 158,
+  "slice": 142
+ },
+ "btn_brass": {
+  "w": 274,
+  "h": 213,
+  "slice": 64
+ },
+ "btn_brass_pressed": {
+  "w": 274,
+  "h": 213,
+  "slice": 64
+ },
+ "btn_brass_disabled": {
+  "w": 273,
+  "h": 213,
+  "slice": 64
+ },
+ "btn_teal": {
+  "w": 273,
+  "h": 232,
+  "slice": 70
+ },
+ "btn_teal_pressed": {
+  "w": 274,
+  "h": 232,
+  "slice": 70
+ },
+ "btn_teal_disabled": {
+  "w": 273,
+  "h": 232,
+  "slice": 70
+ },
+ "card_normal": {
+  "w": 335,
+  "h": 333,
+  "slice": 60
+ },
+ "card_selected": {
+  "w": 353,
+  "h": 361,
+  "slice": 64
+ },
+ "card_locked": {
+  "w": 340,
+  "h": 349,
+  "slice": 61
+ },
+ "card_champion": {
+  "w": 354,
+  "h": 413,
+  "slice": 64
+ },
+ "bar_hp": {
+  "w": 864,
+  "h": 157,
+  "slice": 141
+ },
+ "bar_progress": {
+  "w": 800,
+  "h": 88,
+  "slice": 79
+ },
+ "badge_teal": {
+  "w": 185,
+  "h": 196
+ },
+ "badge_red": {
+  "w": 183,
+  "h": 196
+ },
+ "star_empty": {
+  "w": 141,
+  "h": 145
+ },
+ "star_half": {
+  "w": 141,
+  "h": 145
+ },
+ "star_full": {
+  "w": 142,
+  "h": 145
+ },
+ "icon_gold": {
+  "w": 206,
+  "h": 213
+ },
+ "icon_income": {
+  "w": 204,
+  "h": 213
+ },
+ "icon_pause": {
+  "w": 204,
+  "h": 213
+ },
+ "icon_sound": {
+  "w": 207,
+  "h": 213
+ },
+ "icon_music": {
+  "w": 206,
+  "h": 209
+ },
+ "icon_fullscreen": {
+  "w": 204,
+  "h": 209
+ },
+ "icon_settings": {
+  "w": 204,
+  "h": 209
+ },
+ "icon_battle": {
+  "w": 207,
+  "h": 209
+ }
+}

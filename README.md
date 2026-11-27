@@ -9,6 +9,22 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 
 **Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
 
+**Pixel UI kit.** The menus and HUD use the art in `art/ui_kit/`, which `tools/uikit.py` embeds as `UI_KIT`. At startup each piece becomes a `--k-<name>` CSS variable. Frames are drawn with `border-image` 9-slicing at the slice insets from `ui_kit.json`, with corners scaled uniformly to phone size and `image-rendering: pixelated`.
+
+- **Windows:** every overlay sits in a `panel_large` window. Sub-sections use `panel_medium`, and titles sit on `bar_top`.
+- **Buttons:** `btn_brass` for normal actions and `btn_teal` for main actions (Play, Next stage, Resume, Fight, Upgrade).
+  - When pressed, teal buttons switch to `btn_teal_pressed`. Brass buttons shift their content down 2px, because their pressed art matches the normal art.
+  - Disabled buttons use `btn_*_disabled`.
+- **Cards:** faction picker, campaign stages and unit cards use `card_normal`.
+  - `card_selected` marks the chosen faction, the next stage, and the unit whose info sheet is open.
+  - `card_locked` marks locked stages.
+  - `card_champion` is the champion card. Its crown is split off by the embed tool so the 9-slice does not stretch it.
+- **HUD:** `bar_hp` and `bar_progress` are drawn on the canvas around the base health bars and the wave timer.
+  - `badge_teal` shows owned-unit counts. `badge_red` marks warnings: can't afford, and army full.
+  - `star_*` icons show stars on campaign stages and the end screen.
+  - The icons replace the old top-left buttons and also mark gold, income, settings and Play.
+- **Start menu changes:** the difficulty is now picked first (and remembered), then ⚔ PLAY starts the match. A ⚙ settings window toggles sound, music and fullscreen.
+
 **Music.** Real MP3 tracks in `audio/` replace the old procedural loop:
 - `music_menu` loops on the start menu and campaign screen.
 - `music_desert`, `music_bridge` and `music_volcano` loop in battle on the matching map.
