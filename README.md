@@ -3,11 +3,18 @@
 Mobile tug-of-war auto-battler (inspired by Art of War: Red Tides). Fantasy mixed with advanced technology.
 
 ## Play
-Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedded in that one file.
+Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedded in that one file, except the music in `audio/`.
 
 **Landscape only.** In portrait, a full-screen prompt (logo, rotating phone, "Rotate your phone to play") covers the game, and a running match pauses behind it, resuming when the phone is turned back. The first tap on any start-menu button asks the browser for fullscreen and a landscape orientation lock. Where that's unsupported (iOS Safari), the game just continues. The ⛶ button next to music toggles fullscreen.
 
 **Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
+
+**Music.** Real MP3 tracks in `audio/` replace the old procedural loop:
+- `music_menu` loops on the start menu and campaign screen.
+- `music_desert`, `music_bridge` and `music_volcano` loop in battle on the matching map.
+- `sting_victory` or `sting_defeat` plays once on the end screen, after the battle music stops.
+
+One `<audio>` element plays the music (loop, volume 0.5) and crossfades over 1 s when the track changes. Stings play at 0.7 on their own element. Browsers block autoplay, so music starts on the first tap. The 🎵 toggle is saved to localStorage. Music pauses while the tab is hidden and resumes when it comes back. The service worker pre-caches the tracks for offline play. Sound effects are still procedural (WebAudio).
 
 ## Factions (8)
 Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons

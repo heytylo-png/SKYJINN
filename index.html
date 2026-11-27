@@ -472,32 +472,31 @@ function auInit(){
 function env(g,t,a,peak,dec){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(0.0001,t+a+dec)}
 function tone(type,f0,f1,dur,vol,t){const c=AU.c,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(Math.max(20,f1),t+dur);env(g,t,0.005,vol,dur);o.connect(g);g.connect(AU.out);o.start(t);o.stop(t+dur+0.05)}
 function noise(dur,vol,ftype,freq,t,q){const c=AU.c,s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=AU.noise;f.type=ftype;f.frequency.value=freq;f.Q.value=q||1;env(g,t,0.004,vol,dur);s.connect(f);f.connect(g);g.connect(AU.out);s.start(t,Math.random()*0.5);s.stop(t+dur+0.05)}
-// ---- procedural music: desert-war loop in the Hijaz mode ----
-const MUS={on:true,run:false,timer:null,step:0,next:0,phrase:[],drones:[]};
-const HIJAZ=[293.66,311.13,369.99,392.0,440.0,466.16,523.25,587.33];
-function musInit(){if(!AU.c||AU.mus)return;AU.mus=AU.c.createGain();AU.mus.gain.value=0.55;AU.mus.connect(AU.c.destination)}
-function musStart(){if(!AU.c||!MUS.on||MUS.run)return;musInit();MUS.run=true;MUS.step=0;MUS.next=AU.c.currentTime+0.1;
-  const f=AU.c.createBiquadFilter();f.type='lowpass';f.frequency.value=320;f.connect(AU.mus);
-  for(const [fr,v,ty] of [[73.42,0.05,'sawtooth'],[110,0.025,'sawtooth'],[146.83,0.012,'triangle']]){const o=AU.c.createOscillator(),gg=AU.c.createGain();o.type=ty;o.frequency.value=fr;gg.gain.value=0;gg.gain.linearRampToValueAtTime(v,AU.c.currentTime+2);o.connect(gg);gg.connect(f);o.start();MUS.drones.push([o,gg])}
-  MUS.timer=setInterval(musTick,50)}
-function musStop(){if(!MUS.run)return;MUS.run=false;clearInterval(MUS.timer);const t=AU.c.currentTime;for(const [o,gg] of MUS.drones){gg.gain.cancelScheduledValues(t);gg.gain.setValueAtTime(gg.gain.value,t);gg.gain.linearRampToValueAtTime(0,t+0.6);o.stop(t+0.7)}MUS.drones=[]}
-function newPhrase(){let i=Math.floor(Math.random()*3);const p=[];for(let n=0;n<8;n++){if(Math.random()<0.28&&n>0){p.push(-1);continue}i=Math.max(0,Math.min(7,i+[-2,-1,-1,1,1,2][Math.floor(Math.random()*6)]));p.push(i)}p[7]=Math.random()<0.5?0:4;return p}
-function mtone(type,f,t,dur,vol,cut){const c=AU.c,o=c.createOscillator(),g=c.createGain(),fl=c.createBiquadFilter();o.type=type;o.frequency.setValueAtTime(f,t);fl.type='lowpass';fl.frequency.value=cut||2000;
-  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.006);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(fl);fl.connect(g);g.connect(AU.mus);o.start(t);o.stop(t+dur+0.05)}
-function mnoise(t,dur,vol,freq){const c=AU.c,sN=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();sN.buffer=AU.noise;fl.type='bandpass';fl.frequency.value=freq;fl.Q.value=1.4;
-  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.003);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);sN.connect(fl);fl.connect(g);g.connect(AU.mus);sN.start(t,Math.random()*0.5);sN.stop(t+dur+0.05)}
-function musTick(){if(!AU.c||!MUS.run)return;const S=60/100/4;
-  const hot=G&&!G.over&&G.units.length>28;
-  while(MUS.next<AU.c.currentTime+0.3){const st=MUS.step,t=MUS.next,b16=st%16,bar=Math.floor(st/16)%8;
-    if(b16===0||b16===8){const f=b16===0?110:98;const c=AU.c,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(48,t+0.25);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.3,t+0.005);g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);o.connect(g);g.connect(AU.mus);o.start(t);o.stop(t+0.35)}
-    if(b16===2||b16===6||b16===12)mnoise(t,0.06,0.09,3200);
-    if(hot&&b16%2===1)mnoise(t,0.03,0.035,4200);
-    if(hot&&b16===14)mnoise(t,0.05,0.07,2600);
-    if(st%32===0)MUS.phrase=newPhrase();
-    const rest=(bar===6||bar===7);
-    if(!rest&&st%2===0){const n=MUS.phrase[(st/2)%8|0];if(n>=0){const f=HIJAZ[n]*(bar>=4?2:1)*(st%32>=16&&Math.random()<0.3?0.5:1);mtone('triangle',f,t,0.42,0.06,2400);mtone('sawtooth',f,t,0.18,0.018,1400)}}
-    if(b16===0&&bar%2===0)mtone('sawtooth',73.42*(hot?2:1),t,0.6,0.05,500);
-    MUS.next+=S;MUS.step=(st+1)%128}}
+// ---- music: one looping <audio> element, 1 s crossfade between tracks; stings on their own element ----
+const MUS={on:true,want:null,cur:null,el:null,sting:null,fade:null,armed:false,hidden:false,VOL:0.5,SVOL:0.7};
+try{if(localStorage.getItem('skyjinn-music')==='off')MUS.on=false}catch(e){}
+const MUS_SRC=k=>'audio/'+k+'.mp3';
+function musEl(){if(!MUS.el){const a=new Audio();a.loop=true;a.preload='auto';a.volume=0;MUS.el=a}return MUS.el}
+function musFade(to,ms,done){clearInterval(MUS.fade);const a=musEl(),from=a.volume,t0=performance.now();
+  MUS.fade=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);a.volume=Math.max(0,Math.min(1,from+(to-from)*k));if(k>=1){clearInterval(MUS.fade);MUS.fade=null;done&&done()}},30)}
+function musPlay(){const a=musEl();if(!MUS.armed||!MUS.on||MUS.hidden||!MUS.cur)return;const p=a.play();if(p&&p.catch)p.catch(()=>{})}
+// switch to track k (null = silence); fades out 0.5 s, swaps, fades in 0.5 s
+function musTrack(k){MUS.want=k;if(!MUS.armed)return;if(k===MUS.cur&&MUS.el&&!MUS.el.paused&&MUS.on)return;
+  const a=musEl(),swap=()=>{k=MUS.want;MUS.cur=k;if(!k||!MUS.on){a.pause();return}
+    if(!a.src.endsWith(MUS_SRC(k))){a.src=MUS_SRC(k);a.currentTime=0}a.volume=0;musPlay();musFade(MUS.VOL,500)};
+  if(MUS.cur&&!a.paused&&a.volume>0.01)musFade(0,500,swap);else swap()}
+function musStop(){musTrack(null)}
+function musSting(win){MUS.want=MUS.cur=null;clearInterval(MUS.fade);if(MUS.el)MUS.el.pause();if(!MUS.on||!MUS.armed)return;if(MUS.sting)MUS.sting.pause();
+  const s=new Audio(MUS_SRC(win?'sting_victory':'sting_defeat'));s.volume=MUS.SVOL;MUS.sting=s;const p=s.play();if(p&&p.catch)p.catch(()=>{})}
+function stingStop(){if(MUS.sting){MUS.sting.pause();MUS.sting=null}}
+// which track the current screen wants
+function musScene(){if(G&&G.sim)return MUS.want;if(!G)return 'music_menu';if(G.over)return null;return 'music_'+mapKey(G.map)}
+function musSync(){const k=musScene();if(k!==MUS.want)musTrack(k);if(k)stingStop()}
+setInterval(musSync,250);
+// browsers block autoplay: start on the first tap
+addEventListener('pointerdown',function arm(){if(MUS.armed)return;MUS.armed=true;removeEventListener('pointerdown',arm,true);MUS.cur=null;musTrack(musScene())},true);
+document.addEventListener('visibilitychange',()=>{MUS.hidden=document.hidden;if(!MUS.el)return;
+  if(document.hidden){MUS.el.pause();if(MUS.sting)MUS.sting.pause()}else if(MUS.on&&MUS.cur){MUS.el.volume=MUS.VOL;musPlay()}});
 function snd(k,x){
   if(!AU.c||AU.muted)return;
   if(x!==undefined&&(x<cam.x-60||x>cam.x+V.visW+60))return;
@@ -818,7 +817,6 @@ function newGame(diff,spec,camp,daily){setTimeout(()=>{try{onOrient()}catch(e){}
   G.um=[[1,1],[1,1]];if(daily){G.um=[daily.um.slice(),daily.um.slice()]}
   if(!spec&&!G.sim){const u=upOf(pickFac);G.um[0][0]*=1+0.04*u.hp;G.um[0][1]*=1+0.04*u.dmg;G.gold[0]+=25*u.gold}
   if(camp&&camp.st.boss){const ck=FAC[ef].keys.find(k=>TYPES[k].champ);G.roster[1][ck]=1}
-  musStart();
   warmQ=[];for(const s of [0,1])for(const k of keysOf(s))warm(k,1,s);
   buildCards();setWishIcon(pickFac);aiShop(1);if(spec)aiShop(0);setSpeed(1);cam.x=0;cam.idle=0;
   ['start','end','pause'].forEach(i=>$(i).classList.add('hide'));closeSheet();refreshUI();
@@ -1161,7 +1159,7 @@ function drawEndTowers(){const cv=$('endTw');if(!cv)return;const c=cv.getContext
   for(const s of [0,1]){c.save();c.translate(s?cv.width*0.75:cv.width*0.25,cv.height-6);c.scale(s?-0.95:0.95,0.95);ok=drawTowerArt(c,G.fac[s],towerState(G.anchor[s]/ANCHOR))&&ok;c.restore()}
   cv.classList.toggle('hide',!ok)}
 function endGame(){
-  G.over=true;G.res=result();if(G.sim)return;closeSheet();musStop();const a=G.anchor,R=G.res;let t=R.win<0?'Draw':R.win===0?'Victory!':'Defeat';
+  G.over=true;G.res=result();if(G.sim)return;closeSheet();const a=G.anchor,R=G.res;musSting(!G.spec&&R.win===0||G.spec&&R.win>=0);let t=R.win<0?'Draw':R.win===0?'Victory!':'Defeat';
   if(G.spec){t=R.win<0?'Draw':`Winner: ${FAC[G.fac[R.win]].name}`;snd('win')}else snd(t==='Victory!'?'win':'lose');
   $('endT').textContent=t;$('endT').style.color=G.spec?'#ffd77a':t==='Victory!'?'#7ef0c8':t==='Defeat'?'#ff8a6a':'#ffd77a';
   $('endS').innerHTML=`${FAC[G.fac[0]].name} vs ${FAC[G.fac[1]].name} · ${G.spec?'AI vs AI':G.diff}<br>Waves: ${G.wave} · ${G.spec?FAC[G.fac[0]].name:'Your'} Anchor ${Math.ceil(a[0])} · ${G.spec?FAC[G.fac[1]].name:'Enemy'} Anchor ${Math.ceil(a[1])}<br>${G.spec?FAC[G.fac[0]].name+' kills':'Destroyed'} ${G.kills[0]} · ${G.spec?FAC[G.fac[1]].name+' kills':'Lost'} ${G.kills[1]}`+(R.why==='ground'?'<br>Bases level: won on ground taken':R.why==='kills'?'<br>Bases level and front lines even: won on kills':'');
@@ -1959,7 +1957,9 @@ const PORT=window.matchMedia('(orientation:portrait)');
 function onOrient(){if(!G||G.over)return;if(PORT.matches){if(!G.paused){G.paused=true;G.rotP=true}}else if(G.rotP){G.rotP=false;if($('pause').classList.contains('hide'))G.paused=false}}
 try{PORT.addEventListener('change',onOrient)}catch(e){PORT.addListener(onOrient)}
 $('bPause').onclick=()=>{if(!G||G.over)return;G.paused=true;$('pause').classList.remove('hide')};
-$('bMusic').onclick=()=>{MUS.on=!MUS.on;$('bMusic').classList.toggle('off',!MUS.on);if(MUS.on){auInit();if(G&&!G.over)musStart()}else musStop()};
+$('bMusic').onclick=()=>{MUS.on=!MUS.on;$('bMusic').classList.toggle('off',!MUS.on);try{localStorage.setItem('skyjinn-music',MUS.on?'on':'off')}catch(e){}
+  if(MUS.on){MUS.cur=null;musTrack(musScene())}else{clearInterval(MUS.fade);if(MUS.el)MUS.el.pause();stingStop();MUS.cur=null}};
+$('bMusic').classList.toggle('off',!MUS.on);
 $('bMute').onclick=()=>{AU.muted=!AU.muted;$('bMute').textContent=AU.muted?'🔇':'🔊';if(!AU.muted)auInit()};
 $('resume').onclick=()=>{G.paused=false;$('pause').classList.add('hide')};
 $('quit').onclick=()=>{G=null;$('app').classList.remove('spectate');$('pause').classList.add('hide');$('start').classList.remove('hide')};
