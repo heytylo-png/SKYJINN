@@ -27,7 +27,7 @@ Removing the browser bar:
 - `tools/assetlinks.template.json` shows the final shape.
 
 Store pages and installability:
-- Store pages: `/privacy/` (privacy policy) and `/support/` (contact). Replace `SUPPORT_EMAIL` in `support/index.html`.
+- Store pages: `/privacy/` (privacy policy) and `/support/` (contact).
 - `manifest.json` has 192 and 512 icons, plus 192 and 512 maskable icons (`icon-maskable-*.png`: the logo inside the safe zone, on the title art).
 - The service worker caches every game file, the store pages and the icons, so the app works offline.
 
