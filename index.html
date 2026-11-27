@@ -971,11 +971,13 @@ function laneRow(side){G.rowN=G.rowN||[0,0];const r=(G.rowN[side]++*3)%ROWS;retu
 // drawn body width in world px (sprites are wider than the collision radius)
 const bodyW=u=>u._bw||(u._bw=Math.max(u.T.r*2,htOf(u)*0.62));
 // a same-side ground unit right in front of u on its row: u waits just behind it instead of walking into it
+function sideStep(u,dt){u.blk=(u.blk||0)+dt;if(u.blk<0.6)return;u.blk=0;const h=rowH(),up=Math.max(GY[0],(u.lane??u.y)-h),dn=Math.min(GY[1],(u.lane??u.y)+h);
+  const busy=y=>{let n=0;for(const a of G._L[u.side])if(Math.abs(a.y-y)<h*0.5&&Math.abs(a.x-u.x)<40)n++;return n};u.lane=busy(up)<=busy(dn)?up:dn}
 function laneLists(){const L=[[],[]],A=[[],[]];let mw=0;for(const u of G.units)if(!u.dead){A[u.side].push(u);if(!u.T.air){L[u.side].push(u);mw=Math.max(mw,bodyW(u))}}for(const X of [L[0],L[1],A[0],A[1]])X.sort((a,b)=>a.x-b.x);G._L=L;G._A=A;G._mw=mw}
 function blockedAhead(u,dir){const A=G._L&&G._L[u.side];if(!A)return false;const w=bodyW(u),rh=rowH()*0.6,lim=(w+G._mw)*0.5*1.05;
   let lo=0,hi=A.length;while(lo<hi){const m=(lo+hi)>>1;if(A[m].x<u.x)lo=m+1;else hi=m}   // first unit at or right of u
-  if(dir>0){for(let i=lo;i<A.length;i++){const a=A[i],dx=a.x-u.x;if(dx>lim)break;if(a!==u&&dx>0&&dx<(w+bodyW(a))*0.5*1.05&&Math.abs(a.y-u.y)<rh)return true}}
-  else{for(let i=Math.min(lo,A.length-1);i>=0;i--){const a=A[i],dx=u.x-a.x;if(dx>lim)break;if(a!==u&&dx>0&&dx<(w+bodyW(a))*0.5*1.05&&Math.abs(a.y-u.y)<rh)return true}}
+  if(dir>0){for(let i=lo;i<A.length;i++){const a=A[i],dx=a.x-u.x;if(dx>lim)break;if(a!==u&&dx>0&&!(a.T.proj&&!u.T.proj)&&dx<(w+bodyW(a))*0.5*1.05&&Math.abs(a.y-u.y)<rh)return true}}
+  else{for(let i=Math.min(lo,A.length-1);i>=0;i--){const a=A[i],dx=u.x-a.x;if(dx>lim)break;if(a!==u&&dx>0&&!(a.T.proj&&!u.T.proj)&&dx<(w+bodyW(a))*0.5*1.05&&Math.abs(a.y-u.y)<rh)return true}}
   return false}
 function mkUnit(side,k){
   const T=TYPES[k],tier=tierOf(side,k),m=1+0.3*(tier-1),fm=FACMOD[T.fac];
@@ -1104,9 +1106,9 @@ function hurt(side,k,dmg,e,src){
       if(od.acid){for(const f of G.units)if(f.side!==e.side&&!f.dead&&!f.T.air&&Math.hypot(f.x-e.x,(f.y-e.y)*0.6)<=34){f.acidS=Math.min(3,f.acidS+2);f.acidT=3;f.acidSrc=e.side}
         G.fx.push({t:'ring',x:e.x,y:e.y,r:34,life:0.5,max:0.5,c:ACID});acidSplash(e.x,bodyY(e),9)}}}
 }
-const LATE=240,BREACH=40;   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
+const LATE=240,BREACH=40,EARLY=150,EARLY_K=0.5;   // from minute 4 bases take +50% damage; the last minute (OVERTIME, sudden death) +100%
 function hitAnchor(side,k,dmg){const T=TYPES[k];let m=(T&&T.anchorMult)||1;if(T&&T.champ)m*=1.5;const b=1-side;if(shielded(b,BX[b]))m*=0.3;
-  if(G.time>=OVERTIME)m*=2;else if(G.time>=LATE)m*=1.5;G.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
+  if(G.time>=OVERTIME)m*=2;else if(G.time>=LATE)m*=1.5;else if(G.time<EARLY)m*=EARLY_K;   // early fortification: no knockout rushes before the armies existG.anchor[b]=Math.max(0,G.anchor[b]-dmg*m);G.bshake[b]=0.18;sparks(BX[b],BY-20+rnd(-20,20),4,PAL[side].glow);snd('base',BX[b]);if(b===0)shake(1.5)}
 function dealHit(side,k,dmg,tgt,isA,x,y,src){
   const T=TYPES[k];if(isA)hitAnchor(side,k,dmg);
   if((T.fire||k==='met'&&!wfxOn('meteor_shower'))&&!G.sim)emberBurst(x,y-6,T.lob||k==='met'?10:5,50);
@@ -1245,15 +1247,17 @@ function updUnit(u,dt){
   const EN=G._A[1-u.side];let lo=0,hi=EN.length;const x0=u.x-sight;while(lo<hi){const m=(lo+hi)>>1;if(EN[m].x<x0)lo=m+1;else hi=m}
   for(let ii=lo;ii<EN.length;ii++){const e=EN[ii];if(e.x>u.x+sight)break;if(e.dead||!canHit(T,e))continue;   // x-sorted foes within sight only
     const d=dist(u,e);if(d>sight)continue;let w=d;if(T.prio&&e.T.tags.some(t=>T.prio.includes(t)))w*=0.4;if(w<bw){bw=w;best=e}}
+  // at the enemy gate the base itself is a target: hit it whenever it is closer than the nearest foe
+  if(best&&Math.abs(u.x-eb)<=T.range+34&&Math.abs(u.x-eb)<dist(u,best))best=null;
   if(best){
     const d=dist(u,best),reach=Math.max(T.range+T.r+best.T.r,T.air||best.T.air?0:(bodyW(u)+bodyW(best))*0.5*0.9+T.range*0.5);
     if(d<=reach){u.eng=1;if(u.cd<=0)attack(u,best,false)}
-    else if(T.air||!blockedAhead(u,Math.sign(best.x-u.x)||dir)){const dx=best.x-u.x,dy=T.air||best.T.air?0:(best.y-u.y),L=Math.hypot(dx,dy)||1,s=spd*dt;u.x+=dx/L*s;u.y+=dy/L*s*0.35;u.moving=true}
+    else if(T.air||!blockedAhead(u,Math.sign(best.x-u.x)||dir)||(sideStep(u,dt),false)){u.blk=0;const dx=best.x-u.x,dy=T.air||best.T.air?0:(best.y-u.y),L=Math.hypot(dx,dy)||1,s=spd*dt;u.x+=dx/L*s;u.y+=dy/L*s*0.35;u.moving=true}
   }else{
     if(Math.abs(u.x-eb)<=T.range+34){u.eng=1;if(u.cd<=0)attack(u,null,true);u.brT=(u.brT||0)+dt;if(u.brT>=3&&!u.breach){u.breach=1;hitAnchor(u.side,'breach',BREACH)}}   // breach
-    else if(T.air||!blockedAhead(u,dir)){u.x+=dir*spd*dt;u.moving=true}
+    else if(T.air||!blockedAhead(u,dir)){u.blk=0;u.x+=dir*spd*dt;u.moving=true}else sideStep(u,dt)
   }
-  if(!T.air){if(u.lane==null)u.lane=u.y;if(!best&&u.moving)u.y+=(u.lane-u.y)*Math.min(1,dt*1.2)}
+  if(!T.air){if(u.lane==null)u.lane=u.y;if(!best&&u.moving||u.blk>0)u.y+=(u.lane-u.y)*Math.min(1,dt*(u.blk>0?3:1.2))}
   if(u.moving&&!T.air&&/^(roll|crawl)$/.test((SPR_META[u.k]||{}).mv)&&Math.random()<dt*(T.speed/25))G.parts.push({x:u.x-dir*6,y:u.y-1,vx:-dir*rnd(5,20),vy:-rnd(3,10),g:0,life:0.5,max:0.5,c:'#d8b88a',s:rnd(1.5,3),a:0.5});
   if(u.moving&&T.air&&Math.random()<dt*4)G.parts.push({x:u.x-dir*16,y:u.y-4,vx:-dir*rnd(10,25),vy:rnd(-3,3),g:0,life:0.6,max:0.6,c:T.fac==='verdant'?'#b9d27a':'#e6cfa3',s:rnd(1.5,3),a:0.5});
 }
