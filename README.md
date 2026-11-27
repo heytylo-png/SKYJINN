@@ -83,9 +83,10 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
   - teal wisps for Plague of Bones
   - teal sparkles on the Shield Dome, which stays a single centred copy
 
-**Airstrike and Meteor Shower** no longer loop their sheets over the area. The bomb and the meteor are cut out of their sheets and fall for real. Each impact plays the sheet's ground explosion once, on landing, which is also when the damage happens.
-- **Airstrike:** a Gyrocopter bomber flies in from off-screen just under the HUD. It drops a bomb every 26 world px while over the target, leading for the forward carry. Each bomb arcs down to a random lane depth, then blasts within 30 px.
-- **Meteor Shower:** meteors start high above the view, 150 px back, and fly in at 250 px/s. A pulsing orange glow marks each landing spot until the meteor hits.
+**Airstrike and Meteor Shower** use their own 4-frame sprite sheets in `art/wish_fx/drops/`: `goblin_bomber.png` (300×210 frames, faces right) and `meteor.png` (306×346 frames, falls toward the bottom-right). `python3 tools/wishdrops.py` embeds them as `DROP_DATA` and measures the meteor's rock (the hit point) and its drawn flight angle. Both play at 12 fps (`DROP_FPS`). The sheets' ground explosion still plays once on each impact, which is also when the damage happens.
+- **Airstrike:** the bomber (`BOMBER_S` 0.28×) crosses the whole screen high up, just under the HUD, starting and ending fully off-screen. It is mirrored when it flies left. It drops a bomb every 26 world px while over the target, leading for the forward carry. Each bomb arcs down to a random lane depth, then blasts within 30 px.
+- **Meteor Shower:** each meteor (`METEOR_S` 0.22×) spawns above the top of the screen and flies diagonally to its ground target, along the art's own angle. It comes from the upper left for the player and mirrored from the upper right for the enemy, at 250 px/s. A pulsing orange glow marks each landing spot until the meteor hits.
+- **Scale:** the requested 0.35× (meteor) and 0.5× (bomber) were bigger than the units and covered the HUD on a phone, so they were tuned down. Change `METEOR_S` / `BOMBER_S` to adjust.
 
 **Readability.**
 - Every unit sprite has a 1px dark outline: a cached silhouette of its sheet, drawn 1 screen px out in four directions.
