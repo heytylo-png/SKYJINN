@@ -9,6 +9,15 @@ Open `index.html` in a phone browser. Everything (code, sprites, maps) is embedd
 
 **Install.** `manifest.json` declares `"display": "fullscreen"` and `"orientation": "landscape"`, with the dark `#140e09` background and icons made from the logo. Together with `sw.js`, "Add to Home screen" launches SKYJINN fullscreen with no browser bar.
 
+**Hosting.** `.github/workflows/pages.yml` publishes the game to GitHub Pages on every push to main, at https://heytylo-png.github.io/SKYJINN/. It publishes only `index.html`, `sw.js`, the manifest, the icons and `audio/`.
+- One-time setup: in the repo, go to **Settings → Pages → Source** and choose **GitHub Actions**.
+- Netlify can stay on for PR previews.
+
+**Offline cache.** `sw.js` is cache-first, so a return visit loads entirely from the cache and downloads nothing.
+- The browser re-checks the small `sw.js` on each visit.
+- Bumping its `VERSION` (do it whenever `index.html` changes) makes the browser download the new game once in the background and swap caches.
+- The page then reloads itself, but only on the menu, never mid-battle.
+
 **Match pacing (balance pass).** Tuned with the headless simulator so that equal AIs usually finish by base destruction.
 
 | Setting | Value |

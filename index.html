@@ -2309,7 +2309,9 @@ $('dlGo').onclick=()=>{$('daily').classList.add('hide');pickFac=DAILY.f;newGame(
 $('dlBack').onclick=()=>{$('daily').classList.add('hide');$('start').classList.remove('hide')};
 $('bDaily').onclick=openDaily;$('bForge').onclick=openForge;
 initMeta();
-try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&!/claudeusercontent|claude\.ai/.test(location.host))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&!/claudeusercontent|claude\.ai/.test(location.host)){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.register('sw.js').catch(()=>{});
+  // a new version took over: reload into it, but never in the middle of a battle (wait for the menu)
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!had)return;const go=()=>{if(G&&!G.over){setTimeout(go,3000);return}location.reload()};go()})}}catch(e){}
 let saving=Promise.resolve();
 function saveProg(){try{localStorage.setItem('skyjinn-progress',JSON.stringify(PROG))}catch(e){}
   if(STORE){const body=JSON.parse(JSON.stringify(PROG));saving=saving.then(()=>STORE.set(body)).catch(()=>{})}}
