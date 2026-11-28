@@ -1,8 +1,9 @@
-// node simrun.js <reps> <out.json> : every ordered faction pair x 3 maps x {normal,hard}, reps each, 4 pages in parallel
+// [FOCUS=faction] node simrun.js <reps> <out.json> : every ordered faction pair x 3 maps x {normal,hard}, reps each, 4 pages in parallel
 const {chromium}=require('playwright');const fs=require('fs');
-const D2=(process.env.DIFFS||'normal,hard').split(',');const F=['djinn','verdant','mutant','knight','goblin','undead','auto','dragon'],M=['dunes','bridge','volcano'],D=['normal','hard'];
+const D2=(process.env.DIFFS||'normal,hard').split(',');const F=['djinn','verdant','mutant','knight','goblin','undead','auto','dragon','frost','demon'],M=['dunes','bridge','volcano'],D=['normal','hard'];
+const FOCUS=process.env.FOCUS||'';   // FOCUS=<faction>: only the pairs that faction plays in
 const reps=+process.argv[2]||1,outF=process.argv[3]||'simres.json';
-const jobs=[];for(let r=0;r<reps;r++)for(const a of F)for(const b of F)if(a!==b)for(const m of M)for(const d of D2)jobs.push([a,b,m,d]);
+const jobs=[];for(let r=0;r<reps;r++)for(const a of F)for(const b of F)if(a!==b&&(!FOCUS||a===FOCUS||b===FOCUS))for(const m of M)for(const d of D2)jobs.push([a,b,m,d]);
 (async()=>{const t0=Date.now();const res=[];let next=0;
  const worker=async()=>{const br=await chromium.launch();const p=await br.newPage();await p.goto('file://'+require('path').resolve(__dirname,'../index.html'));await p.waitForTimeout(1200);
    while(true){const i=next;next+=6;if(i>=jobs.length)break;const batch=jobs.slice(i,i+6);

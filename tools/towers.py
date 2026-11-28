@@ -3,6 +3,8 @@
 #   python3 tools/towers.py
 #
 # Each sheet is 512x512: a 2x2 grid of 256x256 states, base bottom-centre.
+# Or an animated tower: a grid of 256x256 frames with C columns and 4 rows (e.g. 1280x1024 = 5x4): rows 1-2 idle loop
+# (6 fps), row 3 plays once each time the tower fires, row 4 plays once when it is destroyed (the last frame stays).
 #   top-left: above 66% HP · top-right: 33-66% · bottom-left: 1-33% · bottom-right: destroyed (0 HP)
 # For each state the tool measures the base line and the top of the structure (ignoring translucent smoke), which
 # the game uses for the tower's shot origin.
@@ -27,13 +29,20 @@ def main():
     out = {}
     for f in sorted(glob.glob(os.path.join(SRC, 'tower_*.png'))):
         fac = re.match(r'tower_(\w+)\.png', os.path.basename(f)).group(1)
-        im = Image.open(f).convert('RGBA'); a = np.asarray(im); top, bot = [], []
-        for q in range(4):
-            r, c = divmod(q, 2); cell = a[r * CELL:(r + 1) * CELL, c * CELL:(c + 1) * CELL]
+        im = Image.open(f).convert('RGBA'); a = np.asarray(im); C, R = im.width // CELL, im.height // CELL
+        def meas(i):
+            r, c = divmod(i, C); cell = a[r * CELL:(r + 1) * CELL, c * CELL:(c + 1) * CELL]
             ys = np.nonzero((cell[..., 3] > 40).any(1))[0]
-            bot.append(int(ys.max()) if len(ys) else CELL - 4); top.append(structure_top(cell))
+            return (int(ys.max()) if len(ys) else CELL - 4), structure_top(cell)
         b = io.BytesIO(); im.save(b, 'WEBP', quality=86, alpha_quality=95, method=6)
-        out[fac] = dict(d='data:image/webp;base64,' + base64.b64encode(b.getvalue()).decode(), top=top, bot=bot)
+        o = dict(d='data:image/webp;base64,' + base64.b64encode(b.getvalue()).decode())
+        if (C, R) == (2, 2):                       # 4 HP states
+            m = [meas(q) for q in range(4)]; o['bot'] = [x[0] for x in m]; o['top'] = [x[1] for x in m]
+        else:                                      # animated: rows 1-2 idle, row 3 firing, row 4 destruction (C frames each)
+            m = [meas(i) for i in range(C * R)]; first, last = m[0], m[-1]
+            o['bot'] = [first[0]] * 3 + [last[0]]; o['top'] = [first[1]] * 3 + [last[1]]
+            o['anim'] = dict(c=C, fb=[x[0] for x in m], idle=list(range(0, 2 * C)), fire=list(range(2 * C, 3 * C)), dead=list(range(3 * C, 4 * C)))
+        out[fac] = o; top, bot = o['top'], o['bot']
         print('%-8s tops %s base %s  %d KB' % (fac, top, bot, len(b.getvalue()) // 1024))
     s = open(HTML).read(); js = 'const TOWER_DATA=' + json.dumps(out, separators=(',', ':')) + ';\n'
     if 'const TOWER_DATA=' in s:

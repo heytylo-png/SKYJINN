@@ -58,10 +58,11 @@ Store pages and installability:
 - **Ranks:**
   - Melee units pass through ranged allies.
   - A unit blocked for 0.6 s sidesteps into the freer neighbouring row.
-- **Faction stats:** `FACMOD` multipliers were re-tuned per faction.
+- **Faction stats:** `FACMOD` multipliers were re-tuned per faction. With the Everwinter Court added (hp ×1.3, dmg ×1.25), Magic Knights damage went to ×0.93 and Verdant to hp ×1.01, dmg ×0.965. Over 2,592 simulated matches (two runs of 3 reps, every ordered pair, 3 maps, Normal and Hard), every faction wins 46.7–54.9%: Djinn 47.7, Verdant 48.1, Mutants 51.2, Knights 48.6, Goblins 49.7, Undead 46.7, Automatons 54.9, Dragons 51.2, Everwinter 51.9.
 - **Simulator:**
   - `window.__sky.sim(faction, diff, true, enemy, map)` runs one AI-vs-AI match headless.
   - `node tools/simrun.js <reps> out.json` runs every ordered faction pair on all 3 maps at Normal and Hard, 4 browsers in parallel.
+  - `FOCUS=<faction> node tools/simrun.js <reps> out.json` runs only the pairs one faction plays in. Use it to tune a new faction quickly; one rep of all nine factions (432 matches) takes about 4–5 min.
   - `python3 tools/simstat.py out.json` prints the summary.
   - Target search, rank blocking and separation scan x-sorted lists, which keeps big late-game armies fast.
 
@@ -105,9 +106,10 @@ Store pages and installability:
   - teal wisps for Plague of Bones
   - teal sparkles on the Shield Dome, which stays a single centred copy
 
-**Airstrike and Meteor Shower** no longer loop their sheets over the area. The bomb and the meteor are cut out of their sheets and fall for real. Each impact plays the sheet's ground explosion once, on landing, which is also when the damage happens.
-- **Airstrike:** a Gyrocopter bomber flies in from off-screen just under the HUD. It drops a bomb every 26 world px while over the target, leading for the forward carry. Each bomb arcs down to a random lane depth, then blasts within 30 px.
-- **Meteor Shower:** meteors start high above the view, 150 px back, and fly in at 250 px/s. A pulsing orange glow marks each landing spot until the meteor hits.
+**Airstrike and Meteor Shower** use their own 4-frame sprite sheets in `art/wish_fx/drops/`: `goblin_bomber.png` (300×210 frames, faces right) and `meteor.png` (306×346 frames, falls toward the bottom-right). `python3 tools/wishdrops.py` embeds them as `DROP_DATA` and measures the meteor's rock (the hit point) and its drawn flight angle. Both play at 12 fps (`DROP_FPS`). The sheets' ground explosion still plays once on each impact, which is also when the damage happens.
+- **Airstrike:** the bomber (`BOMBER_S` 0.28×) crosses the whole screen high up, just under the HUD, starting and ending fully off-screen. It is mirrored when it flies left. It drops a bomb every 26 world px while over the target, leading for the forward carry. Each bomb arcs down to a random lane depth, then blasts within 30 px.
+- **Meteor Shower:** each meteor (`METEOR_S` 0.22×) spawns above the top of the screen and flies diagonally to its ground target, along the art's own angle. It comes from the upper left for the player and mirrored from the upper right for the enemy, at 250 px/s. A pulsing orange glow marks each landing spot until the meteor hits.
+- **Scale:** the requested 0.35× (meteor) and 0.5× (bomber) were bigger than the units and covered the HUD on a phone, so they were tuned down. Change `METEOR_S` / `BOMBER_S` to adjust.
 
 **Readability.**
 - Every unit sprite has a 1px dark outline: a cached silhouette of its sheet, drawn 1 screen px out in four directions.
@@ -131,7 +133,7 @@ Store pages and installability:
   - `badge_teal` shows owned-unit counts. `badge_red` marks warnings: can't afford, and army full.
   - `star_*` icons show stars on campaign stages and the end screen.
   - The icons replace the old top-left buttons and also mark gold, income, settings and Play.
-- **Start menu changes:** the difficulty is now picked first (and remembered), then ⚔ PLAY starts the match. A ⚙ settings window toggles sound, music and fullscreen.
+- **Start menu changes:** the difficulty is now picked first (and remembered), then ⚔ PLAY starts the match. The ⚙ settings window is described under **Polish pass** below.
 
 **Music.** Real MP3 tracks in `audio/` replace the old procedural loop:
 - `music_menu` loops on the start menu and campaign screen.
@@ -174,10 +176,107 @@ One `<audio>` element plays the music (loop, volume 0.5) and crossfades over 1 s
 
 Only the synth `gun`, plus the death and lob-launch thumps, are still synthesized.
 
-## Factions (8)
-Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons
 
-Drawn sprite sheets (idle, walk, attack, death) done for all eight factions. Painted unit art done: Djinn, Verdant, Mutants, Magic Knights, Dragons, Goblins, Undead, Automatons. All eight factions are painted.
+## Polish pass
+All new screens use the pixel UI kit (`panel_large` windows, `panel_medium` sections, `bar_top` titles, brass/teal buttons, card frames).
+
+**Tutorial.** The first ⚔ PLAY starts a short guided match as the Djinn on Easy. It covers: buy a unit, hold its card and upgrade it, buy income, then cast a wish.
+- **Skip** on the coach panel ends the guide; the match carries on as a normal game.
+- It is shown once (`skyjinn-tut` in localStorage) and can be replayed from Settings.
+- Closing the unit card before upgrading steps back to "hold the card".
+
+**Juice** (`HITSTOP`, `DNUM_MIN`, `SLOWMO`, `ZOOM` in `index.html`):
+- **Hit-stop:** a 60 ms freeze on champion hits and base hits of 25+ damage, at most once every 0.45 s so big fights don't stutter.
+- **Damage numbers:** every hit over 40 floats a number: white for yours (gold for champions), orange for the enemy's. They can be turned off in Settings.
+- **Coin pops:** a coin icon and `+N` jump from each enemy your units kill.
+- **Final base kill:** 1.5 s of 0.3× slow motion while the camera zooms 1.6× onto the falling base, then the end screen.
+
+**End screen.** Shows kills, units lost, gold earned (waves and kill bounties, not starting gold) and damage to the enemy base. It also shows the **MVP**: the unit type that dealt the most damage, with its sprite. Buttons:
+- **Rematch:** the same factions, map, difficulty, stage or daily.
+- **Campaign**
+- **Menu**
+- **Next stage ▶:** after a campaign win, opens the next stage's briefing.
+
+**Campaign world map.** Each faction has one winding path of 6 stage nodes over the world art. The travelled part of the path is gold, the next stage pulses, and the boss stage wears a crown. Tapping a stage opens its briefing: a 2-line story intro (`STORY`), the opponent, the map and the stars so far, with **Fight ▶**.
+
+**Settings** (`skyjinn-settings` in localStorage):
+- music and SFX volume sliders
+- game speed: 1×, 1.5× or 2× (1.5× runs two 0.75-length steps per frame)
+- damage numbers on or off
+- fullscreen
+- replay tutorial
+- reset progress, behind a confirm dialog. It clears campaign stars, crowns, unlocks, tints, gems and Forge upgrades, and keeps settings.
+
+The pause menu also opens Settings, without the tutorial and reset buttons.
+
+**Progression** (saved in `skyjinn-meta` in localStorage):
+- **Crowns:** 1 crown per campaign ★, plus 5 for conquering a faction's campaign.
+- **Factions:** Djinn, Verdant, Mutants and Knights start unlocked. The other four cost 12 crowns each. A faction that already has campaign progress stays unlocked. Locked factions show the `card_locked` frame on the start menu, the campaign tabs and the Unlocks window.
+- **Unit tints:** Frost, Ember, Venom, Royal, Gilded and Shadow, 4–10 crowns each, bought and equipped in **Unlocks**. A tint is a colour matrix (`TINTS`) baked into the player's sheets and icons when they are built, so it costs nothing per frame. Glow halos keep their colour, and AI vs AI ignores the tint.
+
+## Factions (10)
+Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons · Everwinter Court · The Fallen Host
+
+Drawn sprite sheets (idle, walk, attack, death) done for all ten factions, and all ten are painted.
+
+## The Fallen Host
+The tenth faction (id `demon`). It is locked at first and costs 12 crowns.
+
+| Unit | Key | Role | Notes |
+|---|---|---|---|
+| Cinderlings | `cdl` | swarm | 3 per buy |
+| Penitent Colossus | `pcl` | tank | |
+| Choir Archon | `cha` | ranged | flies; hellfire bolts pierce armor and hit air |
+| Blade Seraph | `bsr` | diver | |
+| Burning Herald | `bhd` | air | sets enemies burning |
+| Chainwarden | `chw` | anti-air | burning chains (the harpoon projectile) |
+| Brimstone Censer | `bcn` | siege | burning splash |
+| Flame Sister | `fls` | support | her fire ring heals all hurt allies and burns nearby enemies (`fring`) |
+| The Fallen Archangel | `fae` | champion | ability `hellfire` |
+
+- **Martyrdom (trait):** every Fallen unit bursts into hellfire when it dies. Enemies within 32 px take 18 damage and burn for 2 s (`MARTYR_DMG`, `MARTYR_R`).
+- **Hellfire Nova (champion, every 6 s):** 45 damage and 3 s of burning to nearby enemies.
+- **Brand of the Fallen (wish):** every enemy within 100 px takes 50 damage, burns for 4 s and takes +25% damage for 6 s (`BRAND`, `BRAND_T`). Branded units smoulder.
+  - No effect sheet was delivered, so it is drawn with the code effects: shock rings, a blast, scorch and rising embers.
+- **Sheets:** `art/sheets/src/demon_<unit>_t<tier>.png`, cleaned 128 px sheets with 4 or 5 frames per row. The champion's file is `demon_archangel_t*.png`. The Choir Archon and Burning Herald fly.
+- **Emblem and wish icon:** `art/ui/emblem_demon.png` and `art/ui/wish_demon.png` are **placeholders** built from crops of the Archangel and the tower's fire frame. Replace them with the real art and run `python3 tools/ui.py`.
+- **Tower:** `tower_demon.png` is animated: 5×4 frames of 256 px.
+  - Rows 1–2 loop at 6 fps while idle.
+  - Row 3 plays once at 12 fps each time the tower fires.
+  - Row 4 plays once at 8 fps when the base falls, and its last frame stays.
+  - `tools/towers.py` handles any C×4 grid like this (`anim` in `TOWER_DATA`). The 2×2 towers keep their four HP states.
+
+## Everwinter Court
+The ninth faction (id `frost`). It is locked at first and costs 12 crowns, like the other locked factions.
+
+| Unit | Key | Role | Notes |
+|---|---|---|---|
+| Rime Wolves | `rwf` | swarm | 3 per buy |
+| Frost Troll | `trl` | tank | regenerates 5 HP/s (`regen`) |
+| Rimewitch | `rwt` | ranged | armor-piercing ice shards, hits air |
+| Skate Assassin | `ska` | diver | fastest diver |
+| Aurora Serpent | `aur` | air | |
+| Winter Matriarch | `mat` | anti-air | frost orbs |
+| War Mammoth | `mam` | siege | splash; tougher and slower than other siege |
+| Cryo Embalmer | `cry` | support | heals the most hurt ally |
+| Glacial Hydra | `hyd` | champion | frost beams (`beam:1`), ability `frostbeam` |
+
+- **Trait, Chill:** every Everwinter hit chills the target for 1.5 s, slowing its movement and attacks to 80% (`CHILL`, `CHILL_T`). Chilled units shed small frost sparkles.
+- **Frozen:** frozen units (from the Hydra's ability or Absolute Zero) are stunned, stop animating, and sit inside a translucent ice block (`iceBlock`).
+- **Art:** unit sheets are `art/sheets/src/frost_<unit>_t<tier>.png`. They are cleaned 128 px sheets, kept as-is, and the Troll has 5 frames per row. Single sprites `art/units/<key><tier>.png` are frame 1 of each idle row.
+- **Tower:** `art/towers/src/frames/tower_frost_4x4.png` is the delivered 4×4 animation. `art/towers/src/tower_frost.png` packs frames 1 (intact), 13 (cracked), 14 (breaking) and 16 (rubble) into the standard 2×2 states.
+- **Emblem and wish icon:** `art/ui/emblem_frost.png` and `art/ui/wish_frost.png`.
+
+**Glacial Hydra.** The body is an ordinary unit sheet (`frost_hydra_t1.png`). `drawHydra` assembles three necks and heads on it at the socket ring on its back, and `tools/hydra.py` embeds those parts (`art/hydra/src/`) as `HYDRA_DATA`.
+- **Socket:** its position per body frame is `HY_SOCK`. On the attack frames the necks lift with the rearing body (`HY_LIFT`), and on the death row they droop and fade.
+- **Necks:** neck 1 runs flat, neck 2 rises and neck 3 rises steeply, at base angles `HY_NECK` −5°/22°/48°. Each sways on its own, and a head sits on each neck's far ring.
+- **Heads:** a head opens while it fires and is half open just before an attack. Otherwise it is closed.
+- **Basic attack:** the heads take turns firing a frost beam: an instant hit, drawn from the open mouth to the target. The beam is the `frost_beam_mouth` burst, a tiled `frost_beam_mid` and a `frost_beam_impact` at the target, all at 12 fps.
+- **Ability (every 6 s):** all three heads fire at enemies up to 150 px ahead, for 32 damage plus a 1.2 s freeze.
+
+**Absolute Zero (wish).** `wish_fx_absolute_zero.png` uses the standard faction-power format. It is tiled as 3 evenly spaced, overlapping copies across the area (`WFX_TILE`), so the art covers the whole area without visible edges, and all three play in step.
+- **Freeze:** while the loop frames play (1.6 s), every enemy within 105 px is frozen solid, fliers included, along with anything that walks in.
+- **Shatter:** on the shatter frames (13–16), everything still in the area takes 100 damage (`SHATTER_DMG`) and thaws.
 
 ## Layout
 - `index.html` — the full game
@@ -335,6 +434,7 @@ Drawn projectiles come from `art/projectiles/proj_<sheet>.png`: four 256×256 sh
 | `shield_dome` | Shield Dome (all factions) | a 20% teal ellipse on the ground behind units |
 | `meteor_shower` | Dragon Meteor Shower | the sheet draws the meteors and impacts; the meteors still hit as before |
 | `plague_of_bones` | Undead Plague of Bones | the 6 skeletons rise one by one during the loop frames |
+| `absolute_zero` | Everwinter Absolute Zero | 3 tiled copies; freeze during the loop, Shatter damage on frames 13–16 |
 
 Every faction power keeps its short screen flash; the old vector drawings, runes and rings are no longer drawn.
 

@@ -119,6 +119,57 @@
   ],
   "src": "auto_arc_gunner_t3.png"
  },
+ "aur1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 112.0,
+  "hit": 2,
+  "ih": 106,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_aurora_serpent_t1.png"
+ },
+ "aur2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 112.5,
+  "hit": 1,
+  "ih": 108,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_aurora_serpent_t2.png"
+ },
+ "aur3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 120.0,
+  "hit": 2,
+  "ih": 121,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_aurora_serpent_t3.png"
+ },
  "bal1": {
   "F": 128,
   "air": false,
@@ -178,6 +229,108 @@
    4
   ],
   "src": "undead_bone_ballista_t3.png"
+ },
+ "bcn1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_brimstone_censer_t1.png"
+ },
+ "bcn2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_brimstone_censer_t2.png"
+ },
+ "bcn3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_brimstone_censer_t3.png"
+ },
+ "bhd1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 100.0,
+  "hit": 1,
+  "ih": 97,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_burning_herald_t1.png"
+ },
+ "bhd2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 96.0,
+  "hit": 0,
+  "ih": 95,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_burning_herald_t2.png"
+ },
+ "bhd3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 93.5,
+  "hit": 3,
+  "ih": 94,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_burning_herald_t3.png"
  },
  "bik1": {
   "F": 128,
@@ -518,6 +671,57 @@
   ],
   "src": "mutant_brood_mother_t3.png"
  },
+ "bsr1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 93,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_blade_seraph_t1.png"
+ },
+ "bsr2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 95,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_blade_seraph_t2.png"
+ },
+ "bsr3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 92,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_blade_seraph_t3.png"
+ },
  "cat1": {
   "F": 128,
   "air": false,
@@ -685,6 +889,165 @@
    4
   ],
   "src": "undead_corpse_catapult_t3.png"
+ },
+ "cdl1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 115,
+  "mz": [
+   122.5,
+   98.9
+  ],
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_cinderlings_t1.png"
+ },
+ "cdl2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 114,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_cinderlings_t2.png"
+ },
+ "cdl3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 115,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_cinderlings_t3.png"
+ },
+ "cha1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 117.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   124.4,
+   66.2
+  ],
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_choir_archon_t1.png"
+ },
+ "cha2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 117.0,
+  "hit": 0,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_choir_archon_t2.png"
+ },
+ "cha3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 121.0,
+  "hit": 0,
+  "ih": 121,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_choir_archon_t3.png"
+ },
+ "chw1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_chainwarden_t1.png"
+ },
+ "chw2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_chainwarden_t2.png"
+ },
+ "chw3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 120,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_chainwarden_t3.png"
  },
  "cog1": {
   "F": 128,
@@ -866,6 +1229,60 @@
   ],
   "src": "auto_colossus_prime_t3.png"
  },
+ "cry1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 108,
+  "mz": [
+   121.2,
+   91.2
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_cryo_embalmer_t1.png"
+ },
+ "cry2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_cryo_embalmer_t2.png"
+ },
+ "cry3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_cryo_embalmer_t3.png"
+ },
  "dgd1": {
   "F": 128,
   "air": false,
@@ -1046,6 +1463,57 @@
   ],
   "src": "auto_drone_swarm_t3.png"
  },
+ "fae1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 121,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_archangel_t1.png"
+ },
+ "fae2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_archangel_t2.png"
+ },
+ "fae3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_archangel_t3.png"
+ },
  "fcl1": {
   "F": 128,
   "air": false,
@@ -1165,6 +1633,57 @@
    4
   ],
   "src": "goblin_flak_truck_t3.png"
+ },
+ "fls1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_flame_sister_t1.png"
+ },
+ "fls2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_flame_sister_t2.png"
+ },
+ "fls3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_flame_sister_t3.png"
  },
  "gbc1": {
   "F": 128,
@@ -1687,6 +2206,23 @@
    4
   ],
   "src": "dragon_harpoon_crew_t3.png"
+ },
+ "hyd1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 93,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_hydra_t1.png"
  },
  "irb1": {
   "F": 128,
@@ -2242,6 +2778,108 @@
   ],
   "src": "dragon_magma_golem_t3.png"
  },
+ "mam1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 105,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_war_mammoth_t1.png"
+ },
+ "mam2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 111,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_war_mammoth_t2.png"
+ },
+ "mam3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 112,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_war_mammoth_t3.png"
+ },
+ "mat1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_winter_matriarch_t1.png"
+ },
+ "mat2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_winter_matriarch_t2.png"
+ },
+ "mat3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 120,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_winter_matriarch_t3.png"
+ },
  "mec1": {
   "F": 128,
   "air": false,
@@ -2662,6 +3300,60 @@
   ],
   "src": "knight_paladin_t3.png"
  },
+ "pcl1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   125.8,
+   96.8
+  ],
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_penitent_colossus_t1.png"
+ },
+ "pcl2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_penitent_colossus_t2.png"
+ },
+ "pcl3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_penitent_colossus_t3.png"
+ },
  "prs1": {
   "F": 128,
   "air": false,
@@ -3013,6 +3705,114 @@
   ],
   "src": "auto_repair_bot_t3.png"
  },
+ "rwf1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 94,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rime_wolves_t1.png"
+ },
+ "rwf2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 106,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rime_wolves_t2.png"
+ },
+ "rwf3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 112,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rime_wolves_t3.png"
+ },
+ "rwt1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 118,
+  "mz": [
+   123.9,
+   43.9
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rimewitch_t1.png"
+ },
+ "rwt2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 123,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rimewitch_t2.png"
+ },
+ "rwt3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 123,
+  "mz": [
+   121.8,
+   40.1
+  ],
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_rimewitch_t3.png"
+ },
  "sap1": {
   "F": 128,
   "air": false,
@@ -3192,6 +3992,57 @@
    4
   ],
   "src": "dragon_ember_shaman_t3.png"
+ },
+ "ska1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_skate_assassin_t1.png"
+ },
+ "ska2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 113,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_skate_assassin_t2.png"
+ },
+ "ska3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 122,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "frost_skate_assassin_t3.png"
  },
  "skl1": {
   "F": 128,
@@ -3831,6 +4682,57 @@
    4
   ],
   "src": "knight_sun_trebuchet_t3.png"
+ },
+ "trl1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 115,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "frost_frost_troll_t1.png"
+ },
+ "trl2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "frost_frost_troll_t2.png"
+ },
+ "trl3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "frost_frost_troll_t3.png"
  },
  "vec1": {
   "F": 128,

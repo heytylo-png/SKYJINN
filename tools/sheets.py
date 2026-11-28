@@ -24,7 +24,9 @@ HTML = 'index.html'
 FRAME, FRAME_CHAMP, ROWS, COLS = 64, 128, 4, 4
 FACTIONS = {'djinn': 'djinn', 'verdant': 'verdant', 'mutant': 'mutant', 'mutants': 'mutant', 'knight': 'knight',
             'knights': 'knight', 'magic_knights': 'knight', 'goblin': 'goblin', 'goblins': 'goblin', 'undead': 'undead',
-            'auto': 'auto', 'automaton': 'auto', 'automatons': 'auto', 'dragon': 'dragon', 'dragons': 'dragon'}
+            'auto': 'auto', 'automaton': 'auto', 'automatons': 'auto', 'dragon': 'dragon', 'dragons': 'dragon',
+            'frost': 'frost', 'everwinter': 'frost', 'everwinter_court': 'frost',
+            'demon': 'demon', 'demons': 'demon', 'fallen_host': 'demon'}
 
 def units():
     """unit key, faction, role, name, air flag for every unit, read from the game's TYPES table"""
