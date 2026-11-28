@@ -1,7 +1,7 @@
 import json,sys,collections
 R=[]
 for f in sys.argv[1:]:R+=json.load(open(f))
-F=['djinn','verdant','mutant','knight','goblin','undead','auto','dragon']
+F=['djinn','verdant','mutant','knight','goblin','undead','auto','dragon','demon','frost','void']
 def summ(rs,label):
     n=len(rs)
     if not n:return
