@@ -1,7 +1,7 @@
 // SKYJINN offline cache. Bump VERSION whenever index.html changes.
 // Cache first: a return visit loads from this cache and downloads nothing. The browser re-checks this small file on
 // each visit; a new VERSION downloads the game once in the background, then takes over (the page reloads on the menu).
-const VERSION='skyjinn-v41';
+const VERSION='skyjinn-v42';
 const FILES=['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png','./icon-maskable-192.png','./icon-maskable-512.png','./privacy/','./support/',
   './audio/music_menu.mp3','./audio/music_desert.mp3','./audio/music_bridge.mp3','./audio/music_volcano.mp3','./audio/sting_victory.mp3','./audio/sting_defeat.mp3'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(FILES.map(f=>new Request(f,{cache:'reload'})))));self.skipWaiting()});

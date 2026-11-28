@@ -214,10 +214,37 @@ The pause menu also opens Settings, without the tutorial and reset buttons.
 - **Factions:** Djinn, Verdant, Mutants and Knights start unlocked. The other four cost 12 crowns each. A faction that already has campaign progress stays unlocked. Locked factions show the `card_locked` frame on the start menu, the campaign tabs and the Unlocks window.
 - **Unit tints:** Frost, Ember, Venom, Royal, Gilded and Shadow, 4–10 crowns each, bought and equipped in **Unlocks**. A tint is a colour matrix (`TINTS`) baked into the player's sheets and icons when they are built, so it costs nothing per frame. Glow halos keep their colour, and AI vs AI ignores the tint.
 
-## Factions (9)
-Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons · Everwinter Court
+## Factions (10)
+Djinn · Verdant · Mutants · Magic Knights · Goblins · Undead · Automatons · Dragons · Everwinter Court · The Fallen Host
 
-Drawn sprite sheets (idle, walk, attack, death) done for all nine factions, and all nine are painted.
+Drawn sprite sheets (idle, walk, attack, death) done for all ten factions, and all ten are painted.
+
+## The Fallen Host
+The tenth faction (id `demon`). It is locked at first and costs 12 crowns.
+
+| Unit | Key | Role | Notes |
+|---|---|---|---|
+| Cinderlings | `cdl` | swarm | 3 per buy |
+| Penitent Colossus | `pcl` | tank | |
+| Choir Archon | `cha` | ranged | flies; hellfire bolts pierce armor and hit air |
+| Blade Seraph | `bsr` | diver | |
+| Burning Herald | `bhd` | air | sets enemies burning |
+| Chainwarden | `chw` | anti-air | burning chains (the harpoon projectile) |
+| Brimstone Censer | `bcn` | siege | burning splash |
+| Flame Sister | `fls` | support | her fire ring heals all hurt allies and burns nearby enemies (`fring`) |
+| The Fallen Archangel | `fae` | champion | ability `hellfire` |
+
+- **Martyrdom (trait):** every Fallen unit bursts into hellfire when it dies. Enemies within 32 px take 18 damage and burn for 2 s (`MARTYR_DMG`, `MARTYR_R`).
+- **Hellfire Nova (champion, every 6 s):** 45 damage and 3 s of burning to nearby enemies.
+- **Brand of the Fallen (wish):** every enemy within 100 px takes 50 damage, burns for 4 s and takes +25% damage for 6 s (`BRAND`, `BRAND_T`). Branded units smoulder.
+  - No effect sheet was delivered, so it is drawn with the code effects: shock rings, a blast, scorch and rising embers.
+- **Sheets:** `art/sheets/src/demon_<unit>_t<tier>.png`, cleaned 128 px sheets with 4 or 5 frames per row. The champion's file is `demon_archangel_t*.png`. The Choir Archon and Burning Herald fly.
+- **Emblem and wish icon:** `art/ui/emblem_demon.png` and `art/ui/wish_demon.png` are **placeholders** built from crops of the Archangel and the tower's fire frame. Replace them with the real art and run `python3 tools/ui.py`.
+- **Tower:** `tower_demon.png` is animated: 5×4 frames of 256 px.
+  - Rows 1–2 loop at 6 fps while idle.
+  - Row 3 plays once at 12 fps each time the tower fires.
+  - Row 4 plays once at 8 fps when the base falls, and its last frame stays.
+  - `tools/towers.py` handles any C×4 grid like this (`anim` in `TOWER_DATA`). The 2×2 towers keep their four HP states.
 
 ## Everwinter Court
 The ninth faction (id `frost`). It is locked at first and costs 12 crowns, like the other locked factions.

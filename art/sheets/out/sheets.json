@@ -230,6 +230,108 @@
   ],
   "src": "undead_bone_ballista_t3.png"
  },
+ "bcn1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_brimstone_censer_t1.png"
+ },
+ "bcn2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_brimstone_censer_t2.png"
+ },
+ "bcn3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_brimstone_censer_t3.png"
+ },
+ "bhd1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 100.0,
+  "hit": 1,
+  "ih": 97,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_burning_herald_t1.png"
+ },
+ "bhd2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 96.0,
+  "hit": 0,
+  "ih": 95,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_burning_herald_t2.png"
+ },
+ "bhd3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 93.5,
+  "hit": 3,
+  "ih": 94,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_burning_herald_t3.png"
+ },
  "bik1": {
   "F": 128,
   "air": false,
@@ -569,6 +671,57 @@
   ],
   "src": "mutant_brood_mother_t3.png"
  },
+ "bsr1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 93,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_blade_seraph_t1.png"
+ },
+ "bsr2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 95,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_blade_seraph_t2.png"
+ },
+ "bsr3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 92,
+  "mz": null,
+  "n": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "src": "demon_blade_seraph_t3.png"
+ },
  "cat1": {
   "F": 128,
   "air": false,
@@ -736,6 +889,165 @@
    4
   ],
   "src": "undead_corpse_catapult_t3.png"
+ },
+ "cdl1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 115,
+  "mz": [
+   122.5,
+   98.9
+  ],
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_cinderlings_t1.png"
+ },
+ "cdl2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 114,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_cinderlings_t2.png"
+ },
+ "cdl3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 115,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_cinderlings_t3.png"
+ },
+ "cha1": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 117.0,
+  "hit": 2,
+  "ih": 114,
+  "mz": [
+   124.4,
+   66.2
+  ],
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_choir_archon_t1.png"
+ },
+ "cha2": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 117.0,
+  "hit": 0,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_choir_archon_t2.png"
+ },
+ "cha3": {
+  "F": 128,
+  "air": true,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 121.0,
+  "hit": 0,
+  "ih": 121,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_choir_archon_t3.png"
+ },
+ "chw1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_chainwarden_t1.png"
+ },
+ "chw2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 116,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_chainwarden_t2.png"
+ },
+ "chw3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 120,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_chainwarden_t3.png"
  },
  "cog1": {
   "F": 128,
@@ -1151,6 +1463,57 @@
   ],
   "src": "auto_drone_swarm_t3.png"
  },
+ "fae1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 121,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_archangel_t1.png"
+ },
+ "fae2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_archangel_t2.png"
+ },
+ "fae3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 3,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_archangel_t3.png"
+ },
  "fcl1": {
   "F": 128,
   "air": false,
@@ -1270,6 +1633,57 @@
    4
   ],
   "src": "goblin_flak_truck_t3.png"
+ },
+ "fls1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_flame_sister_t1.png"
+ },
+ "fls2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_flame_sister_t2.png"
+ },
+ "fls3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 0,
+  "ih": 119,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_flame_sister_t3.png"
  },
  "gbc1": {
   "F": 128,
@@ -2885,6 +3299,60 @@
    4
   ],
   "src": "knight_paladin_t3.png"
+ },
+ "pcl1": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 2,
+  "ih": 116,
+  "mz": [
+   125.8,
+   96.8
+  ],
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_penitent_colossus_t1.png"
+ },
+ "pcl2": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 117,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_penitent_colossus_t2.png"
+ },
+ "pcl3": {
+  "F": 128,
+  "air": false,
+  "ax": 64.0,
+  "clean": true,
+  "fy": 125.0,
+  "hit": 1,
+  "ih": 118,
+  "mz": null,
+  "n": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "src": "demon_penitent_colossus_t3.png"
  },
  "prs1": {
   "F": 128,
