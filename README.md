@@ -58,7 +58,7 @@ Store pages and installability:
 - **Ranks:**
   - Melee units pass through ranged allies.
   - A unit blocked for 0.6 s sidesteps into the freer neighbouring row.
-- **Faction stats:** `FACMOD` multipliers were re-tuned per faction. With the Everwinter Court added (hp ×1.3, dmg ×1.25), Magic Knights damage went to ×0.93 and Verdant to hp ×1.01, dmg ×0.965. Over 1,296 simulated matches (3 reps, every ordered pair, 3 maps, Normal and Hard), every faction wins 46.5–53.1%.
+- **Faction stats:** `FACMOD` multipliers were re-tuned per faction. With the Everwinter Court added (hp ×1.3, dmg ×1.25), Magic Knights damage went to ×0.93 and Verdant to hp ×1.01, dmg ×0.965. Over 2,592 simulated matches (two runs of 3 reps, every ordered pair, 3 maps, Normal and Hard), every faction wins 46.7–54.9%: Djinn 47.7, Verdant 48.1, Mutants 51.2, Knights 48.6, Goblins 49.7, Undead 46.7, Automatons 54.9, Dragons 51.2, Everwinter 51.9.
 - **Simulator:**
   - `window.__sky.sim(faction, diff, true, enemy, map)` runs one AI-vs-AI match headless.
   - `node tools/simrun.js <reps> out.json` runs every ordered faction pair on all 3 maps at Normal and Hard, 4 browsers in parallel.
